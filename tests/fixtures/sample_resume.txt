@@ -1,0 +1,32 @@
+Jordan Rivera
+Software Engineer — Backend / Platform
+jordan.rivera@example.com | github.com/jordanrivera | Berlin, DE
+
+SUMMARY
+Backend-leaning software engineer with 4 years building and operating Python
+web services at scale. Comfortable owning features end to end, from API design
+through deployment and on-call.
+
+EXPERIENCE
+
+Senior Software Engineer, Nimbus Logistics (2023–present)
+- Designed and shipped a FastAPI service handling 3M requests/day for shipment tracking, cutting p95 latency from 850ms to 240ms.
+- Built an event-driven pipeline on RabbitMQ that reconciles carrier updates, reducing manual data-fix tickets by 60%.
+- Introduced automated deployment with GitHub Actions and Docker, taking releases from weekly to on-demand.
+- Mentored two junior engineers and ran the team's weekly code-review rotation.
+
+Software Engineer, Brightfield SaaS (2021–2023)
+- Developed REST APIs in Python (Flask) backing a B2B analytics dashboard used by 400+ companies.
+- Migrated a monolith's reporting module to a separate service backed by PostgreSQL, improving query times 4x.
+- Wrote integration tests that raised coverage on the billing module from 45% to 88%.
+- Integrated Stripe billing and handled webhook reconciliation for failed payments.
+
+PROJECTS
+- Built a small side project that summarizes RSS feeds using an open-source LLM and a vector search index.
+
+EDUCATION
+BSc Computer Science, TU Munich (2017–2021)
+
+SKILLS
+Python, FastAPI, Flask, PostgreSQL, RabbitMQ, Docker, GitHub Actions, REST APIs,
+pytest, Git, Linux

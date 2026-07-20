@@ -1,0 +1,26 @@
+AI Engineer — Applied LLM Platform
+Aperture AI · Remote (EU) · Full-time
+
+About the role
+We're building the platform that lets our product teams ship LLM-powered
+features safely. You'll design retrieval pipelines, evaluation harnesses, and the
+services that put models into production.
+
+What you'll do
+- Build and operate Python backend services that serve LLM features to production traffic.
+- Design RAG pipelines: chunking, embeddings, vector search, and reranking.
+- Stand up evaluation harnesses (offline eval sets, LLM-as-judge) to measure quality.
+- Add observability and cost tracking to LLM calls (tracing, dashboards).
+- Work with cloud infra and CI/CD to deploy services reliably.
+
+Must-have
+- 3+ years of professional software engineering, primarily in Python.
+- Experience building and operating web services / APIs in production.
+- Solid grasp of PostgreSQL or a comparable relational database.
+- Comfortable with Docker and CI/CD pipelines.
+
+Nice-to-have
+- Hands-on experience with LLM APIs, embeddings, or vector databases (pgvector, Pinecone).
+- Familiarity with RAG, prompt engineering, or model evaluation.
+- Experience with observability tooling (OpenTelemetry, Langfuse, Datadog).
+- Kubernetes experience.

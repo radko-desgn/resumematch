@@ -4,17 +4,37 @@
 
 ResumeMatch grows from a paste-in MVP (score + gap analysis + bullet rewriting) into a portfolio-grade AI product: an evaluated, observable, RAG-style analyzer with live job data, a polished UI, and a public launch. The journey deliberately front-loads the working core, then layers on the "senior signal" pieces (eval + LLMOps), then data/persistence, then design and launch.
 
+## PIVOT (2026-07-20)
+
+The UI direction changed from a Streamlit app to a full-stack **Next.js + Tailwind +
+shadcn/ui** multi-step wizard with a **FastAPI** backend wrapping the existing Python
+engine. The engine (analyze, schemas, prompts, embeddings, mock mode) is unchanged.
+The Streamlit UI (app.py, resumematch/ui, plan 01-02) is now **legacy/superseded**.
+New milestone **v0.2 Wizard UX** supersedes the Streamlit UI work.
+
 ## Current Milestone
 
-**v0.1 MVP Core** (v0.1.0)
-Status: Not started
-Phases: 0 of 5 complete
+**v0.2 Wizard UX — Full-Stack** (v0.2.0)
+Status: In progress
+Goal: 4-step wizard (CV input → Job input → Processing → Tiered results) on
+Next.js/shadcn + FastAPI, with a simulated Free/Paid ($10) paywall and Claude-vision OCR.
+
+Phases:
+- A. **Backend API** — FastAPI `/api/analyze` + input adapters (text, PDF, DOCX, URL, image/vision), mock mode. Wraps `resumematch.analyze`.
+- B. **Frontend shell** — Next.js + Tailwind + shadcn scaffold; wizard shell (Step X of 4 indicator, state store, back/edit, light/dark, transitions).
+- C. **Steps 1 & 2** — CV input (file/text/image tabs) + Job input (URL/file/text/image tabs) with validation.
+- D. **Step 3** — animated processing (staged status, progress) triggering the API.
+- E. **Step 4** — tiered results: Free (gauge + blurred locked preview + $10 CTA) vs Paid (full breakdown: summary, strengths, gaps, recommendations); simulated unlock.
+
+### Legacy — v0.1 MVP Core (engine SHIPPED, Streamlit UI superseded)
+- Phase 1 plan 01-01 (headless engine) — ✅ done, still the core.
+- Phase 1 plan 01-02 (Streamlit UI) — superseded by v0.2 (kept as legacy in app.py).
 
 ## Phases
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 1 | MVP Core (score + gaps + rewrites) | TBD | Not started | - |
+| 1 | MVP Core (score + gaps + rewrites) | 2 (01-01, 01-02) | Planning | - |
 | 2 | Eval & LLMOps | TBD | Not started | - |
 | 3 | Data & Persistence | TBD | Not started | - |
 | 4 | Design Polish | TBD | Not started | - |

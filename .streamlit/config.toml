@@ -1,0 +1,12 @@
+# ResumeMatch base theme — aligns Streamlit defaults with docs/DESIGN.md.
+# Custom CSS (resumematch/ui/theme.py) does the heavy lifting on top of this.
+[theme]
+base = "dark"
+backgroundColor = "#0B0D12"
+secondaryBackgroundColor = "#141821"
+textColor = "#E6E9EF"
+primaryColor = "#35C1F1"
+font = "sans serif"
+
+[server]
+headless = true
