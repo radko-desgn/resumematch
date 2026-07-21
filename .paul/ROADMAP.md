@@ -15,16 +15,20 @@ New milestone **v0.2 Wizard UX** supersedes the Streamlit UI work.
 ## Current Milestone
 
 **v0.2 Wizard UX — Full-Stack** (v0.2.0)
-Status: In progress
-Goal: 4-step wizard (CV input → Job input → Processing → Tiered results) on
-Next.js/shadcn + FastAPI, with a simulated Free/Paid ($10) paywall and Claude-vision OCR.
+Status: ✅ SHIPPED (2026-07-21) — see .paul/phases/02-wizard-ux/02-SUMMARY.md
+Delivered: 4-step wizard (CV → Job → Processing → Tiered results) on Next.js + Tailwind
++ FastAPI, simulated Free/Paid ($10) paywall, Claude-vision OCR (stubbed in mock),
+full landing page, and a monochrome black&white editorial redesign (mobile-first).
 
-Phases:
-- A. **Backend API** — FastAPI `/api/analyze` + input adapters (text, PDF, DOCX, URL, image/vision), mock mode. Wraps `resumematch.analyze`.
-- B. **Frontend shell** — Next.js + Tailwind + shadcn scaffold; wizard shell (Step X of 4 indicator, state store, back/edit, light/dark, transitions).
-- C. **Steps 1 & 2** — CV input (file/text/image tabs) + Job input (URL/file/text/image tabs) with validation.
-- D. **Step 3** — animated processing (staged status, progress) triggering the API.
-- E. **Step 4** — tiered results: Free (gauge + blurred locked preview + $10 CTA) vs Paid (full breakdown: summary, strengths, gaps, recommendations); simulated unlock.
+Phases (all ✅ complete):
+- A. **Backend API** — FastAPI `/api/analyze` + input adapters (text, PDF, DOCX, URL, image/vision), mock mode. ✅
+- B. **Frontend shell** — Next.js + Tailwind + shadcn-style wizard shell (Step X of 4, state, back/edit, transitions). ✅
+- C. **Steps 1 & 2** — CV + Job tabbed multi-source inputs with validation, sample-fill. ✅
+- D. **Step 3** — animated processing (radar + staged checklist + progress). ✅
+- E. **Step 4** — tiered results (Free gauge/locked/CTA vs Paid full breakdown), simulated unlock. ✅
+- (+ Landing page, monochrome redesign, spacing pass, form polish.) ✅
+
+Open de-risk: PDF/DOCX/URL/vision adapters verified only on the text path e2e.
 
 ### Legacy — v0.1 MVP Core (engine SHIPPED, Streamlit UI superseded)
 - Phase 1 plan 01-01 (headless engine) — ✅ done, still the core.

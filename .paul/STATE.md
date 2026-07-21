@@ -9,38 +9,30 @@ See: .paul/PROJECT.md (updated 2026-07-20)
 
 ## Current Position
 
-Milestone: v0.1 MVP Core
-Phase: 1 of 5 (MVP Core) — Planning
-Plan: 01-02 created, awaiting approval
-Status: PLAN created, ready for APPLY
-Last activity: 2026-07-20 — Created .paul/phases/01-mvp-core/01-02-PLAN.md (Streamlit UI)
+Milestone: v0.2 Wizard UX — Full-Stack — ✅ SHIPPED
+Phase: v0.2 phases A–E complete
+Plan: milestone reconciled (02-SUMMARY.md written)
+Status: Milestone shipped; ready to plan v0.3 (or de-risk PDF/URL inputs)
+Last activity: 2026-07-21 — Closed v0.2; full-stack wizard + landing + monochrome redesign shipped
 
 Progress:
-- Milestone: [█░░░░░░░░░] ~10%
-- Phase 1: [█████░░░░░] 50% (1 of 2 plans complete; 01-02 planned)
+- v0.1 MVP engine: [██████████] shipped (Streamlit UI superseded)
+- v0.2 Wizard UX: [██████████] shipped
 
 ## Loop Position
 
 Current loop state:
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ○        ○     [Plan 01-02 created, awaiting approval]
+  ✓        ✓        ✓     [v0.2 milestone closed — ready for next PLAN]
 ```
 
-Note: Phase 1 = 2 plans — 01-01 (analysis engine, ✅ DONE), 01-02 (Streamlit UI, planned).
-01-02 is the LAST plan in Phase 1 → UNIFY will trigger the phase transition (commit).
-Required skills for 01-02 APPLY: /theme-factory, /dataviz (blocking).
+Servers (dev): FastAPI backend :8000, Next.js frontend :3001. Run instructions in README.
 
-### Environment (RESOLVED 2026-07-20)
-Installed Python 3.12.13 via Homebrew; created .venv; `pip install -e ".[dev]"`
-succeeds. Full test suite now 6/6 passing (real bge-small embedding match runs,
-no longer skipped).
-1. `pip install -e .` — ✅ RESOLVED (works on 3.12).
-2. Live Claude structured-output calls — 🟡 DEFERRED BY DESIGN. Free `--mock` mode
-   works end-to-end without a key; live calls to be enabled at the final stage
-   when the user adds credits.
-3. Real bge-small embedding match — ✅ RESOLVED (7/7 tests pass, incl. mock e2e).
-Status: fully runnable free. No blocker to continue building (UI is next).
+### Environment (stable)
+Python 3.12 (.venv) + Node 24. Engine tests 11/11. Backend analyze (mock/text) verified.
+Live Claude calls + image OCR still need ANTHROPIC_API_KEY (mock is default).
+Open de-risk: PDF/DOCX/URL adapters only exercised on the text path e2e so far.
 
 ## Accumulated Context
 
@@ -63,10 +55,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-07-20
-Stopped at: Plan 01-02 (Streamlit UI) created, awaiting approval
-Next action: Load /theme-factory + /dataviz, then run /paul:apply .paul/phases/01-mvp-core/01-02-PLAN.md
-Resume file: .paul/phases/01-mvp-core/01-02-PLAN.md
+Last session: 2026-07-21
+Stopped at: v0.2 milestone shipped + reconciled in PAUL
+Next action: Either de-risk PDF/URL inputs (real files through /api/analyze) OR plan v0.3 (Eval & LLMOps)
+Resume file: .paul/phases/02-wizard-ux/02-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*

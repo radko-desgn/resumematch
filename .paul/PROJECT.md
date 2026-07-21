@@ -12,10 +12,10 @@ Job seekers get an instant, evidence-based read on how well they fit a specific 
 
 | Attribute | Value |
 |-----------|-------|
-| Type | Application |
-| Version | 0.0.0 |
-| Status | Initializing |
-| Last Updated | 2026-07-20 |
+| Type | Application (full-stack: Next.js + FastAPI) |
+| Version | 0.2.0 |
+| Status | Beta (functional, mock-mode by default) |
+| Last Updated | 2026-07-21 |
 
 ## Requirements
 
@@ -29,10 +29,16 @@ Job seekers get an instant, evidence-based read on how well they fit a specific 
 - **Observability**: tracing + per-analysis cost tracking
 
 ### Validated (Shipped)
-None yet.
+- [x] Headless analysis engine (score + evidence gap analysis + no-fabrication rewrites) — v0.1
+- [x] Free `--mock` mode (no key, no cost) — v0.1
+- [x] FastAPI backend `/api/analyze` wrapping the engine + input adapters (text/PDF/DOCX/URL/vision) — v0.2
+- [x] Next.js 4-step wizard (CV → Job → Processing → Tiered results) with tabbed multi-source inputs — v0.2
+- [x] Tiered Free/Paid ($10 simulated) results with count-up gauge, coverage chips, copy actions — v0.2
+- [x] Landing page (hero+wizard, How It Works, Benefits, FAQ, footer) — v0.2
+- [x] Monochrome black&white editorial identity (Montserrat/Inter), mobile-first — v0.2
 
 ### Active (In Progress)
-None yet.
+None — v0.2 shipped. Next: verify PDF/URL adapters live, then v0.3 Eval & LLMOps.
 
 ### Planned (Next)
 - Milestone v0.1 (MVP): scoring + gap analysis + bullet rewriting in a basic Streamlit UI
