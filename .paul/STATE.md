@@ -33,7 +33,15 @@ Servers (dev): FastAPI backend :8000, Next.js frontend :3001. Run instructions i
 Python 3.12 (.venv) + Node 24. Engine tests 11/11.
 Input adapters verified e2e via /api/analyze (mock): text ✅, PDF ✅ (1523 chars),
 DOCX ✅ (1530), URL ✅ (local HTML, 1238). Image/vision OCR stubbed in mock (needs key).
-Live Claude calls still need ANTHROPIC_API_KEY (mock is default).
+
+### LIVE VERIFIED (2026-07-21) — last deferred item now closed
+Real Claude call via CLI with ANTHROPIC_API_KEY in .env (gitignored, chmod 600):
+score 78 "strong match", 8 requirements extracted (vs 5 in mock), evidence quotes
+exact, 0 anti-fabrication violations, 5/15 bullets honestly rewritten (added
+"CI/CD", "production Python web services"). AC-2/AC-3 from plan 01-01 now
+genuinely satisfied end-to-end.
+NOTE: the wizard UI still hardcodes mock=true (lib/store.tsx) — live runs go via CLI
+until a live toggle is added.
 
 ## Accumulated Context
 
