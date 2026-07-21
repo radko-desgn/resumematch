@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Montserrat, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 
-const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display-next" });
+const display = Montserrat({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-display-next" });
 const body = Inter({ subsets: ["latin"], variable: "--font-body-next" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-next" });
 
@@ -14,14 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full">
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }

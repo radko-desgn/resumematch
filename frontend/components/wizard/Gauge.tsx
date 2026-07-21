@@ -12,8 +12,8 @@ export function Gauge({ score, size = 220 }: { score: number; size?: number }) {
       <svg viewBox="0 0 220 132" className="w-full" role="img" aria-label={`Match score ${s} of 100`}>
         <defs>
           <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--brand-a)" />
-            <stop offset="100%" stopColor="var(--brand-b)" />
+            <stop offset="0%" stopColor="var(--accent-a)" />
+            <stop offset="100%" stopColor="var(--accent-b)" />
           </linearGradient>
         </defs>
         <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="var(--border)" strokeWidth="16" strokeLinecap="round" />
@@ -30,8 +30,8 @@ export function Gauge({ score, size = 220 }: { score: number; size?: number }) {
         />
       </svg>
       <div className="absolute inset-x-0 bottom-1 text-center">
-        <div className="font-mono font-bold text-4xl leading-none">{s}</div>
-        <div className="font-mono text-xs text-muted-foreground mt-1">/ 100 match</div>
+        <div className="font-display text-5xl leading-none">{s}</div>
+        <div className="text-xs text-muted-foreground mt-1">/ 100 match</div>
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export function FileDrop({
       }}
       className={cn(
         "rounded-[var(--radius-lg)] border-2 border-dashed p-8 text-center transition-colors",
-        drag ? "border-brand-b bg-muted" : "border-border"
+        drag ? "border-foreground bg-muted" : "border-border"
       )}
     >
       <input

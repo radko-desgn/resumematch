@@ -75,7 +75,7 @@ export function Step3Processing() {
           className="absolute inset-0"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, color-mix(in srgb, var(--brand-b) 55%, transparent) 60deg, transparent 90deg)",
+              "conic-gradient(from 0deg, transparent 0deg, color-mix(in srgb, var(--foreground) 45%, transparent) 60deg, transparent 90deg)",
             borderRadius: "9999px",
             maskImage: "radial-gradient(circle, black 62%, transparent 63%)",
             WebkitMaskImage: "radial-gradient(circle, black 62%, transparent 63%)",
@@ -84,16 +84,16 @@ export function Step3Processing() {
           transition={{ duration: 2.2, ease: "linear", repeat: Infinity }}
           aria-hidden
         />
-        <span className="absolute inset-0 m-auto h-2.5 w-2.5 rounded-full brand-gradient" style={{ boxShadow: "0 0 18px var(--brand-b)" }} />
+        <span className="absolute inset-0 m-auto h-2.5 w-2.5 rounded-full bg-foreground" style={{ boxShadow: "0 0 18px color-mix(in srgb, var(--foreground) 60%, transparent)" }} />
       </div>
 
       <h2 className="font-display text-2xl font-semibold mb-2">Analyzing your match</h2>
-      <motion.p key={stage} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-sm text-muted-foreground mb-6">
+      <motion.p key={stage} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-sm text-muted-foreground mb-6">
         {STAGES[stage]}
       </motion.p>
 
       <div className="w-full max-w-md h-2 rounded-full bg-muted overflow-hidden">
-        <motion.div className="h-full brand-gradient" animate={{ width: `${progress}%` }} transition={{ ease: "easeOut" }} />
+        <motion.div className="h-full bg-foreground" animate={{ width: `${progress}%` }} transition={{ ease: "easeOut" }} />
       </div>
     </div>
   );

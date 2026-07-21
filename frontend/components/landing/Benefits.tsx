@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Clock, ShieldCheck, Target, Gauge } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 const BENEFITS = [
   { icon: Clock, title: "Save hours", body: "Stop hand-tailoring every application. Get the edits that matter in seconds." },
@@ -19,37 +18,36 @@ const STATS = [
 
 export function Benefits() {
   return (
-    <section id="why" className="scroll-mt-20 border-y border-border bg-muted/40">
-      <div className="mx-auto max-w-6xl px-5 py-24">
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Why use it</span>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl font-semibold tracking-tight">
-            The unfair advantage for every application
+    <section id="why" className="scroll-mt-16 bg-[#0A0A0A] text-white">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+        <div className="max-w-2xl">
+          <span className="eyebrow text-white/45">Why use it</span>
+          <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
+            An unfair advantage on every application
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 sm:mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.map((b, i) => (
             <motion.div
               key={b.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className="rounded-2xl border border-white/12 bg-white/[0.03] p-7"
             >
-              <Card className="h-full p-6">
-                <b.icon className="size-6" style={{ color: "var(--brand-b)" }} />
-                <h3 className="mt-4 font-display font-semibold">{b.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{b.body}</p>
-              </Card>
+              <b.icon className="size-6 text-white" />
+              <h3 className="mt-5 font-display text-lg">{b.title}</h3>
+              <p className="mt-2 text-sm text-white/55 leading-relaxed">{b.body}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-14 grid grid-cols-3 gap-4 max-w-2xl mx-auto text-center">
+        <div className="mt-14 grid grid-cols-3 gap-4 max-w-2xl">
           {STATS.map((s) => (
             <div key={s.label}>
-              <div className="font-display text-3xl sm:text-4xl font-bold brand-text">{s.value}</div>
-              <div className="mt-1 text-xs sm:text-sm text-muted-foreground">{s.label}</div>
+              <div className="font-display text-3xl sm:text-5xl">{s.value}</div>
+              <div className="mt-1.5 text-xs sm:text-sm text-white/50">{s.label}</div>
             </div>
           ))}
         </div>

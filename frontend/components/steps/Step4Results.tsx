@@ -107,8 +107,8 @@ export function Step4Results() {
           {/* Lock overlay + CTA */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <Card className="p-7 max-w-sm text-center shadow-lg">
-              <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full brand-gradient">
-                <Lock className="size-5 text-primary-foreground" />
+              <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-foreground">
+                <Lock className="size-5 text-background" />
               </div>
               <h3 className="font-display text-lg font-semibold mb-1">Unlock the full analysis</h3>
               <p className="text-sm text-muted-foreground mb-5">

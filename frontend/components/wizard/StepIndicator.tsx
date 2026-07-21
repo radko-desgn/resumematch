@@ -12,10 +12,8 @@ export function StepIndicator() {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-3">
-        <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground">
-          Step {step} of 4
-        </span>
-        <span className="font-display text-sm font-semibold">{STEPS[step - 1]}</span>
+        <span className="eyebrow text-muted-foreground text-[11px]">Step {step} of 4</span>
+        <span className="font-display text-sm">{STEPS[step - 1]}</span>
       </div>
       <div className="flex items-center gap-2">
         {STEPS.map((label, i) => {
@@ -28,17 +26,14 @@ export function StepIndicator() {
               <button
                 disabled={!clickable}
                 onClick={() => clickable && goto(n)}
-                className={cn(
-                  "group flex w-full items-center gap-2",
-                  clickable ? "cursor-pointer" : "cursor-default"
-                )}
+                className={cn("group flex w-full items-center gap-2", clickable ? "cursor-pointer" : "cursor-default")}
                 aria-label={`${label} step`}
               >
                 <span
                   className={cn(
-                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold font-mono transition-all",
-                    done && "brand-gradient text-primary-foreground",
-                    active && "border-2 border-brand-b text-foreground",
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-all",
+                    done && "bg-foreground text-background",
+                    active && "border-2 border-foreground text-foreground",
                     !done && !active && "border border-border text-muted-foreground"
                   )}
                 >
@@ -53,12 +48,7 @@ export function StepIndicator() {
                   {label}
                 </span>
               </button>
-              <div
-                className={cn(
-                  "mt-2 h-1 rounded-full transition-all duration-500",
-                  n <= step ? "brand-gradient" : "bg-border"
-                )}
-              />
+              <div className={cn("mt-2 h-1 rounded-full transition-all duration-500", n <= step ? "bg-foreground" : "bg-border")} />
             </div>
           );
         })}
