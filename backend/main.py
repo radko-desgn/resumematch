@@ -110,6 +110,7 @@ async def analyze_endpoint(
     cv_kind: str = Form(...),
     job_kind: str = Form(...),
     mock: bool = Form(True),
+    full: bool = Form(True),
     cv_text: Optional[str] = Form(None),
     job_text: Optional[str] = Form(None),
     job_url: Optional[str] = Form(None),
@@ -121,10 +122,10 @@ async def analyze_endpoint(
     if not cv.strip() or not job.strip():
         raise HTTPException(422, "Could not extract text from the CV and/or job inputs.")
     try:
-        result = analyze(cv, job, mock=mock)
+        result = analyze(cv, job, mock=mock, with_rewrites=full)
     except ValueError as exc:  # e.g. missing API key on a live run
         raise HTTPException(400, str(exc))
     # Echo the resolved text lengths so the UI can show what was parsed.
     payload = result.model_dump()
-    payload["_meta"] = {"cv_chars": len(cv), "job_chars": len(job), "mock": mock}
+    payload["_meta"] = {"cv_chars": len(cv), "job_chars": len(job), "mock": mock, "full": full}
     return payload

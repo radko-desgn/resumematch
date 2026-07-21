@@ -12,7 +12,7 @@ const QA = [
   },
   {
     q: "What's free vs. paid?",
-    a: "Free shows your match score and a locked preview of the report. The $10 tier unlocks the full breakdown — executive summary, strengths, every gap, and tailored rewrites. In this demo the unlock is simulated (no charge).",
+    a: "You choose before we scan. The free score gives you the overall match percentage and a verdict. The $10 full report runs the deeper analysis — executive summary, strengths, every gap with its evidence, tailored CV rewrites, and a branded PDF you can download or have emailed. You can start free and upgrade afterwards. In this demo the payment is simulated (no charge).",
   },
   {
     q: "Will it invent experience to make me look good?",

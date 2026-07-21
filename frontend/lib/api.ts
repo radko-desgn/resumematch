@@ -41,11 +41,12 @@ export async function emailReport(
   return body;
 }
 
-export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean): Promise<Analysis> {
+export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean, full: boolean): Promise<Analysis> {
   const fd = new FormData();
   fd.append("cv_kind", cv.kind);
   fd.append("job_kind", job.kind);
   fd.append("mock", String(mock));
+  fd.append("full", String(full));
 
   if (cv.kind === "text") fd.append("cv_text", cv.text);
   else if (cv.file) fd.append("cv_file", cv.file);

@@ -26,6 +26,10 @@ interface WizardState {
   back: () => void;
   reset: () => void;
   analyze: () => Promise<void>;
+  /** Pick a plan and immediately start the scan. */
+  startScan: (t: Tier) => void;
+  /** Upgrade after a free scan — re-runs the analysis with rewrites. */
+  upgrade: () => void;
   cvReady: boolean;
   jobReady: boolean;
 }
@@ -88,18 +92,32 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
     setStatus("processing");
     setError(null);
     try {
-      const result = await runAnalyze(cv, job, mock);
+      // Free tier skips the rewrite call entirely (cheaper per scan).
+      const result = await runAnalyze(cv, job, mock, tier === "paid");
       setAnalysis(result);
       setStatus("done");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Analysis failed");
       setStatus("error");
     }
-  }, [cv, job, mock]);
+  }, [cv, job, mock, tier]);
+
+  const startScan = (t: Tier) => {
+    setTier(t);
+    setAnalysis(null);
+    setStep(3);
+  };
+
+  const upgrade = () => {
+    setTier("paid");
+    setAnalysis(null);
+    setStep(3); // re-runs the scan, now with rewrites
+  };
 
   const value: WizardState = {
     step, cv, job, tier, status, analysis, error, mock, hasKey, setMock,
-    setCv, setJob, setTier, goto, next, back, reset, analyze, cvReady, jobReady,
+    setCv, setJob, setTier, goto, next, back, reset, analyze, startScan, upgrade,
+    cvReady, jobReady,
   };
   return <WizardCtx.Provider value={value}>{children}</WizardCtx.Provider>;
 }

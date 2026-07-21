@@ -12,20 +12,29 @@ from .llm import structured_call
 from .schemas import Analysis, RewriteResult, ScoreResult
 
 
-def analyze(resume: str, job: str, mock: bool = False) -> Analysis:
-    """Run the full analysis on a resume + job posting (both plain text).
+def analyze(
+    resume: str,
+    job: str,
+    mock: bool = False,
+    with_rewrites: bool = True,
+) -> Analysis:
+    """Run the analysis on a resume + job posting (both plain text).
 
-    When `mock=True`, the two paid Claude calls are replaced with canned results
-    (no API key, no cost); the local embedding match still runs for real.
+    `mock=True` replaces the paid Claude calls with canned results (no key, no
+    cost); the local embedding match still runs for real.
+
+    `with_rewrites=False` runs ONLY the scoring call and skips the bullet-rewrite
+    call — used for the free tier, roughly halving the cost per analysis.
     """
     bullets = extract_bullets(resume)
+    empty_rewrite = RewriteResult(rewritten_bullets=[], tailored_summary="")
 
     if mock:
         # Free/offline mode: fake only the paid calls.
         from . import mocks
 
         score: ScoreResult = mocks.mock_score(resume, job)
-        rewrite: RewriteResult = mocks.mock_rewrite(bullets, job)
+        rewrite: RewriteResult = mocks.mock_rewrite(bullets, job) if with_rewrites else empty_rewrite
     else:
         # 1) Scoring + gap analysis (Claude call #1)
         score = structured_call(
@@ -33,11 +42,15 @@ def analyze(resume: str, job: str, mock: bool = False) -> Analysis:
             user=prompts.build_scoring_user(resume, job),
             schema=ScoreResult,
         )
-        # 3) Bullet rewriting (Claude call #2)
-        rewrite = structured_call(
-            system=prompts.REWRITE_SYSTEM,
-            user=prompts.build_rewrite_user(bullets, job),
-            schema=RewriteResult,
+        # 3) Bullet rewriting (Claude call #2) — paid tier only
+        rewrite = (
+            structured_call(
+                system=prompts.REWRITE_SYSTEM,
+                user=prompts.build_rewrite_user(bullets, job),
+                schema=RewriteResult,
+            )
+            if with_rewrites
+            else empty_rewrite
         )
 
     # 2) Local embedding match: requirements -> nearest resume evidence (no API)

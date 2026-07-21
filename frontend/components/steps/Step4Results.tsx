@@ -103,7 +103,7 @@ function CoverageChips({ a }: { a: Analysis }) {
 }
 
 export function Step4Results() {
-  const { analysis, tier, setTier, reset } = useWizard();
+  const { analysis, tier, upgrade, reset } = useWizard();
   if (!analysis) return null;
   const { score } = analysis;
 
@@ -129,26 +129,30 @@ export function Step4Results() {
           <ReportActions analysis={analysis} />
         </motion.div>
       ) : (
-        <div className="relative">
-          <div className="pointer-events-none select-none blur-[7px] opacity-60" aria-hidden>
-            <ReportBody a={analysis} />
+        <Card className="p-7 text-center">
+          <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-foreground">
+            <Lock className="size-5 text-background" />
           </div>
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <Card className="p-7 max-w-sm text-center shadow-xl">
-              <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-foreground">
-                <Lock className="size-5 text-background" />
-              </div>
-              <h3 className="font-display text-lg mb-1">Unlock the full analysis</h3>
-              <p className="text-sm text-muted-foreground mb-5">
-                Executive summary, strengths, every gap, and tailored CV rewrites for this job.
-              </p>
-              <Button size="lg" className="w-full" onClick={() => setTier("paid")}>
-                Unlock Full Analysis — $10
-              </Button>
-              <p className="mt-3 text-xs text-muted-foreground">Demo: unlock is simulated (no charge).</p>
-            </Card>
-          </div>
-        </div>
+          <h3 className="font-display text-lg mb-1">That&apos;s your score. Want the why?</h3>
+          <p className="mx-auto mb-5 max-w-sm text-sm text-muted-foreground">
+            The full report adds an executive summary, every gap with the evidence behind it,
+            tailored CV rewrites, and a branded PDF you can keep.
+          </p>
+          <ul className="mx-auto mb-6 max-w-xs space-y-2 text-left">
+            {["Executive summary", "Strengths & every gap, with evidence", "Tailored CV rewrites", "Branded PDF + email"].map((t) => (
+              <li key={t} className="flex gap-2 text-sm">
+                <Check className="mt-0.5 size-4 shrink-0 text-met" />
+                {t}
+              </li>
+            ))}
+          </ul>
+          <Button size="lg" className="w-full sm:w-auto" onClick={upgrade}>
+            Get the full report — $10
+          </Button>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Demo: payment is simulated. We&apos;ll re-run the deeper analysis for you.
+          </p>
+        </Card>
       )}
 
       <div className="mt-8 flex justify-center">
