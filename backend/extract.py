@@ -29,22 +29,88 @@ def extract_docx(data: bytes) -> str:
     return "\n".join(p.text for p in document.paragraphs).strip()
 
 
+_BROWSER_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+)
+
+# Ordered best-effort selectors for the job description body.
+_JOB_SELECTORS = [
+    ".show-more-less-html__markup",      # LinkedIn
+    ".description__text",                # LinkedIn
+    "[data-testid*='jobDescription']",
+    "[class*='job-description']",
+    "#job-description",
+    "section.description",
+    "div[class*='posting']",             # Lever
+    "div#content",                       # Greenhouse
+    "article",
+    "main",
+]
+
+_WALL_HINTS = ("sign in", "join now", "create a password", "verify you are human", "enable javascript")
+
+
+def _jsonld_job(soup) -> str:
+    """schema.org JobPosting is the cleanest source when a site publishes it."""
+    import json
+
+    from bs4 import BeautifulSoup
+
+    for tag in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(tag.string or "{}")
+        except Exception:
+            continue
+        for obj in data if isinstance(data, list) else [data]:
+            if isinstance(obj, dict) and obj.get("@type") == "JobPosting":
+                parts = [obj.get("title", ""), (obj.get("hiringOrganization") or {}).get("name", "")
+                         if isinstance(obj.get("hiringOrganization"), dict) else "",
+                         BeautifulSoup(obj.get("description", ""), "html.parser").get_text(" ", strip=True)]
+                text = "\n".join(p for p in parts if p).strip()
+                if len(text) > 200:
+                    return text
+    return ""
+
+
+def _selector_job(soup) -> str:
+    for sel in _JOB_SELECTORS:
+        for node in soup.select(sel):
+            text = " ".join(node.get_text(" ", strip=True).split())
+            if len(text) > 400:  # long enough to plausibly be the description
+                return text
+    return ""
+
+
 def extract_url(url: str) -> str:
+    """Fetch a job posting URL and return the description text.
+
+    Strategy: schema.org JobPosting -> known description containers -> whole page.
+    Raises ValueError when the page yields no usable job text (login/consent wall,
+    JS-only page), so the caller can tell the user to paste the text instead.
+    """
     import httpx
     from bs4 import BeautifulSoup
 
-    resp = httpx.get(
-        url,
-        follow_redirects=True,
-        timeout=15,
-        headers={"User-Agent": "Mozilla/5.0 (ResumeMatch)"},
-    )
+    resp = httpx.get(url, follow_redirects=True, timeout=20, headers={"User-Agent": _BROWSER_UA})
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
-    for tag in soup(["script", "style", "nav", "footer", "header", "noscript", "svg"]):
-        tag.decompose()
-    lines = [ln.strip() for ln in soup.get_text("\n").splitlines() if ln.strip()]
-    return "\n".join(lines)
+
+    text = _jsonld_job(soup) or _selector_job(soup)
+
+    if not text:  # fall back to the whole page, minus chrome
+        for tag in soup(["script", "style", "nav", "footer", "header", "noscript", "svg", "form"]):
+            tag.decompose()
+        text = "\n".join(ln.strip() for ln in soup.get_text("\n").splitlines() if ln.strip())
+
+    if len(text) < 250:
+        head = text[:400].lower()
+        why = "the page looks like a sign-in/consent wall" if any(w in head for w in _WALL_HINTS) else "the page had no readable job text"
+        raise ValueError(
+            f"Couldn't read a job description from that link — {why}. "
+            "Open the posting, copy the description, and use the 'Paste text' tab instead."
+        )
+    return text
 
 
 def extract_image(data: bytes, media_type: str = "image/png", mock: bool = False) -> str:
