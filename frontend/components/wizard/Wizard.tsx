@@ -9,11 +9,12 @@ import { Step2Job } from "../steps/Step2Job";
 import { Step3Processing } from "../steps/Step3Processing";
 import { Step4Results } from "../steps/Step4Results";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "./ModeToggle";
 
 const STEPS = [Step1Cv, Step2Job, Step3Processing, Step4Results];
 
 export function Wizard() {
-  const { step, next, back, cvReady, jobReady } = useWizard();
+  const { step, next, back, cvReady, jobReady, mock } = useWizard();
   const Current = STEPS[step - 1];
 
   return (
@@ -42,14 +43,19 @@ export function Wizard() {
         </div>
       )}
       {step === 2 && (
-        <div className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-between gap-3">
-          <Button variant="outline" onClick={back} className="w-full sm:w-auto">
-            <ArrowLeft /> Back
-          </Button>
-          <Button disabled={!jobReady} onClick={next} className="w-full sm:w-auto">
-            Analyze <ArrowRight />
-          </Button>
-        </div>
+        <>
+          <div className="mt-6">
+            <ModeToggle />
+          </div>
+          <div className="mt-4 flex flex-col-reverse sm:flex-row sm:justify-between gap-3">
+            <Button variant="outline" onClick={back} className="w-full sm:w-auto">
+              <ArrowLeft /> Back
+            </Button>
+            <Button disabled={!jobReady} onClick={next} className="w-full sm:w-auto">
+              {mock ? "Analyze (free)" : "Analyze live (~1.5¢)"} <ArrowRight />
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );

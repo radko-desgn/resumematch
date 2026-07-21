@@ -2,6 +2,12 @@ import { Analysis, CvInput, JobInput } from "./types";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+export async function getHealth(): Promise<{ ok: boolean; has_key: boolean }> {
+  const res = await fetch(`${API}/api/health`);
+  if (!res.ok) throw new Error("health check failed");
+  return res.json();
+}
+
 export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean): Promise<Analysis> {
   const fd = new FormData();
   fd.append("cv_kind", cv.kind);
