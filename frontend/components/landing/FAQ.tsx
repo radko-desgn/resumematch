@@ -1,0 +1,76 @@
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const QA = [
+  {
+    q: "How do I get the most accurate match score?",
+    a: "Paste the full text or upload a clean PDF/DOCX rather than a low-resolution screenshot. The more complete the CV and job description, the sharper the gap analysis.",
+  },
+  {
+    q: "What's free vs. paid?",
+    a: "Free shows your match score and a locked preview of the report. The $10 tier unlocks the full breakdown — executive summary, strengths, every gap, and tailored rewrites. In this demo the unlock is simulated (no charge).",
+  },
+  {
+    q: "Will it invent experience to make me look good?",
+    a: "Never. Rewrites only rephrase what's already in your CV to match the job's language — no fabricated skills, tools, or metrics. Every judgment cites evidence from your resume.",
+  },
+  {
+    q: "Does it work for any role or industry?",
+    a: "Yes. It reads the requirements from whatever job you give it and matches them against your CV, so it works across roles and fields.",
+  },
+  {
+    q: "What happens to my data?",
+    a: "Your CV and the job text are used only to run the analysis for your session — they aren't part of any training set.",
+  },
+];
+
+function Item({ q, a, open, onClick }: { q: string; a: string; open: boolean; onClick: () => void }) {
+  return (
+    <div className="border-b border-border">
+      <button
+        onClick={onClick}
+        className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer"
+        aria-expanded={open}
+      >
+        <span className="font-medium">{q}</span>
+        <Plus className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-45")} />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <p className="pb-5 text-sm text-muted-foreground max-w-2xl">{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section id="faq" className="mx-auto max-w-3xl px-5 py-24 scroll-mt-20">
+      <div className="text-center">
+        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">FAQ & tips</span>
+        <h2 className="mt-3 font-display text-3xl sm:text-4xl font-semibold tracking-tight">
+          Everything you need to know
+        </h2>
+      </div>
+      <div className="mt-12">
+        {QA.map((item, i) => (
+          <Item key={i} q={item.q} a={item.a} open={open === i} onClick={() => setOpen(open === i ? null : i)} />
+        ))}
+      </div>
+    </section>
+  );
+}
