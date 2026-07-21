@@ -30,9 +30,10 @@ PLAN ──▶ APPLY ──▶ UNIFY
 Servers (dev): FastAPI backend :8000, Next.js frontend :3001. Run instructions in README.
 
 ### Environment (stable)
-Python 3.12 (.venv) + Node 24. Engine tests 11/11. Backend analyze (mock/text) verified.
-Live Claude calls + image OCR still need ANTHROPIC_API_KEY (mock is default).
-Open de-risk: PDF/DOCX/URL adapters only exercised on the text path e2e so far.
+Python 3.12 (.venv) + Node 24. Engine tests 11/11.
+Input adapters verified e2e via /api/analyze (mock): text ✅, PDF ✅ (1523 chars),
+DOCX ✅ (1530), URL ✅ (local HTML, 1238). Image/vision OCR stubbed in mock (needs key).
+Live Claude calls still need ANTHROPIC_API_KEY (mock is default).
 
 ## Accumulated Context
 
