@@ -19,7 +19,7 @@ const STATS = [
 export function Benefits() {
   return (
     <section id="why" className="scroll-mt-16 bg-[#0A0A0A] text-white">
-      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-white/45">Why use it</span>
           <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
@@ -27,7 +27,7 @@ export function Benefits() {
           </h2>
         </div>
 
-        <div className="mt-12 sm:mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 sm:mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.map((b, i) => (
             <motion.div
               key={b.title}
@@ -43,7 +43,7 @@ export function Benefits() {
           ))}
         </div>
 
-        <div className="mt-14 grid grid-cols-3 gap-4 max-w-2xl">
+        <div className="mt-12 grid grid-cols-3 gap-4 max-w-2xl">
           {STATS.map((s) => (
             <div key={s.label}>
               <div className="font-display text-3xl sm:text-5xl">{s.value}</div>

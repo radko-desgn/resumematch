@@ -13,7 +13,7 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section id="how" className="bg-background scroll-mt-16">
-      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-muted-foreground">How it works</span>
           <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
@@ -22,7 +22,7 @@ export function HowItWorks() {
           <p className="mt-4 text-muted-foreground sm:text-lg">No account, no setup. Paste, click, and read your fit.</p>
         </div>
 
-        <div className="mt-12 sm:mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 sm:mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <motion.div
               key={s.title}

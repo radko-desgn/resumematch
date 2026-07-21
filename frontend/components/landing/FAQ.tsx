@@ -59,7 +59,7 @@ function Item({ q, a, open, onClick }: { q: string; a: string; open: boolean; on
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-5 py-20 sm:py-28 scroll-mt-16">
+    <section id="faq" className="mx-auto max-w-3xl px-5 py-20 sm:py-24 scroll-mt-16">
       <div>
         <span className="eyebrow text-muted-foreground">FAQ &amp; tips</span>
         <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">

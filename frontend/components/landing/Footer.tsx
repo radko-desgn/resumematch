@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 export function Footer() {
   return (
     <footer className="bg-[#0A0A0A] text-white">
-      <div className="mx-auto max-w-6xl px-5 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="text-center">
           <h2 className="mx-auto max-w-2xl font-display text-3xl sm:text-5xl leading-[1.05]">
             Stop guessing. Know your match.

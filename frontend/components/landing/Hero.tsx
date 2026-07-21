@@ -6,7 +6,7 @@ import { Wizard } from "../wizard/Wizard";
 export function Hero() {
   return (
     <section id="top" className="bg-[#0A0A0A] text-white">
-      <div className="mx-auto max-w-6xl px-5 pt-14 pb-12 sm:pt-20 sm:pb-16 text-center">
+      <div className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:pt-16 sm:pb-24 text-center">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className="flex items-center justify-center gap-3 text-white/50">
             <span className="h-px w-8 bg-white/25" />
