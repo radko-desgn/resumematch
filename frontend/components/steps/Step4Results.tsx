@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, Check, AlertTriangle, Sparkles, RotateCcw } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { Gauge } from "../wizard/Gauge";
+import { CopyButton } from "../wizard/CopyButton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Analysis } from "@/lib/types";
@@ -18,59 +19,84 @@ function verdictColor(v: string) {
 function ReportBody({ a }: { a: Analysis }) {
   const gaps = [
     ...a.score.critical_gaps,
-    ...a.score.requirements
-      .filter((r) => r.status !== "met")
-      .map((r) => `${r.requirement} (${r.status.replace("-", " ")})`),
+    ...a.score.requirements.filter((r) => r.status !== "met").map((r) => `${r.requirement} (${r.status.replace("-", " ")})`),
   ];
   const recs = [
     ...a.score.quick_wins,
-    ...a.rewrite.rewritten_bullets.filter((b) => b.changed).map((b) => `Reword: “${b.rewritten}”`),
+    ...a.rewrite.rewritten_bullets.filter((b) => b.changed).map((b) => b.rewritten),
   ];
   return (
     <div className="grid gap-4">
       <Card className="p-5">
         <h3 className="font-display font-semibold mb-2">Executive summary</h3>
-        <p className="text-sm text-muted-foreground">{a.score.summary}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{a.score.summary}</p>
       </Card>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Card className="p-5">
+          <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
+            <Check className="size-4 text-met" /> What&apos;s strong
+          </h3>
+          <ul className="space-y-2.5">
+            {a.score.key_strengths.map((s, i) => (
+              <li key={i} className="flex gap-2.5 text-sm">
+                <span className="mt-1.5 size-1.5 rounded-full shrink-0" style={{ background: "var(--met)" }} />
+                {s}
+              </li>
+            ))}
+          </ul>
+        </Card>
+        <Card className="p-5">
+          <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
+            <AlertTriangle className="size-4 text-missing" /> Gaps to address
+          </h3>
+          <ul className="space-y-2.5">
+            {gaps.map((g, i) => (
+              <li key={i} className="flex gap-2.5 text-sm">
+                <span className="mt-1.5 size-1.5 rounded-full shrink-0" style={{ background: "var(--missing)" }} />
+                {g}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
+
       <Card className="p-5">
-        <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
-          <Check className="size-4 text-met" /> What's strong
-        </h3>
-        <ul className="space-y-2">
-          {a.score.key_strengths.map((s, i) => (
-            <li key={i} className="flex gap-2 text-sm">
-              <span className="mt-1.5 size-1.5 rounded-full shrink-0" style={{ background: "var(--met)" }} />
-              {s}
-            </li>
-          ))}
-        </ul>
-      </Card>
-      <Card className="p-5">
-        <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
-          <AlertTriangle className="size-4 text-missing" /> Gaps to address
-        </h3>
-        <ul className="space-y-2">
-          {gaps.map((g, i) => (
-            <li key={i} className="flex gap-2 text-sm">
-              <span className="mt-1.5 size-1.5 rounded-full shrink-0" style={{ background: "var(--missing)" }} />
-              {g}
-            </li>
-          ))}
-        </ul>
-      </Card>
-      <Card className="p-5">
-        <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
-          <Sparkles className="size-4" style={{ color: "var(--violet)" }} /> Recommendations
-        </h3>
-        <ul className="space-y-2">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h3 className="font-display font-semibold flex items-center gap-2">
+            <Sparkles className="size-4" /> Recommendations
+          </h3>
+          <CopyButton text={recs.join("\n")} label="Copy all" />
+        </div>
+        <ul className="divide-y divide-border">
           {recs.map((r, i) => (
-            <li key={i} className="flex gap-2 text-sm">
-              <span className="mt-1.5 size-1.5 rounded-full shrink-0" style={{ background: "var(--violet)" }} />
-              {r}
+            <li key={i} className="flex items-start justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
+              <span className="text-sm">{r}</span>
+              <CopyButton text={r} />
             </li>
           ))}
         </ul>
       </Card>
+    </div>
+  );
+}
+
+function CoverageChips({ a }: { a: Analysis }) {
+  const reqs = a.score.requirements;
+  const must = reqs.filter((r) => r.type === "must-have");
+  const mustMet = must.filter((r) => r.status === "met").length;
+  const met = reqs.filter((r) => r.status === "met").length;
+  const chip = "inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs";
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      <span className={chip}>
+        <span className="size-1.5 rounded-full" style={{ background: "var(--met)" }} />
+        Must-haves {mustMet}/{must.length}
+      </span>
+      <span className={chip}>
+        <span className="size-1.5 rounded-full bg-foreground" />
+        Requirements {met}/{reqs.length}
+      </span>
     </div>
   );
 }
@@ -83,14 +109,15 @@ export function Step4Results() {
   return (
     <div>
       {/* Score header — shown to everyone */}
-      <Card className="p-6 mb-6">
-        <div className="flex flex-wrap items-center gap-6">
+      <Card className="p-6 mb-4">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
           <Gauge score={score.overall_fit_score} />
-          <div className="min-w-0">
-            <div className="font-display text-xl font-semibold" style={{ color: verdictColor(score.verdict) }}>
+          <div className="min-w-0 flex-1">
+            <div className="font-display text-xl" style={{ color: verdictColor(score.verdict) }}>
               {score.verdict}
             </div>
-            <p className="text-sm text-muted-foreground mt-1 max-w-md">{score.summary}</p>
+            <p className="text-sm text-muted-foreground mt-1.5 max-w-md leading-relaxed">{score.summary}</p>
+            <CoverageChips a={analysis} />
           </div>
         </div>
       </Card>
@@ -104,13 +131,12 @@ export function Step4Results() {
           <div className="pointer-events-none select-none blur-[7px] opacity-60" aria-hidden>
             <ReportBody a={analysis} />
           </div>
-          {/* Lock overlay + CTA */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <Card className="p-7 max-w-sm text-center shadow-lg">
+            <Card className="p-7 max-w-sm text-center shadow-xl">
               <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-foreground">
                 <Lock className="size-5 text-background" />
               </div>
-              <h3 className="font-display text-lg font-semibold mb-1">Unlock the full analysis</h3>
+              <h3 className="font-display text-lg mb-1">Unlock the full analysis</h3>
               <p className="text-sm text-muted-foreground mb-5">
                 Executive summary, strengths, every gap, and tailored CV rewrites for this job.
               </p>

@@ -4,8 +4,10 @@ import { FileText, Type, Image as ImageIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { FileDrop } from "../wizard/FileDrop";
+import { TextMeta } from "../wizard/TextMeta";
 import { useWizard } from "@/lib/store";
 import { CvKind } from "@/lib/types";
+import { SAMPLE_CV } from "@/lib/samples";
 
 export function Step1Cv() {
   const { cv, setCv } = useWizard();
@@ -28,6 +30,7 @@ export function Step1Cv() {
             value={cv.text}
             onChange={(e) => setCv({ text: e.target.value })}
           />
+          <TextMeta value={cv.text} min={30} onFill={() => setCv({ kind: "text", text: SAMPLE_CV })} />
         </TabsContent>
         <TabsContent value="file">
           <FileDrop accept=".pdf,.docx" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PDF or DOCX" />

@@ -5,8 +5,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { FileDrop } from "../wizard/FileDrop";
+import { TextMeta } from "../wizard/TextMeta";
 import { useWizard } from "@/lib/store";
 import { JobKind } from "@/lib/types";
+import { SAMPLE_JOB } from "@/lib/samples";
 
 export function Step2Job() {
   const { job, setJob } = useWizard();
@@ -41,6 +43,7 @@ export function Step2Job() {
             value={job.text}
             onChange={(e) => setJob({ text: e.target.value })}
           />
+          <TextMeta value={job.text} min={30} onFill={() => setJob({ kind: "text", text: SAMPLE_JOB })} />
         </TabsContent>
         <TabsContent value="file">
           <FileDrop accept=".pdf" file={job.file} onFile={(f) => setJob({ file: f })} hint="PDF" />
