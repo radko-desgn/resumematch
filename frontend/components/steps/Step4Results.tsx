@@ -5,6 +5,7 @@ import { Lock, Check, AlertTriangle, Sparkles, RotateCcw } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { Gauge } from "../wizard/Gauge";
 import { CopyButton } from "../wizard/CopyButton";
+import { ReportActions } from "../wizard/ReportActions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Analysis } from "@/lib/types";
@@ -125,6 +126,7 @@ export function Step4Results() {
       {tier === "paid" ? (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
           <ReportBody a={analysis} />
+          <ReportActions analysis={analysis} />
         </motion.div>
       ) : (
         <div className="relative">
