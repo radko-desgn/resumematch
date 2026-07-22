@@ -25,32 +25,35 @@ export function Step2Job() {
           <TabsTrigger value="image"><ImageIcon className="size-4" /> Screenshot</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="url">
-          <Input
-            type="url"
-            placeholder="https://company.com/careers/role"
-            value={job.url}
-            onChange={(e) => setJob({ url: e.target.value })}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">
-            We fetch the page and extract the description. Some sites block bots — paste the text if it fails.
-          </p>
-        </TabsContent>
-        <TabsContent value="text">
-          <Textarea
-            rows={12}
-            placeholder="Paste the job description here…"
-            value={job.text}
-            onChange={(e) => setJob({ text: e.target.value })}
-          />
-          <TextMeta value={job.text} min={30} onFill={() => setJob({ kind: "text", text: SAMPLE_JOB })} />
-        </TabsContent>
-        <TabsContent value="file">
-          <FileDrop accept=".pdf" file={job.file} onFile={(f) => setJob({ file: f })} hint="PDF" />
-        </TabsContent>
-        <TabsContent value="image">
-          <FileDrop accept="image/*" file={job.file} onFile={(f) => setJob({ file: f })} hint="PNG or JPG — read via OCR" />
-        </TabsContent>
+        {/* fixed height so switching tabs never resizes the panel */}
+        <div className="mt-4 h-[232px]">
+          <TabsContent value="url" className="mt-0 h-full">
+            <Input
+              type="url"
+              placeholder="https://company.com/careers/role"
+              value={job.url}
+              onChange={(e) => setJob({ url: e.target.value })}
+            />
+            <p className="mt-2 text-xs text-muted-foreground">
+              We fetch the page and extract the description. Some sites block bots — paste the text if it fails.
+            </p>
+          </TabsContent>
+          <TabsContent value="text" className="mt-0 h-full">
+            <Textarea
+              className="h-[192px] resize-none"
+              placeholder="Paste the job description here…"
+              value={job.text}
+              onChange={(e) => setJob({ text: e.target.value })}
+            />
+            <TextMeta value={job.text} min={30} onFill={() => setJob({ kind: "text", text: SAMPLE_JOB })} />
+          </TabsContent>
+          <TabsContent value="file" className="mt-0 h-full">
+            <FileDrop className="h-full" accept=".pdf" file={job.file} onFile={(f) => setJob({ file: f })} hint="PDF" />
+          </TabsContent>
+          <TabsContent value="image" className="mt-0 h-full">
+            <FileDrop className="h-full" accept="image/*" file={job.file} onFile={(f) => setJob({ file: f })} hint="PNG or JPG — read via OCR" />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

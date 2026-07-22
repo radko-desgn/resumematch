@@ -9,11 +9,13 @@ export function FileDrop({
   file,
   onFile,
   hint,
+  className,
 }: {
   accept: string;
   file: File | null;
   onFile: (f: File | null) => void;
   hint: string;
+  className?: string;
 }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [drag, setDrag] = React.useState(false);
@@ -31,8 +33,9 @@ export function FileDrop({
         if (e.dataTransfer.files?.[0]) onFile(e.dataTransfer.files[0]);
       }}
       className={cn(
-        "rounded-[var(--radius-lg)] border-2 border-dashed p-8 text-center transition-colors",
-        drag ? "border-foreground bg-muted" : "border-border"
+        "flex items-center justify-center rounded-[var(--radius-lg)] border-2 border-dashed p-8 text-center transition-colors",
+        drag ? "border-foreground bg-muted" : "border-border",
+        className
       )}
     >
       <input

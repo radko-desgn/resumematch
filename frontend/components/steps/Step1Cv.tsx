@@ -23,21 +23,24 @@ export function Step1Cv() {
           <TabsTrigger value="image"><ImageIcon className="size-4" /> Screenshot</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="text">
-          <Textarea
-            rows={12}
-            placeholder="Paste your CV / resume here…"
-            value={cv.text}
-            onChange={(e) => setCv({ text: e.target.value })}
-          />
-          <TextMeta value={cv.text} min={30} onFill={() => setCv({ kind: "text", text: SAMPLE_CV })} />
-        </TabsContent>
-        <TabsContent value="file">
-          <FileDrop accept=".pdf,.docx" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PDF or DOCX" />
-        </TabsContent>
-        <TabsContent value="image">
-          <FileDrop accept="image/*" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PNG or JPG — read via OCR" />
-        </TabsContent>
+        {/* fixed height so switching tabs never resizes the panel */}
+        <div className="mt-4 h-[232px]">
+          <TabsContent value="text" className="mt-0 h-full">
+            <Textarea
+              className="h-[192px] resize-none"
+              placeholder="Paste your CV / resume here…"
+              value={cv.text}
+              onChange={(e) => setCv({ text: e.target.value })}
+            />
+            <TextMeta value={cv.text} min={30} onFill={() => setCv({ kind: "text", text: SAMPLE_CV })} />
+          </TabsContent>
+          <TabsContent value="file" className="mt-0 h-full">
+            <FileDrop className="h-full" accept=".pdf,.docx" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PDF or DOCX" />
+          </TabsContent>
+          <TabsContent value="image" className="mt-0 h-full">
+            <FileDrop className="h-full" accept="image/*" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PNG or JPG — read via OCR" />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );
