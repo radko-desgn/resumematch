@@ -45,13 +45,24 @@ export function useWizard() {
 const emptyCv: CvInput = { kind: "text", text: "", file: null };
 const emptyJob: JobInput = { kind: "text", text: "", url: "", file: null };
 
-export function WizardProvider({ children }: { children: React.ReactNode }) {
-  const [step, setStep] = React.useState(1);
+export function WizardProvider({
+  children,
+  initialAnalysis = null,
+  initialTier = "free",
+  initialStep = 1,
+}: {
+  children: React.ReactNode;
+  /** Seed state — used by the /preview/results design page. */
+  initialAnalysis?: Analysis | null;
+  initialTier?: Tier;
+  initialStep?: number;
+}) {
+  const [step, setStep] = React.useState(initialStep);
   const [cv, setCvState] = React.useState<CvInput>(emptyCv);
   const [job, setJobState] = React.useState<JobInput>(emptyJob);
-  const [tier, setTier] = React.useState<Tier>("free");
-  const [status, setStatus] = React.useState<Status>("idle");
-  const [analysis, setAnalysis] = React.useState<Analysis | null>(null);
+  const [tier, setTier] = React.useState<Tier>(initialTier);
+  const [status, setStatus] = React.useState<Status>(initialAnalysis ? "done" : "idle");
+  const [analysis, setAnalysis] = React.useState<Analysis | null>(initialAnalysis);
   const [error, setError] = React.useState<string | null>(null);
   // Free demo mode is the DEFAULT so nobody spends money by accident.
   const [mock, setMock] = React.useState(true);
