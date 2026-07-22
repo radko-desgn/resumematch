@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -15,9 +16,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="size-6 rounded-md accent-gradient" />
-          <span className="font-display text-[17px]">ResumeMatch</span>
+        <a href="#top" className="flex items-center" onClick={() => setOpen(false)} aria-label="ResumeMatch home">
+          <Image
+            src="/logo-black.png"
+            alt="ResumeMatch"
+            width={1476}
+            height={261}
+            priority
+            className="h-[26px] w-auto"
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-8">

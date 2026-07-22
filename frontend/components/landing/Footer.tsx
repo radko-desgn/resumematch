@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -15,10 +16,13 @@ export function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-white/50">
-          <div className="flex items-center gap-2.5">
-            <span className="size-5 rounded-md accent-gradient" />
-            <span className="font-display text-white">ResumeMatch</span>
-          </div>
+          <Image
+            src="/logo-white.png"
+            alt="ResumeMatch"
+            width={1476}
+            height={261}
+            className="h-[22px] w-auto"
+          />
           <p className="text-xs">Built with Next.js + FastAPI · demo project</p>
         </div>
       </div>

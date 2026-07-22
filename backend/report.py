@@ -7,13 +7,26 @@ then prints it to PDF with Chromium via Playwright.
 
 from __future__ import annotations
 
+import base64
 import html
 import math
 from datetime import date
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 _R = 90
 _ARC = math.pi * _R
+_ASSETS = Path(__file__).parent / "assets"
+
+
+@lru_cache(maxsize=4)
+def _asset_data_uri(name: str) -> str:
+    """Inline an image so the PDF renderer needs no file access."""
+    path = _ASSETS / name
+    if not path.exists():
+        return ""
+    return "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode()
 
 
 def _verdict_color(verdict: str) -> str:
@@ -88,8 +101,7 @@ def build_html(analysis: dict[str, Any]) -> str:
   h1,h2,h3 {{ font-family: Montserrat, sans-serif; letter-spacing:-0.02em; margin:0; }}
   .band {{ background:#0A0A0A; color:#fff; padding:22px 34px; display:flex;
            justify-content:space-between; align-items:center; }}
-  .brand {{ display:flex; align-items:center; gap:9px; font-family:Montserrat; font-weight:700; font-size:15px; }}
-  .mark {{ width:16px; height:16px; border-radius:5px; background:linear-gradient(120deg,#10B981,#0EA5B7); }}
+  .logo {{ height:22px; width:auto; display:block; }}
   .band .meta {{ font-size:10px; color:rgba(255,255,255,.55); }}
   .wrap {{ padding: 26px 34px 0; }}
   .hero {{ display:flex; gap:26px; align-items:center; border:1px solid #E6E6E8;
@@ -119,7 +131,7 @@ def build_html(analysis: dict[str, Any]) -> str:
 </style></head><body>
 
 <div class="band">
-  <div class="brand"><span class="mark"></span> ResumeMatch</div>
+  <img class="logo" src="{_asset_data_uri('logo-white.png')}" alt="ResumeMatch">
   <div class="meta">Match report · {date.today().isoformat()}</div>
 </div>
 
