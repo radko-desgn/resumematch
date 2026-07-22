@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock, ShieldCheck, Target, Gauge } from "lucide-react";
+import { CountUp } from "./CountUp";
 
 const BENEFITS = [
   { icon: Clock, title: "Save hours", body: "Stop hand-tailoring every application. Get the edits that matter in seconds." },
@@ -34,7 +35,7 @@ export function Benefits() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
-              className="rounded-2xl border border-white/12 bg-white/[0.03] p-7"
+              className="rounded-2xl border border-white/12 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-white/30 hover:bg-white/[0.06]"
             >
               <b.icon className="size-6 text-white" />
               <h3 className="mt-5 font-display text-lg">{b.title}</h3>
@@ -46,7 +47,7 @@ export function Benefits() {
         <div className="mt-12 grid grid-cols-3 gap-4 max-w-2xl">
           {STATS.map((s) => (
             <div key={s.label}>
-              <div className="font-display text-3xl sm:text-5xl">{s.value}</div>
+              <div className="font-display text-3xl sm:text-5xl"><CountUp value={s.value} /></div>
               <div className="mt-1.5 text-xs sm:text-sm text-white/50">{s.label}</div>
             </div>
           ))}

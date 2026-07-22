@@ -29,10 +29,10 @@ export function HowItWorks() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
-              className="bg-background p-7 sm:p-8"
+              className="group bg-background p-7 sm:p-8 transition-colors duration-300 hover:bg-muted/60"
             >
               <div className="flex items-center justify-between">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-foreground text-background">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-foreground text-background transition-transform duration-300 group-hover:-translate-y-0.5">
                   <s.icon className="size-5" />
                 </div>
                 <span className="font-display text-2xl text-border">0{i + 1}</span>
