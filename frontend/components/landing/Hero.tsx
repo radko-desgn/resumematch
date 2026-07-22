@@ -34,7 +34,17 @@ export function Hero() {
               </motion.span>
             </span>
 
-            <RotatingText phrases={ROTATING} className="my-1 sm:my-1.5" />
+            {/* same mask reveal as the fixed lines, staggered between them */}
+            <span className="block overflow-hidden pb-[0.08em] my-1 sm:my-1.5">
+              <motion.span
+                className="block"
+                initial={{ y: "110%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
+              >
+                <RotatingText phrases={ROTATING} />
+              </motion.span>
+            </span>
 
             <span className="block overflow-hidden pb-[0.08em]">
               <motion.span

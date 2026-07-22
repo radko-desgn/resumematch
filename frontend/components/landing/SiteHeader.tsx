@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "#how", label: "How it works" },
@@ -13,7 +14,15 @@ const NAV = [
 ];
 
 export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll(); // respect a restored scroll position on load
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // lock background scroll while the drawer is open
   useEffect(() => {
@@ -25,16 +34,40 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">
-          <a href="#top" aria-label="ResumeMatch home" onClick={() => setOpen(false)}>
+      <header
+        className={cn(
+          "sticky top-0 z-50 transition-all duration-300",
+          scrolled
+            ? "border-b border-border bg-background/80 backdrop-blur-md shadow-sm text-foreground"
+            : "bg-[#0A0A0A] text-white" // seamless with the dark hero
+        )}
+      >
+        <div
+          className={cn(
+            "mx-auto max-w-6xl px-5 flex items-center justify-between transition-all duration-300",
+            scrolled ? "h-14" : "h-20"
+          )}
+        >
+          {/* logo crossfades black/white with the header state */}
+          <a href="#top" className="relative block" aria-label="ResumeMatch home" onClick={() => setOpen(false)}>
             <Image
-              src="/logo-black.png"
+              src="/logo-white.png"
               alt="ResumeMatch"
               width={1476}
               height={261}
               priority
-              className="h-[26px] w-auto"
+              className={cn("w-auto transition-all duration-300", scrolled ? "h-[22px] opacity-0" : "h-[26px] opacity-100")}
+            />
+            <Image
+              src="/logo-black.png"
+              alt=""
+              aria-hidden
+              width={1476}
+              height={261}
+              className={cn(
+                "absolute inset-0 w-auto transition-all duration-300",
+                scrolled ? "h-[22px] opacity-100" : "h-[26px] opacity-0"
+              )}
             />
           </a>
 
@@ -43,7 +76,10 @@ export function SiteHeader() {
               <a
                 key={n.href}
                 href={n.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className={cn(
+                  "text-sm transition-colors",
+                  scrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"
+                )}
               >
                 {n.label}
               </a>
@@ -51,11 +87,11 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button asChild size="sm" className="hidden sm:inline-flex">
+            <Button asChild size="sm" variant={scrolled ? "default" : "invert"} className="hidden sm:inline-flex">
               <a href="#analyze">Analyze now</a>
             </Button>
             <button
-              className="md:hidden inline-flex size-11 items-center justify-center rounded-full hover:bg-foreground/5"
+              className="md:hidden inline-flex size-11 items-center justify-center rounded-full hover:bg-current/10"
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
