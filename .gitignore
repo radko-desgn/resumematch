@@ -53,3 +53,8 @@ Thumbs.db
 # Langfuse / eval outputs
 eval_results/
 *.trace.json
+
+# generated report/CV downloads
+resumematch-report.pdf
+tailored-cv.pdf
+*.docx
