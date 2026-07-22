@@ -3,44 +3,62 @@
 import { useEffect } from "react";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 
-export function Gauge({ score, size = 220 }: { score: number; size?: number }) {
-  const R = 90;
-  const len = Math.PI * R;
+/**
+ * Monochrome score dial. The value arc is solid ink on a hairline track — the
+ * number carries the meaning, the arc just gives it shape.
+ */
+export function Gauge({ score, size = 208 }: { score: number; size?: number }) {
+  const R = 88;
+  const CIRC = 2 * Math.PI * R;
+  const SWEEP = 0.75; // three-quarter dial
+  const track = CIRC * SWEEP;
   const s = Math.max(0, Math.min(100, Math.round(score)));
-  const off = len * (1 - s / 100);
 
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v));
+  const progress = useMotionValue(0);
+  const dashoffset = useTransform(progress, (v) => track * (1 - v / 100));
+  const rounded = useTransform(progress, (v) => Math.round(v));
+
   useEffect(() => {
-    const controls = animate(count, s, { duration: 1.2, ease: [0.2, 0.7, 0.2, 1] });
+    const controls = animate(progress, s, { duration: 1.2, ease: [0.2, 0.7, 0.2, 1] });
     return () => controls.stop();
-  }, [s, count]);
+  }, [s, progress]);
 
   return (
-    <div style={{ width: size }} className="relative shrink-0">
-      <svg viewBox="0 0 220 132" className="w-full" role="img" aria-label={`Match score ${s} of 100`}>
-        <defs>
-          <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--accent-a)" />
-            <stop offset="100%" stopColor="var(--accent-b)" />
-          </linearGradient>
-        </defs>
-        <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="var(--border)" strokeWidth="16" strokeLinecap="round" />
-        <motion.path
-          d="M 20 110 A 90 90 0 0 1 200 110"
+    <div style={{ width: size }} className="relative shrink-0" aria-label={`Match score ${s} of 100`} role="img">
+      <svg viewBox="0 0 200 200" className="w-full -rotate-[135deg]">
+        <circle
+          cx="100"
+          cy="100"
+          r={R}
           fill="none"
-          stroke="url(#gaugeGrad)"
-          strokeWidth="16"
+          stroke="currentColor"
+          className="text-foreground/12"
+          strokeWidth="10"
           strokeLinecap="round"
-          strokeDasharray={len}
-          initial={{ strokeDashoffset: len }}
-          animate={{ strokeDashoffset: off }}
-          transition={{ duration: 1.2, ease: [0.2, 0.7, 0.2, 1] }}
+          strokeDasharray={`${track} ${CIRC}`}
+        />
+        <motion.circle
+          cx="100"
+          cy="100"
+          r={R}
+          fill="none"
+          stroke="currentColor"
+          className="text-foreground"
+          strokeWidth="10"
+          strokeLinecap="round"
+          strokeDasharray={`${track} ${CIRC}`}
+          style={{ strokeDashoffset: dashoffset }}
         />
       </svg>
-      <div className="absolute inset-x-0 bottom-1 text-center">
-        <motion.span className="font-display text-5xl leading-none">{rounded}</motion.span>
-        <div className="text-xs text-muted-foreground mt-1">/ 100 match</div>
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="flex items-start leading-none">
+          <motion.span className="font-display text-[64px] tracking-[-0.04em]">{rounded}</motion.span>
+          <span className="mt-2 ml-1 font-display text-2xl text-foreground/35">%</span>
+        </div>
+        <span className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          match
+        </span>
       </div>
     </div>
   );

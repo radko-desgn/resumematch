@@ -11,13 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Analysis } from "@/lib/types";
 
-function verdictColor(v: string) {
-  const s = v.toLowerCase();
-  if (s.includes("strong")) return "var(--met)";
-  if (s.includes("weak")) return "var(--missing)";
-  return "var(--partial)";
-}
-
 function ReportBody({ a }: { a: Analysis }) {
   const gaps = [
     ...a.score.critical_gaps,
@@ -72,10 +65,7 @@ function ReportBody({ a }: { a: Analysis }) {
         </div>
         <ul className="divide-y divide-border">
           {recs.map((r, i) => (
-            <li key={i} className="flex items-start justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
-              <span className="text-sm">{r}</span>
-              <CopyButton text={r} />
-            </li>
+            <li key={i} className="py-2.5 text-sm first:pt-0 last:pb-0">{r}</li>
           ))}
         </ul>
       </Card>
@@ -88,16 +78,17 @@ function CoverageChips({ a }: { a: Analysis }) {
   const must = reqs.filter((r) => r.type === "must-have");
   const mustMet = must.filter((r) => r.status === "met").length;
   const met = reqs.filter((r) => r.status === "met").length;
-  const chip = "inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs";
+  const chip =
+    "inline-flex items-baseline gap-2 rounded-full border border-foreground/20 bg-foreground/[0.04] px-3.5 py-1.5 text-xs";
   return (
-    <div className="mt-3 flex flex-wrap gap-2">
+    <div className="mt-4 flex flex-wrap gap-2">
       <span className={chip}>
-        <span className="size-1.5 rounded-full" style={{ background: "var(--met)" }} />
-        Must-haves {mustMet}/{must.length}
+        <span className="font-semibold uppercase tracking-[0.08em] text-muted-foreground">Must-haves</span>
+        <span className="font-display text-sm">{mustMet}/{must.length}</span>
       </span>
       <span className={chip}>
-        <span className="size-1.5 rounded-full bg-foreground" />
-        Requirements {met}/{reqs.length}
+        <span className="font-semibold uppercase tracking-[0.08em] text-muted-foreground">Requirements</span>
+        <span className="font-display text-sm">{met}/{reqs.length}</span>
       </span>
     </div>
   );
@@ -115,9 +106,7 @@ export function Step4Results() {
         <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
           <Gauge score={score.overall_fit_score} />
           <div className="min-w-0 flex-1">
-            <div className="font-display text-xl" style={{ color: verdictColor(score.verdict) }}>
-              {score.verdict}
-            </div>
+            <div className="font-display text-2xl capitalize">{score.verdict}</div>
             <p className="text-sm text-muted-foreground mt-1.5 max-w-md leading-relaxed">{score.summary}</p>
             <CoverageChips a={analysis} />
           </div>
