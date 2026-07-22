@@ -39,18 +39,26 @@ def _verdict_color(verdict: str) -> str:
 
 
 def _gauge_svg(score: int) -> str:
+    """Monochrome three-quarter dial — matches the app's results header."""
     score = max(0, min(100, int(score)))
-    off = _ARC * (1 - score / 100)
+    r = 88
+    circ = 2 * math.pi * r
+    track = circ * 0.75
+    off = track * (1 - score / 100)
     return f"""
-<svg viewBox="0 0 220 132" width="200" height="120">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#0EA5B7"/>
-  </linearGradient></defs>
-  <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#E6E6E8" stroke-width="16" stroke-linecap="round"/>
-  <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#g)" stroke-width="16"
-        stroke-linecap="round" stroke-dasharray="{_ARC:.2f}" stroke-dashoffset="{off:.2f}"/>
-  <text x="110" y="104" text-anchor="middle" font-family="Montserrat, sans-serif"
-        font-size="44" font-weight="700" fill="#0A0A0A">{score}</text>
+<svg viewBox="0 0 200 200" width="150" height="150">
+  <g transform="rotate(-135 100 100)">
+    <circle cx="100" cy="100" r="{r}" fill="none" stroke="#E6E6E8" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="{track:.2f} {circ:.2f}"/>
+    <circle cx="100" cy="100" r="{r}" fill="none" stroke="#0A0A0A" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="{track:.2f} {circ:.2f}"
+            stroke-dashoffset="{off:.2f}"/>
+  </g>
+  <text x="100" y="106" text-anchor="middle" font-family="Montserrat, sans-serif"
+        font-size="54" font-weight="700" letter-spacing="-2" fill="#0A0A0A">{score}<tspan
+        font-size="26" fill="#A6A6AC">%</tspan></text>
+  <text x="100" y="131" text-anchor="middle" font-family="Inter, sans-serif"
+        font-size="10" font-weight="600" letter-spacing="2.2" fill="#6B6B72">MATCH</text>
 </svg>"""
 
 
@@ -104,13 +112,18 @@ def build_html(analysis: dict[str, Any]) -> str:
   .logo {{ height:22px; width:auto; display:block; }}
   .band .meta {{ font-size:10px; color:rgba(255,255,255,.55); }}
   .wrap {{ padding: 26px 34px 0; }}
-  .hero {{ display:flex; gap:26px; align-items:center; border:1px solid #E6E6E8;
-           border-radius:14px; padding:18px 22px; }}
-  .verdict {{ font-family:Montserrat; font-weight:700; font-size:17px; }}
+  .hero {{ display:flex; gap:24px; align-items:center; border:1px solid #E6E6E8;
+           border-radius:14px; padding:20px 24px; }}
+  /* the dial is a flex item — stop it collapsing */
+  .hero > svg {{ flex:0 0 150px; width:150px; height:150px; }}
+  .verdict {{ font-family:Montserrat; font-weight:700; font-size:19px; color:#0A0A0A; letter-spacing:-0.01em; }}
   .summary {{ color:#6B6B72; margin-top:5px; }}
   .chips {{ margin-top:9px; }}
-  .chip {{ display:inline-block; border:1px solid #E6E6E8; border-radius:999px;
-           padding:3px 9px; font-size:9.5px; margin-right:6px; }}
+  .chip {{ display:inline-block; border:1px solid rgba(10,10,10,.20); background:rgba(10,10,10,.04);
+           border-radius:999px; padding:4px 11px; font-size:9px; margin-right:7px; }}
+  .chip b {{ text-transform:uppercase; letter-spacing:.08em; color:#6B6B72; font-weight:600; }}
+  .chip i {{ font-style:normal; font-family:Montserrat, sans-serif; font-weight:700;
+             font-size:10.5px; color:#0A0A0A; margin-left:5px; }}
   h2.sec {{ font-size:13px; margin:22px 0 9px; }}
   .cols {{ display:flex; gap:14px; }}
   .card {{ border:1px solid #E6E6E8; border-radius:12px; padding:13px 15px; flex:1; }}
@@ -139,11 +152,11 @@ def build_html(analysis: dict[str, Any]) -> str:
   <div class="hero">
     {_gauge_svg(score.get('overall_fit_score', 0))}
     <div>
-      <div class="verdict" style="color:{_verdict_color(score.get('verdict',''))}">{html.escape(score.get('verdict',''))}</div>
+      <div class="verdict">{html.escape(score.get('verdict','')).title()}</div>
       <div class="summary">{html.escape(score.get('summary',''))}</div>
       <div class="chips">
-        <span class="chip">Must-haves {len(must_met)}/{len(must)}</span>
-        <span class="chip">Requirements {len(met)}/{len(reqs)}</span>
+        <span class="chip"><b>Must-haves</b><i>{len(must_met)}/{len(must)}</i></span>
+        <span class="chip"><b>Requirements</b><i>{len(met)}/{len(reqs)}</i></span>
       </div>
     </div>
   </div>
