@@ -28,21 +28,75 @@ Phases (all ✅ complete):
 - E. **Step 4** — tiered results (Free gauge/locked/CTA vs Paid full breakdown), simulated unlock. ✅
 - (+ Landing page, monochrome redesign, spacing pass, form polish.) ✅
 
-Open de-risk: PDF/DOCX/URL/vision adapters verified only on the text path e2e.
+All input adapters since verified e2e (text, PDF, DOCX, URL); live Claude path verified.
 
 ### Legacy — v0.1 MVP Core (engine SHIPPED, Streamlit UI superseded)
 - Phase 1 plan 01-01 (headless engine) — ✅ done, still the core.
 - Phase 1 plan 01-02 (Streamlit UI) — superseded by v0.2 (kept as legacy in app.py).
 
-## Phases
+## v0.2.x — Post-milestone work (all ✅ SHIPPED)
 
-| Phase | Name | Plans | Status | Completed |
-|-------|------|-------|--------|-----------|
-| 1 | MVP Core (score + gaps + rewrites) | 2 (01-01, 01-02) | Planning | - |
-| 2 | Eval & LLMOps | TBD | Not started | - |
-| 3 | Data & Persistence | TBD | Not started | - |
-| 4 | Design Polish | TBD | Not started | - |
-| 5 | Launch & Write-up | TBD | Not started | - |
+Delivered after the v0.2 summary was written, outside the formal loop:
+
+| Item | Status |
+|------|--------|
+| Branded PDF match report (Chromium render) + email delivery (Resend/SMTP) | ✅ |
+| One-click **Tailored CV generator** — 3rd Claude call, ATS rules, live preview, .pdf/.docx export | ✅ |
+| Pay-first tiering — plan chosen before scanning; free tier skips the rewrite call (~half cost) | ✅ |
+| Free/live analysis toggle with spend protection (defaults free, disabled without a key) | ✅ |
+| Targeted job-description extraction (JSON-LD → known containers → fallback) + fail-loud guard | ✅ |
+| Real logo + favicon; monochrome black/white identity (Montserrat/Inter) | ✅ |
+| Input adapters verified e2e (PDF, DOCX, URL); live Claude path verified (0 fabrication violations) | ✅ |
+| Full mobile/responsive pass (overflow, stacking, tap targets) | ✅ |
+| `/preview/results` design sandbox with real example data | ✅ |
+| Portfolio README with screenshots + engineering rationale | ✅ |
+
+## Planned milestones
+
+| # | Milestone | Effort | Depends on | Status |
+|---|-----------|--------|------------|--------|
+| **v0.3** | **Payments & Entitlement (Stripe)** | ~1.5–2 days | — | 📋 Planned |
+| **v0.4** | **Eval & LLMOps** | ~1 week | analysis pipeline | 📋 Planned |
+| **v0.5** | Data & live job search | ~3–4 days | v0.3 persistence | 📋 Optional |
+| **v0.6** | Launch & write-up | ~2–3 days | v0.4 | 📋 Planned |
+
+### v0.3 — Payments & Entitlement (Stripe)
+
+**Why now:** the paid tier is currently client-side state. `POST /api/analyze` with
+`full=true`, `/api/tailored-cv`, and `/api/report/*` are unauthenticated — anyone can
+call them directly. Server-side entitlement is needed regardless of payment provider;
+Stripe is the smaller half of this milestone.
+
+**Scope:**
+- **Persistence (SQLite → Postgres later):** `purchases` table — id, status, inputs, result, consumed_at.
+- **Server-side gating:** paid endpoints require a paid, unconsumed purchase. Never trust the client.
+- **Stripe Checkout:** `POST /api/checkout` creates a session (one-time $10) storing inputs against a purchase id.
+- **Webhook:** `POST /api/stripe/webhook` — signature-verified, idempotent (Stripe retries), handles `checkout.session.completed`.
+- **Do not unlock from the success redirect** — it's forgeable; trust the webhook / `Session.retrieve`.
+- **Test mode only** initially: full implementation, test cards, Stripe CLI webhook forwarding, zero real money.
+
+**Deliberately deferred to "go live" (admin, not code):** business verification, EU VAT/OSS
+registration, Terms/Privacy/refund pages, public HTTPS deployment.
+Fees when live: EEA cards ~1.5% + €0.25 (≈€0.40 on a €10 sale).
+
+### v0.4 — Eval & LLMOps
+
+The milestone that makes this read as an AI-engineering project rather than a polished UI,
+and the one gap the README currently admits to.
+
+**Scope:** ~20-case golden set · LLM-as-judge (faithfulness, evidence-grounding, calibration,
+no-fabrication) · CI-style score report · Langfuse tracing · per-analysis cost/latency.
+Buildable against mock mode for free; a few dollars of API spend to score for real.
+
+## Legacy phase table (superseded by the milestones above)
+
+| Phase | Name | Status |
+|-------|------|--------|
+| 1 | MVP Core (engine) | ✅ shipped (Streamlit UI superseded) |
+| 2 | Eval & LLMOps | → now v0.4 |
+| 3 | Data & Persistence | → folded into v0.3 / v0.5 |
+| 4 | Design Polish | ✅ shipped ad-hoc (monochrome redesign, logo, mobile) |
+| 5 | Launch & Write-up | → now v0.6 (README done) |
 
 ## Phase Details
 

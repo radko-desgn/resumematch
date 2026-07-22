@@ -9,15 +9,23 @@ See: .paul/PROJECT.md (updated 2026-07-20)
 
 ## Current Position
 
-Milestone: v0.2 Wizard UX — Full-Stack — ✅ SHIPPED
-Phase: v0.2 phases A–E complete
-Plan: milestone reconciled (02-SUMMARY.md written)
-Status: Milestone shipped; ready to plan v0.3 (or de-risk PDF/URL inputs)
-Last activity: 2026-07-21 — Closed v0.2; full-stack wizard + landing + monochrome redesign shipped
+Milestone: v0.2 + v0.2.x — ✅ SHIPPED
+Phase: idle between milestones
+Plan: roadmap reconciled; v0.3 (Payments & Entitlement) planned but not started
+Status: Ready to plan v0.3 (Stripe, test mode) or v0.4 (Eval & LLMOps)
+Last activity: 2026-07-22 — Roadmap reconciled with all v0.2.x work; Stripe milestone added
 
 Progress:
-- v0.1 MVP engine: [██████████] shipped (Streamlit UI superseded)
-- v0.2 Wizard UX: [██████████] shipped
+- v0.1 MVP engine:  [██████████] shipped (Streamlit UI superseded)
+- v0.2 Wizard UX:   [██████████] shipped
+- v0.2.x polish:    [██████████] shipped (PDF/email, tailored CV, branding, mobile, tiering)
+- v0.3 Payments:    [░░░░░░░░░░] planned (~1.5-2 days)
+- v0.4 Eval/LLMOps: [░░░░░░░░░░] planned (~1 week)
+
+### KNOWN GAP (drives v0.3)
+Paid tier is client-side state. /api/analyze?full=true, /api/tailored-cv and
+/api/report/* are unauthenticated — anyone can call them directly. Server-side
+entitlement + persistence is required before real payments mean anything.
 
 ## Loop Position
 
@@ -66,7 +74,8 @@ None yet.
 
 Last session: 2026-07-21
 Stopped at: v0.2 milestone shipped + reconciled in PAUL
-Next action: Either de-risk PDF/URL inputs (real files through /api/analyze) OR plan v0.3 (Eval & LLMOps)
+Next action: /paul:plan v0.3 (Payments & Entitlement — Stripe test mode + SQLite + server-side gating)
+             OR /paul:plan v0.4 (Eval & LLMOps — the AI-engineering substance)
 Resume file: .paul/phases/02-wizard-ux/02-SUMMARY.md
 
 ---
