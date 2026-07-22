@@ -9,7 +9,7 @@ const PAID = [
   "Everything in the free score",
   "Executive summary",
   "Strengths & every gap, with evidence",
-  "Tailored CV rewrites",
+  "One-click tailored ATS CV (.pdf/.docx)",
   "Branded PDF + email delivery",
 ];
 

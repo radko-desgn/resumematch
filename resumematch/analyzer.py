@@ -9,7 +9,7 @@ from __future__ import annotations
 from . import prompts
 from .embeddings import chunk_resume, extract_bullets, match_requirements
 from .llm import structured_call
-from .schemas import Analysis, RewriteResult, ScoreResult
+from .schemas import Analysis, RewriteResult, ScoreResult, TailoredCV
 
 
 def analyze(
@@ -61,4 +61,28 @@ def analyze(
         score=score,
         rewrite=rewrite,
         requirement_matches=requirement_matches,
+    )
+
+
+def generate_tailored_cv(
+    resume: str,
+    job: str,
+    mock: bool = False,
+    gaps: list[str] | None = None,
+) -> TailoredCV:
+    """Rewrite the CV as an ATS-friendly document tailored to one job.
+
+    A third Claude call, reserved for the paid tier. Nothing is invented — the
+    prompt only permits reordering, emphasis, and honest rewording.
+    """
+    if mock:
+        from . import mocks
+
+        return mocks.mock_tailored_cv(resume, job)
+
+    return structured_call(
+        system=prompts.TAILORED_CV_SYSTEM,
+        user=prompts.build_tailored_cv_user(resume, job, gaps),
+        schema=TailoredCV,
+        max_tokens=8000,
     )

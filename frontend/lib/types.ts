@@ -35,7 +35,8 @@ export interface Analysis {
   score: ScoreResult;
   rewrite: RewriteResult;
   requirement_matches: { requirement: string; best_chunk: string; score: number }[];
-  _meta?: { cv_chars: number; job_chars: number; mock: boolean };
+  _meta?: { cv_chars: number; job_chars: number; mock: boolean; full?: boolean };
+  _source?: { cv: string; job: string };
 }
 
 // ---- Wizard input model ----
@@ -52,4 +53,10 @@ export interface JobInput {
   text: string;
   url: string;
   file: File | null;
+}
+
+export interface TailoredCV {
+  markdown: string;
+  keywords_used: string[];
+  changes: string[];
 }

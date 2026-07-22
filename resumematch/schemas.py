@@ -53,6 +53,22 @@ class RewriteResult(BaseModel):
     tailored_summary: str
 
 
+class TailoredCV(BaseModel):
+    """An ATS-friendly CV rewritten for one specific job — no invented facts."""
+
+    markdown: str = Field(
+        description="The full CV in simple ATS-safe markdown (headings, bullets, bold only)."
+    )
+    keywords_used: list[str] = Field(
+        default_factory=list,
+        description="Terms from the job description that were honestly surfaced.",
+    )
+    changes: list[str] = Field(
+        default_factory=list,
+        description="What was emphasised, reordered, or reworded — and why.",
+    )
+
+
 class RequirementMatch(BaseModel):
     """Local-embedding link from a requirement to its best resume evidence."""
 

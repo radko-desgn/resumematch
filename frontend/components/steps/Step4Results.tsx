@@ -6,6 +6,7 @@ import { useWizard } from "@/lib/store";
 import { Gauge } from "../wizard/Gauge";
 import { CopyButton } from "../wizard/CopyButton";
 import { ReportActions } from "../wizard/ReportActions";
+import { TailoredCv } from "../wizard/TailoredCv";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Analysis } from "@/lib/types";
@@ -126,6 +127,7 @@ export function Step4Results() {
       {tier === "paid" ? (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
           <ReportBody a={analysis} />
+          <TailoredCv />
           <ReportActions analysis={analysis} />
         </motion.div>
       ) : (
@@ -139,7 +141,7 @@ export function Step4Results() {
             tailored CV rewrites, and a branded PDF you can keep.
           </p>
           <ul className="mx-auto mb-6 max-w-xs space-y-2 text-left">
-            {["Executive summary", "Strengths & every gap, with evidence", "Tailored CV rewrites", "Branded PDF + email"].map((t) => (
+            {["Executive summary", "Strengths & every gap, with evidence", "One-click tailored ATS CV (.pdf/.docx)", "Branded PDF report + email"].map((t) => (
               <li key={t} className="flex gap-2 text-sm">
                 <Check className="mt-0.5 size-4 shrink-0 text-met" />
                 {t}
@@ -147,7 +149,7 @@ export function Step4Results() {
             ))}
           </ul>
           <Button size="lg" className="w-full sm:w-auto" onClick={upgrade}>
-            Get the full report — $10
+            Unlock Full Analysis & Tailored CV — $10
           </Button>
           <p className="mt-3 text-xs text-muted-foreground">
             Demo: payment is simulated. We&apos;ll re-run the deeper analysis for you.

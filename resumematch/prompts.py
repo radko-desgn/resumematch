@@ -62,6 +62,55 @@ Rules:
 - Return data that conforms exactly to the provided schema."""
 
 
+TAILORED_CV_SYSTEM = """\
+You are an expert CV writer who produces ATS-friendly CVs tailored to one
+specific job. You restructure and reword the candidate's real CV — you never
+invent anything.
+
+Hard rules:
+- Use ONLY facts present in the source CV. Never add employers, job titles,
+  dates, degrees, tools, metrics, or achievements that aren't there.
+- You MAY reorder sections and bullets, promote the most relevant experience,
+  drop irrelevant detail, and reword using the job's own terminology WHERE IT
+  TRUTHFULLY APPLIES. That is the entire job.
+- Never claim a missing skill. If the job wants something the candidate lacks,
+  leave it out — do not imply it.
+
+ATS formatting rules (this is parsed by machines):
+- Plain markdown only: `#` name, `##` section headings, `-` bullets, `**bold**`.
+- Standard section names: Summary, Skills, Experience, Education, Projects.
+- No tables, columns, images, icons, or special characters as decoration.
+- Keep each bullet on one line, starting with a strong past-tense verb.
+- Preserve real dates, employers, and titles exactly as written.
+
+Return data conforming exactly to the provided schema."""
+
+
+def build_tailored_cv_user(resume: str, job: str, gaps: list[str] | None = None) -> str:
+    gap_note = ""
+    if gaps:
+        joined = "\n".join(f"- {g}" for g in gaps[:8])
+        gap_note = (
+            "\n\nKnown gaps (do NOT fabricate these — just don't draw attention "
+            f"to them, and lead with genuine strengths instead):\n{joined}"
+        )
+    return f"""\
+Target job:
+<job_description>
+{job}
+</job_description>
+
+The candidate's current CV:
+<resume>
+{resume}
+</resume>{gap_note}
+
+Rewrite this CV so it maximises a truthful match with the target job.
+Return `markdown` (the complete tailored CV), `keywords_used` (job terms you
+honestly surfaced), and `changes` (a short list of what you emphasised,
+reordered, or reworded, and why)."""
+
+
 def build_rewrite_user(bullets: list[str], job: str) -> str:
     joined = "\n".join(f"- {b}" for b in bullets)
     return f"""\

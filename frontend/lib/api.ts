@@ -1,4 +1,4 @@
-import { Analysis, CvInput, JobInput } from "./types";
+import { Analysis, CvInput, JobInput, TailoredCV } from "./types";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -67,4 +67,38 @@ export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean, full
     throw new Error(msg);
   }
   return res.json();
+}
+
+export async function generateTailoredCv(
+  cvText: string,
+  jobText: string,
+  mock: boolean,
+  gaps: string[] = []
+): Promise<TailoredCV> {
+  const res = await fetch(`${API}/api/tailored-cv`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cv_text: cvText, job_text: jobText, mock, gaps }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.detail || "Could not generate the tailored CV");
+  return body;
+}
+
+export async function downloadTailoredCv(markdown: string, format: "pdf" | "docx"): Promise<void> {
+  const res = await fetch(`${API}/api/tailored-cv/export`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ markdown, format }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || "Export failed");
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `tailored-cv.${format}`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }

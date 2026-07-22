@@ -15,8 +15,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
 
-from backend import extract, mailer, report
-from resumematch.analyzer import analyze
+from backend import cv_export, extract, mailer, report
+from resumematch.analyzer import analyze, generate_tailored_cv
 
 app = FastAPI(title="ResumeMatch API", version="0.2.0")
 
@@ -59,6 +59,18 @@ def _resolve(kind: str, text: Optional[str], url: Optional[str],
 
 class ReportRequest(BaseModel):
     analysis: dict
+
+
+class TailoredCVRequest(BaseModel):
+    cv_text: str
+    job_text: str
+    mock: bool = True
+    gaps: list[str] = []
+
+
+class CVExportRequest(BaseModel):
+    markdown: str
+    format: str = "pdf"
 
 
 class EmailRequest(BaseModel):
@@ -128,4 +140,41 @@ async def analyze_endpoint(
     # Echo the resolved text lengths so the UI can show what was parsed.
     payload = result.model_dump()
     payload["_meta"] = {"cv_chars": len(cv), "job_chars": len(job), "mock": mock, "full": full}
+    payload["_source"] = {"cv": cv, "job": job}
     return payload
+
+
+@app.post("/api/tailored-cv")
+def tailored_cv(req: TailoredCVRequest) -> dict:
+    """Generate an ATS-friendly CV rewritten for this specific job (paid tier)."""
+    if not req.cv_text.strip() or not req.job_text.strip():
+        raise HTTPException(422, "Both the CV and the job description are required.")
+    try:
+        result = generate_tailored_cv(req.cv_text, req.job_text, mock=req.mock, gaps=req.gaps)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    return result.model_dump()
+
+
+@app.post("/api/tailored-cv/export")
+def tailored_cv_export(req: CVExportRequest) -> Response:
+    if not req.markdown.strip():
+        raise HTTPException(422, "Nothing to export.")
+    fmt = req.format.lower()
+    try:
+        if fmt == "pdf":
+            data, media = cv_export.cv_to_pdf(req.markdown), "application/pdf"
+        elif fmt == "docx":
+            data = cv_export.cv_to_docx(req.markdown)
+            media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        else:
+            raise HTTPException(422, "format must be 'pdf' or 'docx'.")
+    except HTTPException:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(500, f"Could not build the {fmt.upper()}: {exc}")
+    return Response(
+        content=data,
+        media_type=media,
+        headers={"Content-Disposition": f'attachment; filename="tailored-cv.{fmt}"'},
+    )

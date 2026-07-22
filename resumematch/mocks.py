@@ -8,7 +8,7 @@ the --mock flag once an ANTHROPIC_API_KEY is set.
 
 from __future__ import annotations
 
-from .schemas import Requirement, RewriteResult, RewrittenBullet, ScoreResult
+from .schemas import Requirement, RewriteResult, RewrittenBullet, ScoreResult, TailoredCV
 
 _MOCK_NOTE = "[mock] canned result — set ANTHROPIC_API_KEY and drop --mock for a real analysis."
 
@@ -127,4 +127,37 @@ def mock_rewrite(bullets: list[str], job: str) -> RewriteResult:
             "Backend engineer with 4 years of production Python, API ownership, "
             "and CI/CD, plus early LLM + vector-search side work. " + _MOCK_NOTE
         ),
+    )
+
+
+def mock_tailored_cv(resume: str, job: str) -> TailoredCV:
+    """Canned ATS-style CV for the demo — restructures the real input text."""
+    lines = [ln.strip() for ln in resume.splitlines() if ln.strip()]
+    name = lines[0] if lines else "Your Name"
+    bullets = [ln.lstrip("-*• ").strip() for ln in lines if ln.lstrip().startswith(("-", "*", "•"))]
+    top = bullets[:6] or ["Add bullet points to your CV to see them tailored here."]
+    body = "\n".join(f"- {b}" for b in top)
+    md = f"""# {name}
+
+## Summary
+Backend-leaning engineer with production Python experience, API ownership, and
+CI/CD. {_MOCK_NOTE}
+
+## Skills
+Python · FastAPI · PostgreSQL · Docker · CI/CD · REST APIs
+
+## Experience
+{body}
+
+## Education
+See original CV.
+"""
+    return TailoredCV(
+        markdown=md,
+        keywords_used=["Python", "production", "CI/CD", "PostgreSQL"],
+        changes=[
+            "[mock] Promoted the most job-relevant bullets to the top.",
+            "[mock] Mirrored the job's terminology where it truthfully applied.",
+            "Set ANTHROPIC_API_KEY and turn off mock mode for a real tailored CV.",
+        ],
     )
