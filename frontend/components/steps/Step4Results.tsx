@@ -81,7 +81,7 @@ function CoverageChips({ a }: { a: Analysis }) {
   const chip =
     "inline-flex items-baseline gap-2 rounded-full border border-foreground/20 bg-foreground/[0.04] px-3.5 py-1.5 text-xs";
   return (
-    <div className="mt-4 flex flex-wrap gap-2">
+    <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
       <span className={chip}>
         <span className="font-semibold uppercase tracking-[0.08em] text-muted-foreground">Must-haves</span>
         <span className="font-display text-sm">{mustMet}/{must.length}</span>
@@ -103,11 +103,11 @@ export function Step4Results() {
     <div>
       {/* Score header — shown to everyone */}
       <Card className="p-6 mb-4">
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:gap-8 sm:text-left">
           <Gauge score={score.overall_fit_score} />
           <div className="min-w-0 flex-1">
             <div className="font-display text-2xl capitalize">{score.verdict}</div>
-            <p className="text-sm text-muted-foreground mt-1.5 max-w-md leading-relaxed">{score.summary}</p>
+            <p className="mt-1.5 max-w-md text-sm leading-relaxed text-muted-foreground">{score.summary}</p>
             <CoverageChips a={analysis} />
           </div>
         </div>

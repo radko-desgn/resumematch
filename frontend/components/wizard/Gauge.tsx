@@ -7,7 +7,7 @@ import { animate, motion, useMotionValue, useTransform } from "framer-motion";
  * Monochrome score dial. The value arc is solid ink on a hairline track — the
  * number carries the meaning, the arc just gives it shape.
  */
-export function Gauge({ score, size = 208 }: { score: number; size?: number }) {
+export function Gauge({ score }: { score: number }) {
   const R = 88;
   const CIRC = 2 * Math.PI * R;
   const SWEEP = 0.75; // three-quarter dial
@@ -24,7 +24,7 @@ export function Gauge({ score, size = 208 }: { score: number; size?: number }) {
   }, [s, progress]);
 
   return (
-    <div style={{ width: size }} className="relative shrink-0" aria-label={`Match score ${s} of 100`} role="img">
+    <div className="relative w-[168px] shrink-0 sm:w-[204px]" aria-label={`Match score ${s} of 100`} role="img">
       <svg viewBox="0 0 200 200" className="w-full -rotate-[135deg]">
         <circle
           cx="100"

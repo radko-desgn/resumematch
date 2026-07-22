@@ -15,7 +15,7 @@ export function TextMeta({ value, min, onFill }: { value: string; min: number; o
       <button
         type="button"
         onClick={onFill}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
       >
         <Wand2 className="size-3.5" /> Try a sample
       </button>

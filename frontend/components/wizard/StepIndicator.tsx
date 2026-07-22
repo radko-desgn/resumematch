@@ -26,7 +26,7 @@ export function StepIndicator() {
               <button
                 disabled={!clickable}
                 onClick={() => clickable && goto(n)}
-                className={cn("group flex w-full items-center gap-2", clickable ? "cursor-pointer" : "cursor-default")}
+                className={cn("group flex w-full items-center gap-2 py-1.5", clickable ? "cursor-pointer" : "cursor-default")}
                 aria-label={`${label} step`}
               >
                 <span
