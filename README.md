@@ -1,85 +1,167 @@
 # ResumeMatch
 
-AI-powered resume-to-job-fit analyzer. Paste in a **resume** and a **job posting**, and get:
+**Find out whether your CV actually fits a job — before you apply.**
 
-1. A calibrated **fit score** (0–100)
-2. An evidence-backed **gap analysis** — each requirement tagged must-have/nice-to-have and met/partial/missing, with a supporting quote from your resume
-3. **Rewritten resume bullets** tailored to the job — with a before/after and rationale, and **no fabrication**
+Paste a CV and a job posting. ResumeMatch returns a calibrated match score, a gap analysis where
+every judgment is backed by a quote from your own CV, and rewritten bullet points tailored to the
+role — without inventing a single thing you didn't do.
 
-Built to demonstrate production-grade AI engineering patterns (RAG-style retrieval, embeddings, structured LLM outputs, evaluation, LLMOps) — not just an API wrapper.
+![ResumeMatch hero](docs/screenshots/hero.png)
+
+---
+
+## The problem
+
+"Tailor your CV to every job" is the standard advice, and it's genuinely good advice — it's also
+hours of work per application, and most people have no idea *what* to change. Meanwhile automated
+screeners reject CVs that don't mirror the posting's language.
+
+The obvious way to solve this with an LLM is also the wrong way: ask a model to rate a CV and it
+will happily hallucinate experience, invent metrics, and give everyone a friendly 85%. A tool that
+does that is worse than useless — it hands people confidently wrong advice about their careers.
+
+So the interesting engineering problem here isn't "call an LLM." It's **making the output
+trustworthy, cheap, and fast enough to actually use.**
+
+## What it does
+
+- **Match score (0–100)** with a calibrated verdict, not flattery
+- **Gap analysis** — every requirement tagged `must-have` / `nice-to-have` and `met` / `partially-met` / `missing`, each with the exact CV quote that supports it (or explicitly *no evidence*)
+- **Tailored rewrites** — your bullets rephrased in the job's language, with a before/after diff and the reasoning
+- **Multi-source input** — paste text, upload PDF/DOCX, drop a screenshot (vision OCR), or hand it a job URL
+- **Branded PDF report** you can download or have emailed
+
+| Choose your plan up front | The full report |
+|---|---|
+| ![Plan choice](docs/screenshots/plan-choice.png) | ![Results](docs/screenshots/results.png) |
 
 ## How it works
 
 ```
-resume + job ──▶ [Claude: scoring + gap analysis]  ──┐
-             │                                        ├──▶ combined Analysis (JSON)
-             ├──▶ [local bge-small: requirement↔resume match]
-             └──▶ [Claude: bullet rewriting] ─────────┘
+                    ┌─────────────────────────────────────┐
+ CV   (text/PDF/    │  input adapters                     │
+      DOCX/image) ──▶  pdf · docx · url · vision OCR      │
+ Job  (text/PDF/    │  → plain text                       │
+      URL/image)  ──▶                                     │
+                    └───────────────┬─────────────────────┘
+                                    ▼
+              ┌──────────────────────────────────────────┐
+              │ 1. Claude — scoring + evidence-backed    │  paid + free
+              │    gap analysis  (structured output)     │
+              ├──────────────────────────────────────────┤
+              │ 2. bge-small — requirement ↔ CV chunk    │  local, free
+              │    semantic match (on-device)            │
+              ├──────────────────────────────────────────┤
+              │ 3. Claude — bullet rewriting             │  paid tier only
+              │    (structured output)                   │
+              └───────────────┬──────────────────────────┘
+                              ▼
+                    schema-validated Analysis
+                    → web UI · JSON · branded PDF
 ```
 
-Exactly **two** Claude calls per analysis (model: `claude-haiku-4-5`), plus on-device embeddings — keeping cost around ~1.5¢ per run.
+At most **two LLM calls** per analysis. Embeddings run on-device, so retrieval costs nothing.
 
-## Setup
+## Engineering decisions worth explaining
+
+**Anti-hallucination is enforced by construction, not by asking nicely.**
+The prompt requires an exact CV quote for every requirement it marks as met; anything unsupported
+must return `evidence: null`. The Pydantic schema makes that shape mandatory, and the test suite
+asserts the invariant (`changed == (rewritten != original)`, missing requirements never carry
+evidence). On a live run the model extracted 8 requirements and produced **0 violations**.
+
+**Structured outputs everywhere.**
+Claude responses are parsed straight into Pydantic models via `messages.parse`, so malformed output
+fails loudly at the boundary instead of leaking into the UI as `undefined`.
+
+**Cost engineering is a feature.**
+Claude Haiku 4.5 for the reasoning, `bge-small` locally for retrieval, and the free tier *skips the
+rewrite call entirely* (`analyze(with_rewrites=False)`) — so free users cost roughly half of a paid
+one. A full analysis lands around **1.5¢**.
+
+**A real mock mode, not a stub.**
+The entire product runs end-to-end with `mock=True`: no API key, no spend. It made the whole UI
+buildable for free and doubles as an offline test path — the suite runs without touching the API.
+
+**URL extraction that fails loudly.**
+Naive whole-page scraping fed a LinkedIn cookie banner into the analyzer and produced a confident,
+meaningless score. Extraction now tries schema.org `JobPosting` → known description containers
+(LinkedIn, Lever, Greenhouse) → whole-page fallback, and **refuses** to analyze pages that look like
+a consent or login wall. Wrong answers are worse than errors.
+
+**The PDF shares the app's design system.**
+Rather than a generic PDF library, the report is an HTML template rendered through headless Chromium
+— same fonts, same black-and-white identity, same red/green rewrite diffs.
+
+![PDF report](docs/screenshots/pdf-report.png)
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| LLM | Claude Haiku 4.5 — structured outputs |
+| Retrieval | `BAAI/bge-small-en-v1.5`, on-device via sentence-transformers |
+| Backend | FastAPI (Python 3.12), Pydantic v2 |
+| Frontend | Next.js 16, React, Tailwind v4, shadcn-style components, framer-motion |
+| Input parsing | pypdf · python-docx · httpx + BeautifulSoup · Claude vision |
+| Reporting | Headless Chromium (Playwright) → PDF · Resend/SMTP email |
+
+Mobile-first, single high-contrast black-and-white identity (Montserrat + Inter):
+
+<img src="docs/screenshots/mobile.png" width="300" alt="Mobile view" />
+
+## Running it
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -e .
-cp .env.example .env      # then add your ANTHROPIC_API_KEY
-```
+# engine + backend
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+pip install -r backend/requirements.txt
+cp .env.example .env          # add ANTHROPIC_API_KEY for live runs (optional)
 
-## Run the app (v0.2 — full-stack wizard)
-
-The current UI is a **Next.js + Tailwind + shadcn/ui** multi-step wizard talking to a
-**FastAPI** backend that wraps the Python engine. Free by default (mock mode).
-
-```bash
-# 1) Backend (FastAPI) — from repo root, with the .venv active
 uvicorn backend.main:app --reload --port 8000
-
-# 2) Frontend (Next.js) — in a second terminal
-cd frontend
-npm install
-npm run dev        # http://localhost:3000
 ```
-
-Set `ANTHROPIC_API_KEY` (and flip mock off) for live analysis + image OCR.
-
-## Legacy Streamlit UI
 
 ```bash
-streamlit run app.py
+# web UI (second terminal)
+cd frontend && npm install && npm run dev     # http://localhost:3000
 ```
 
-The original single-page dark→white UI. **Free by default** (mock mode). Superseded by
-the wizard above but kept for reference.
+Runs in **free demo mode** by default — no key required. Flip *Live analysis* in the UI (it's
+disabled unless the server has a key) for a real run.
 
-## Run the CLI
-
+**CLI:**
 ```bash
 python -m resumematch.cli --mock \
   --resume tests/fixtures/sample_resume.txt \
   --job tests/fixtures/sample_job.txt
 ```
 
-Prints a single combined JSON result (score + gap analysis + rewritten bullets).
-Drop `--mock` for a live run (needs `ANTHROPIC_API_KEY`).
+**Tests:** `pytest -q` — 11 tests, fully offline, zero API spend.
 
-## Test
+**Optional email delivery:** set `RESEND_API_KEY` (or `SMTP_HOST`) and the PDF gets emailed;
+otherwise the app says so honestly instead of pretending it sent.
 
-```bash
-pip install -e ".[dev]"
-pytest -q          # offline; spends zero API tokens
+## Project layout
+
+```
+resumematch/      analysis engine — schemas, prompts, embeddings, mock mode, CLI
+backend/          FastAPI — input adapters, PDF report, email
+frontend/         Next.js wizard + landing page
+tests/            offline test suite + fixtures
+.paul/            project roadmap, decisions, milestone summaries
 ```
 
-## Tech stack
+## Honest limitations
 
-| Layer | Tech |
-|-------|------|
-| LLM | Claude Haiku 4.5 (structured outputs) |
-| Embeddings | `BAAI/bge-small-en-v1.5` (local, via sentence-transformers) |
-| Models/validation | Pydantic v2 |
-| UI (next) | Streamlit |
+- **Payment is simulated.** The $10 tier flips state; there's no Stripe integration.
+- **No evaluation harness yet.** Correctness is enforced by schema + invariant tests, but there's no golden set or LLM-as-judge scoring yet — that's the next milestone and the piece I most want to build.
+- **Image OCR needs a key** (it's a Claude vision call), so it's stubbed in demo mode.
+- **Some job boards block scraping.** LinkedIn job pages work; heavily gated sites don't — the app tells you to paste the text instead.
 
 ## Roadmap
 
-Managed with [PAUL](.paul/ROADMAP.md): **v0.1 MVP** (this) → Eval & LLMOps → Data & Persistence → Design → Launch.
+- **v0.3 — Eval & LLMOps:** golden set, LLM-as-judge (faithfulness, evidence-grounding, calibration), tracing and per-analysis cost/latency
+- Real payments, persistence of past analyses, live job search
+
+Roadmap and decision history live in [`.paul/`](.paul/ROADMAP.md).
