@@ -1,0 +1,24 @@
+{
+  "id": "design-systems-specialist",
+  "role": "Design Systems Designer",
+  "level": "senior",
+  "expected_band": [
+    70,
+    100
+  ],
+  "cv": "SARAH CHEN\nsarah.chen@email.com | LinkedIn.com/in/sarahchen\n\nDESIGN SYSTEMS LEAD\n\nExperienced design systems professional with 5 years of hands-on experience building and maintaining comprehensive design systems. Proven track record of scaling design infrastructure across multiple product squads and brand contexts.\n\nPROFESSIONAL EXPERIENCE\n\nSenior Design Systems Designer\nThrive Digital, San Francisco | 2019–Present\n\n• Own and maintain multi-brand token-based design system serving 6 product squads across mobile, web, and desktop platforms\n• Architected Figma variables and component system enabling consistent visual language across all brand expressions\n• Established governance framework and contribution model, reducing design inconsistencies by 70% and enabling squad autonomy\n• Maintained comprehensive Storybook documentation with code examples, usage guidelines, and migration patterns\n• Partner directly with front-end engineering teams on component implementation, conducting design reviews and accessibility audits\n• Lead quarterly design system reviews with stakeholders to assess adoption metrics and roadmap priorities\n\nProduct Designer\nMomentum Labs, Oakland | 2018–2019\n\n• Designed user interfaces for SaaS collaboration platform serving 500K+ users\n• Contributed initial component specifications that informed design system foundation\n\nUI Designer\nNexus Creative, Los Angeles | 2017–2018\n\n• Created visual designs for e-commerce and branded experiences\n\nSKILLS\n\nFigma (variables, components, prototyping), Storybook, design tokens, design governance, documentation, design systems, collaboration, front-end partnership, CSS in practice, component architecture\n\nEDUCATION\n\nBachelor of Fine Arts in Graphic Design\nUniversity of California, Davis | 2016",
+  "job": "DESIGN SYSTEMS DESIGNER\n\nGreat Leap is seeking a Design Systems Designer to lead and evolve our design system infrastructure. You'll own our Figma environment, documentation, and component governance while partnering closely with engineering teams to ensure seamless implementation across our product ecosystem.\n\nYou'll be responsible for maintaining system health, establishing contribution standards, and scaling our design language across multiple product surfaces. This role requires strong communication skills, attention to detail, and a collaborative mindset.\n\nMust-have:\n\n• 4+ years proven ownership of design systems at scale across multiple squads or teams\n• Expert proficiency with Figma components and variables\n• Experience creating and maintaining comprehensive design system documentation\n• Strong track record of collaboration with front-end engineering teams on component implementation\n\nNice-to-have:\n\n• Experience implementing design tokens across multiple brands or design systems\n• Familiarity with Storybook or similar documentation platforms\n• Background establishing governance frameworks and contribution models\n• Experience with accessibility standards in design systems",
+  "requirements": [
+    {
+      "match": "design system",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "token",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

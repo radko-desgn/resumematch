@@ -1,0 +1,27 @@
+{
+  "id": "design-short-cv",
+  "role": "Product Designer (sparse CV)",
+  "level": "mid",
+  "expected_band": [
+    25,
+    65
+  ],
+  "cv": "MARCUS REID\n\nProduct Designer, Beacon Labs, 2021-2024\nSenior Product Designer, Threshold Creative, 2019-2021\nProduct Designer, Nexus Digital, 2017-2019\nGraphic Designer, Vertex Studios, 2015-2017\n\nEducation\nBachelor of Fine Arts in Graphic Design, Portland State University, 2015",
+  "job": "Product Designer\n\nBeacon Labs is seeking an experienced Product Designer to lead the design of our consumer platform. You'll work across design, engineering, and product strategy to create seamless user experiences.\n\nMust-have:\n- 3+ years of professional product design experience\n- Expert proficiency in Figma\n- Demonstrated experience conducting user research and interpreting findings\n- Experience building and maintaining design systems\n\nNice-to-have:\n- Background in SaaS product design\n- Experience with design handoff and developer collaboration\n- Portfolio showing shipped consumer products\n- Familiarity with design accessibility standards",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "missing",
+      "note": "sparse CV names no tools"
+    },
+    {
+      "match": "research",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "Figma",
+    "usability testing"
+  ]
+}

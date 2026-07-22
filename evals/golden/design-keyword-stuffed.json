@@ -1,0 +1,19 @@
+{
+  "id": "design-keyword-stuffed",
+  "role": "Keyword-stuffed designer CV",
+  "level": "mid",
+  "expected_band": [
+    20,
+    62
+  ],
+  "cv": "SARAH CHEN\nProduct Design Professional\n\nSummary\nExperienced designer with a strong foundation in digital product design and user experience. Proficient across multiple design tools and methodologies with expertise in creating intuitive user interfaces and comprehensive design systems.\n\nProfessional Experience\n\nSenior Designer, Meridian Tech Solutions (2021–2023)\nWorked on various design tasks across multiple projects. Collaborated with cross-functional teams on design initiatives. Contributed to ongoing product improvements and design efforts.\n\nProduct Designer, Coastal Digital (2019–2021)\nPerformed design work on several product lines. Engaged in design-related activities and responsibilities. Supported team members with design deliverables and feedback.\n\nJunior UX Designer, Nexus Creative (2017–2019)\nAssisted with design tasks and user experience work. Participated in design reviews and team meetings. Helped maintain design documentation and standards.\n\nSkills\nFigma, Sketch, UX, UI, Design Systems, Research, Accessibility, Prototyping, Wireframing, User Flows, Adobe XD, Usability Testing, Information Architecture, Interaction Design, Design Thinking, Responsive Design\n\nEducation\nBachelor of Arts in Graphic Design, Portland State University (2017)",
+  "job": "PRODUCT DESIGNER\n\nAbout the Role\nWe're looking for a talented Product Designer to join our growing design team. You'll own the complete product design process, from research through implementation, shaping experiences that delight our users. This is a hands-on role where your work directly impacts our product roadmap and business outcomes.\n\nMust-Haves\n• Demonstrated end-to-end product design work with clear outcomes and measurable results\n• Proficiency in Figma for design and prototyping\n• Experience conducting user research with documented methodologies (interviews, surveys, usability testing, etc.)\n• Portfolio with 2+ projects showing full product lifecycle from discovery through shipping\n• Ability to articulate design decisions backed by research and user insights\n\nNice-to-Haves\n• Experience with design systems and component libraries\n• Knowledge of accessibility standards (WCAG)\n• Background in B2B SaaS or fintech products\n• Familiarity with analytics and data-driven design\n• Experience mentoring junior designers",
+  "requirements": [
+    {
+      "match": "end-to-end",
+      "status": "partially-met",
+      "note": "claimed via keywords, never evidenced"
+    }
+  ],
+  "forbidden_claims": []
+}

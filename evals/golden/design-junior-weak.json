@@ -1,0 +1,28 @@
+{
+  "id": "design-junior-weak",
+  "role": "Junior Designer vs Senior role",
+  "level": "junior",
+  "expected_band": [
+    0,
+    45
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | (415) 789-2341 | San Francisco, CA\n\nGraphic Designer with passion for visual storytelling and creative execution. Currently seeking opportunities to expand design skills and take on more complex projects.\n\nEXPERIENCE\n\nJunior Graphic Designer\nBrightwave Creative Studio, San Francisco\nJanuary 2024 – October 2024\n\n- Created 40+ social media banners for Instagram, LinkedIn, and Facebook campaigns across 8 client accounts\n- Designed and produced print flyers for local events, retail promotions, and corporate announcements\n- Managed asset organization and version control for 15+ concurrent brand projects\n- Collaborated with copywriters to align visual messaging with campaign briefs\n- Prepared files for print production and digital distribution across multiple formats\n\nSKILLS\n\nAdobe Photoshop (advanced)\nAdobe Illustrator (advanced)\nBrand guidelines implementation\nLayout and typography\nColor theory and composition\nFile preparation for print and web\n\nEDUCATION\n\nBachelor of Arts in Graphic Design\nCalifornia Institute of Design, Oakland\nGraduated May 2023\n\nCertification in Digital Marketing Fundamentals\nDesign Academy Online, 2024",
+  "job": "Senior Product Designer\n\nWe're building innovative digital products that delight millions of users worldwide. Our design team is expanding, and we're looking for an experienced Senior Product Designer to lead strategic design initiatives across our platform.\n\nMUST-HAVE QUALIFICATIONS\n\n- 5+ years of professional product design experience with proven track record shipping consumer or enterprise products\n- Expert-level proficiency in Figma; experience building and maintaining design systems at scale\n- Demonstrated expertise in user research methodologies (interviews, usability testing, analytics interpretation)\n- End-to-end product ownership: from discovery through launch and iteration\n- Portfolio showcasing 3+ shipped products with measurable impact\n- Strong collaboration skills working with engineering, product management, and leadership teams\n\nNICE-TO-HAVE QUALIFICATIONS\n\n- Experience designing B2B SaaS or mobile applications\n- Knowledge of accessibility standards and inclusive design practices\n- Background in interaction design and motion design\n- Experience mentoring junior designers\n- Familiarity with design operations and team processes\n\nResponsibilities include leading design strategy, conducting user research, prototyping and testing solutions, and working cross-functionally to deliver polished, user-centered products.",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "missing",
+      "note": ""
+    },
+    {
+      "match": "research",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "Figma",
+    "design system",
+    "product designer"
+  ]
+}

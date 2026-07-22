@@ -1,0 +1,32 @@
+{
+  "id": "design-mid-partial-research",
+  "role": "Product Designer",
+  "level": "mid",
+  "expected_band": [
+    50,
+    78
+  ],
+  "cv": "MARGARET CHEN\nmargaret.chen@email.com | LinkedIn.com/in/margaretchen\n\nUI DESIGNER with 3 years of experience at Beacon Creative Agency, specializing in digital product interfaces and visual design systems.\n\nEXPERIENCE\n\nUI Designer, Beacon Creative Agency (2021–2024)\nDesigned user interfaces for 12+ client projects across fintech, e-commerce, and SaaS verticals. Built comprehensive design systems in Figma, establishing component libraries and design tokens for consistency. Collaborated with product managers and developers to refine designs through iteration cycles. Created high-fidelity wireframes and interactive prototypes for stakeholder presentations and developer handoff.\n\nFreelance UI Designer (2020–2021)\nProduced visual designs and interface mockups for startup clients. Managed design deliverables and client feedback loops independently.\n\nSKILLS\n\nFigma, wireframing, prototyping, design systems, visual hierarchy, typography, color theory, Adobe Creative Suite, Maze, Hotjar, user flows, interaction design, responsive design\n\nEDUCATION\n\nBachelor of Arts in Graphic Design\nPortland State University (2019)\n\nCERTIFICATIONS\n\nGoogle UX Design Certificate (2020)",
+  "job": "PRODUCT DESIGNER\n\nBlueprint Labs is building the next generation of collaboration software. We're seeking a Product Designer to lead design initiatives across our platform, combining strategic thinking with hands-on execution.\n\nMUST-HAVES\n\n• 3+ years of product design or UX design experience\n• Expert proficiency in Figma\n• Hands-on experience conducting user research and usability testing with documented methodology (e.g., think-aloud protocols, task analysis, A/B testing frameworks)\n• Demonstrated ability to translate research findings into design decisions\n• Strong portfolio showing design process and user-centered problem solving\n• Excellent communication and cross-functional collaboration skills\n\nNICE-TO-HAVE\n\n• Knowledge of WCAG accessibility standards\n• Experience with design systems and component libraries\n• Familiarity with analytics and data visualization tools\n• Background in SaaS or B2B product design",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "research",
+      "status": "partially-met",
+      "note": "tools listed, no methodology or outcome"
+    },
+    {
+      "match": "accessib",
+      "status": "missing",
+      "note": "never mentioned"
+    }
+  ],
+  "forbidden_claims": [
+    "conducted longitudinal",
+    "WCAG"
+  ]
+}

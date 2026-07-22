@@ -1,0 +1,24 @@
+{
+  "id": "design-adjacent-motion",
+  "role": "Motion Designer vs Product Designer",
+  "level": "mid",
+  "expected_band": [
+    20,
+    55
+  ],
+  "cv": "MARCUS CHEN\nLondon, UK | marcus.chen@email.com | +44 7911 234567\n\nMOTION DESIGNER & VIDEO ARTIST\n\nCreative professional with 4 years of specialized experience in motion design and video production. Expertise in crafting compelling brand animations and visual storytelling for advertising campaigns. Proven ability to deliver polished, broadcast-quality content that elevates brand narratives and engages audiences.\n\nEXPERIENCE\n\nMotion Designer, Volt Creative Studios (2021-Present)\nProduced animated assets for major brand campaigns including luxury watch and automotive advertising. Created 30+ broadcast commercials using After Effects and Cinema 4D. Collaborated with creative directors to translate brand guidelines into dynamic visual language. Managed post-production workflows and delivered final assets meeting strict broadcast specifications.\n\nJunior Motion Designer, Pulse Design Agency (2020-2021)\nAssisted senior animators on commercial projects and social media content. Built proficiency in After Effects character animation and 3D motion graphics. Used Figma to develop storyboards and animatic previews for client presentations. Contributed to 15+ completed projects across hospitality and fashion sectors.\n\nVideo Production Assistant, Nexus Media (2019-2020)\nSupported video shoots and basic post-production editing. Assisted with After Effects compositing tasks. Gained foundational knowledge of broadcast workflows and color grading principles.\n\nSKILLS\n\nMotion Design: After Effects (advanced), Cinema 4D (advanced), character animation, kinetic typography, visual effects, motion graphics\nVisual Tools: Figma (storyboarding), Adobe Premiere Pro (intermediate)\nOther: Broadcast standards compliance, color grading, sound design coordination\n\nEDUCATION\n\nDiploma in Digital Animation, London College of Creative Media (2019)\nA-Levels: Media Studies, Art, Computing (2017)",
+  "job": "PRODUCT DESIGNER\n\nJoin our Berlin-based fintech startup as a Product Designer. We're building the next generation of personal finance tools, and we need an experienced designer to lead product initiatives from discovery through launch. You'll work directly with our CEO and engineering lead to shape features that impact thousands of users daily.\n\nMUST-HAVES:\n- 3+ years of product design experience (digital products, SaaS, or apps)\n- Demonstrated expertise in user research methods (interviews, usability testing, analytics)\n- Experience building and maintaining design systems at scale\n- End-to-end feature ownership: from research and wireframing through prototyping, testing, and handoff\n- Strong portfolio showing your design process and impact\n- Figma proficiency\n\nNICE-TO-HAVE:\n- Experience with motion design or interaction design principles\n- Knowledge of accessibility standards (WCAG)\n- Background in fintech or financial products\n- Prototyping with Framer or similar tools\n\nWe're looking for someone who thrives in ambiguity, champions users, and isn't afraid to challenge assumptions with research. You'll mentor junior designers and collaborate closely with product and engineering. Competitive salary, equity, and remote-friendly setup.\n\nApply via our careers page with your portfolio link.",
+  "requirements": [
+    {
+      "match": "research",
+      "status": "missing",
+      "note": ""
+    },
+    {
+      "match": "motion",
+      "status": "met",
+      "note": "nice-to-have genuinely satisfied"
+    }
+  ],
+  "forbidden_claims": []
+}

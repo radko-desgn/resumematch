@@ -1,0 +1,32 @@
+{
+  "id": "ai-eng-sideproject-only",
+  "role": "Backend → AI Engineer",
+  "level": "mid",
+  "expected_band": [
+    45,
+    75
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | github.com/mchen-dev | London, UK\n\nPROFESSIONAL SUMMARY\nBackend engineer with 4 years of production Python experience building scalable REST APIs and microservices. Proficient in PostgreSQL database design, containerization, and CI/CD automation. Seeking to expand into AI systems and LLM integration work.\n\nWORK EXPERIENCE\n\nSenior Backend Engineer, Fintech Solutions Ltd (2021–Present)\nDesigned and deployed FastAPI microservices handling 500+ requests per second for payment processing platform. Architected PostgreSQL schemas with complex indexing strategies for real-time transaction queries. Implemented comprehensive Docker Compose setups and automated CI/CD pipelines using GitHub Actions. Mentored junior developers on production Python best practices and code review processes.\n\nBackend Developer, TechVenture Inc (2020–2021)\nBuilt RESTful APIs in FastAPI for SaaS analytics dashboard. Managed PostgreSQL database migrations and optimization for growing user base. Containerized applications and set up automated testing in continuous deployment workflows. Collaborated with frontend team to define API contracts.\n\nJunior Python Developer, StartupHub (2019–2020)\nDeveloped Flask applications for internal tools and customer-facing features. Wrote unit and integration tests. Assisted with Docker container setup and deployment processes.\n\nSKILLS\nLanguages: Python (expert), SQL, Bash\nFrameworks & Tools: FastAPI, PostgreSQL, Docker, Git, GitHub Actions, Linux\nMethodologies: Agile, microservices architecture, REST API design\n\nSIDE PROJECT\nRSS Feed Summarizer (2023 – personal project)\nDeveloped weekend project using open-source language model to automatically summarize news feeds. Implemented vector indexing for semantic search across summaries. Experimented with embeddings and similarity matching for content discovery.\n\nEDUCATION\nBachelor of Science in Computer Science, University of Manchester (2019)\n\nCERTIFICATIONS\nDocker Certified Associate (2022)",
+  "job": "AI ENGINEER\n\nAbout the Role\nWe're building the next generation of AI-powered data products and need a backend-focused AI engineer to help us. You'll develop production APIs that seamlessly integrate large language models and embeddings into our platform, working closely with ML researchers and product teams. This role bridges backend infrastructure and applied AI.\n\nMust-Have Requirements\n- 3+ years production Python development\n- Proven experience building and maintaining production APIs (REST, async frameworks preferred)\n- Strong PostgreSQL expertise (schema design, optimization, complex queries)\n- Hands-on experience with Docker and CI/CD pipeline implementation\n\nNice-to-Have\n- Experience integrating LLM APIs or working with embeddings and vector databases\n- Familiarity with RAG (Retrieval-Augmented Generation) systems or model evaluation frameworks\n- Knowledge of observability tools such as OpenTelemetry or Langfuse for monitoring AI systems",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "llm",
+      "status": "partially-met",
+      "note": "side project only, not production"
+    },
+    {
+      "match": "observability",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "production LLM",
+    "evaluation harness"
+  ]
+}

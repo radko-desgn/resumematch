@@ -1,0 +1,32 @@
+{
+  "id": "swe-missing-musthave-db",
+  "role": "Backend Engineer (missing a must-have)",
+  "level": "mid",
+  "expected_band": [
+    35,
+    70
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | linkedin.com/in/marcuschen | github.com/marcuschen\n\nSOFTWARE ENGINEER\nResults-driven backend engineer with 4 years of experience building scalable Python and Django applications. Passionate about clean code, API design, and containerized deployments.\n\nPROFESSIONAL EXPERIENCE\n\nBackend Engineer at DataFlow Systems (2021 - Present)\nDeveloped and maintained production Django REST APIs serving 2M+ requests daily\nDesigned MongoDB document schemas for high-performance data storage and retrieval\nImplemented automated CI/CD pipelines using GitHub Actions for continuous deployment\nContainerized applications with Docker, reducing deployment time by 60%\nBuilt real-time data synchronization services between microservices\n\nJunior Developer at TechVenture Inc. (2019 - 2021)\nContributed to core Django backend features supporting 50K active users\nOptimized MongoDB aggregation pipelines for complex reporting queries\nSet up Docker environments for local development across team of 8 engineers\nAutomated testing workflows with GitHub Actions, improving code coverage from 45% to 78%\n\nIntern at CloudMetrics (2018 - 2019)\nAssisted in building Python microservices for analytics platform\nImplemented MongoDB indexes to improve query performance by 40%\nSupported infrastructure team with Docker container management\n\nTECHNICAL SKILLS\nLanguages: Python\nFrameworks & Libraries: Django, Django REST Framework, FastAPI\nDatabases: MongoDB\nTools & Platforms: Docker, GitHub Actions, Git, Linux\nOther: API Design, Microservices Architecture, JSON/BSON\n\nEDUCATION\nBachelor of Science in Computer Science, Portland State University (2018)",
+  "job": "BACKEND ENGINEER\n\nJoin our team and help us build the next generation of payment processing infrastructure. We're looking for an experienced Backend Engineer to design and maintain robust APIs that power millions of transactions daily.\n\nMust-Have Requirements:\n3+ years of professional Python development experience\nProven track record building and maintaining production APIs\nExperience with PostgreSQL or other relational database systems\nProficiency with Docker and CI/CD tooling (GitHub Actions, Jenkins, GitLab CI, or similar)\n\nNice-to-Have Qualifications:\nFamiliarity with Django or Flask frameworks\nExperience with cloud platforms (AWS, GCP, or Azure)\nKnowledge of microservices architecture\nContribution to open-source projects\nExperience with message queues and asynchronous task processing\nUnderstanding of database optimization and query tuning\n\nWe offer competitive salary, comprehensive benefits, remote flexibility, and opportunities for professional growth in a collaborative engineering team.",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "postgres",
+      "status": "missing",
+      "note": "only MongoDB present — relational DB absent"
+    },
+    {
+      "match": "docker",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "PostgreSQL",
+    "SQL"
+  ]
+}

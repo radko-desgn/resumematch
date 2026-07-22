@@ -1,0 +1,24 @@
+{
+  "id": "non-native-phrasing",
+  "role": "Backend Engineer, non-native English CV",
+  "level": "mid",
+  "expected_band": [
+    55,
+    90
+  ],
+  "cv": "MARTIN ALEKSEEV\nmalekseev@email.com | +46 70 445 2821\n\nPROFESSIONAL SUMMARY\nExperienced Python backend developer with strong expertise in building and maintaining scalable API services. I have solid understanding of modern development practices and infrastructure automation. Committed to delivering high-quality code and reliable systems.\n\nPROFESSIONAL EXPERIENCE\n\nSenior Backend Developer at TechCore Solutions, Stockholm\nJanuary 2021 - Present (3 years 11 months)\nI was responsible for develop the API services that process over 2 million requests daily for e-commerce platform. Led migration of legacy monolith to microservices architecture using FastAPI framework. Implemented comprehensive monitoring with Prometheus and Grafana, reducing mean response time from 800ms to 180ms. Designed and managed PostgreSQL database schemas supporting 50+ concurrent connections. Established CI/CD pipeline using GitHub Actions, deploying to Kubernetes cluster with automated testing coverage of 87%.\n\nBackend Developer at DataFlow Systems, Stockholm\nMarch 2020 - December 2020 (10 months)\nDeveloped REST APIs using FastAPI for data analytics platform. Worked with PostgreSQL to optimize complex queries handling 500GB datasets. Containerized applications using Docker, reducing deployment time by 65%. Implemented automated testing and integrated with Jenkins pipeline.\n\nJunior Python Developer at CloudInit AB, Stockholm\nJune 2019 - February 2020 (9 months)\nBuilt backend services using Python and Flask. Assisted in Docker infrastructure setup and basic CI/CD configuration.\n\nSKILLS\nPython, FastAPI, PostgreSQL, Docker, Kubernetes, GitHub Actions, Jenkins, Prometheus, Grafana, RESTful API design, Linux, Git, Agile methodologies\n\nEDUCATION\nBachelor of Science in Computer Science, Uppsala University, 2019",
+  "job": "Backend Engineer - API Platform\n\nAbout the Role\nWe are seeking an experienced Backend Engineer to join our platform team. You will design and maintain production-grade APIs that power our SaaS infrastructure, collaborating with product and infrastructure teams to deliver reliable, scalable services to thousands of users worldwide.\n\nMust-have Requirements\n- 3+ years professional experience developing backend services with Python\n- Proven track record shipping production APIs to real users\n- Strong experience with PostgreSQL database design and optimization\n- Hands-on experience with Docker and CI/CD pipeline implementation\n- Experience working in fast-paced startup or scale-up environment\n\nNice-to-have Requirements\n- Experience with FastAPI or similar modern Python web frameworks\n- Familiarity with Kubernetes orchestration\n- Exposure to monitoring and observability tools (Prometheus, Grafana, ELK)\n- Previous microservices architecture experience\n- Contributions to open-source projects\n\nWhat We Offer\nCompetitive salary, flexible remote work, professional development budget, and the opportunity to work on systems used by 100,000+ customers across Europe and North America.",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "met",
+      "note": "phrasing must not be penalised as capability"
+    },
+    {
+      "match": "postgres",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

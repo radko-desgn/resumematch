@@ -1,0 +1,29 @@
+{
+  "id": "design-senior-strong",
+  "role": "Senior Product Designer",
+  "level": "senior",
+  "expected_band": [
+    75,
+    100
+  ],
+  "cv": "MARCUS REID\nProduct Designer | B2B SaaS Specialist\nmarcos.reid@email.com | linkedin.com/in/marcosreid\n\nPROFESSIONAL SUMMARY\nExperienced product designer with 6 years of hands-on expertise in B2B SaaS environments. Skilled at owning features end-to-end from discovery through launch, creating intuitive user experiences that drive adoption. Proficient in Figma with advanced knowledge of components, variants, and design system architecture. Committed to accessible design and user-centered product development.\n\nEXPERIENCE\n\nSenior Product Designer – CloudVault Solutions, San Francisco, CA | 2021–Present\nOwn discovery, interaction design, and visual design for core data management features serving 500+ enterprise clients. Conduct weekly usability testing sessions and user interviews to validate assumptions. Built and maintained design system with 200+ reusable Figma components and variants. Work closely with engineering team daily to resolve design implementation challenges and optimize handoff workflows. Implemented WCAG AA accessibility standards across all product surfaces, ensuring compliance for government and regulated industry clients.\n\nProduct Designer – Insight Analytics, Boston, MA | 2018–2021\nDesigned end-to-end user flows and wireframes for reporting and analytics platform. Created hi-fidelity UI designs in Figma, establishing foundational component library. Conducted 40+ user research sessions annually with customers and prospects. Collaborated with cross-functional teams including engineers, product managers, and sales to validate design decisions. Achieved 35% improvement in feature adoption through iterative usability testing.\n\nJunior Product Designer – StreamFlow Inc., Austin, TX | 2017–2018\nSupported product design activities including wireframing, prototyping, and user testing. Assisted in building initial design documentation and Figma workspace structure.\n\nSKILLS\nFigma (components, variants, design systems), User Research, Usability Testing, Wireframing, Prototyping, Information Architecture, WCAG AA Accessibility, User Interviews, Cross-functional Collaboration, Product Strategy, Interaction Design\n\nEDUCATION\nBachelor of Fine Arts in Interaction Design – School of Visual Arts, New York, NY | 2017",
+  "job": "Senior Product Designer – B2B SaaS\n\nAbout the Role\nWe're looking for an experienced Senior Product Designer to lead the design of our next generation of enterprise collaboration features. You'll own complete product experiences from research through launch, working alongside engineers, product managers, and customers to build intuitive solutions for technical users. This is a high-impact role where your design decisions directly influence how thousands of teams work together daily.\n\nMust-Have Qualifications\n• 4+ years of product design experience in B2B SaaS environments\n• Demonstrated ability to own features end-to-end: discovery, user flows, wireframes, hi-fidelity UI design\n• Expert-level Figma skills including component systems, variants, and design system architecture\n• Hands-on experience conducting user research and usability testing to validate design decisions\n• Proven track record of close collaboration with engineering teams throughout the design-to-development cycle\n\nNice-to-Have Qualifications\n• Experience implementing and maintaining WCAG AA accessibility standards\n• Familiarity with analytics tools to measure design impact\n• Background in mentoring junior designers",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "research",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "accessib",
+      "status": "met",
+      "note": "CV explicitly names WCAG AA"
+    }
+  ],
+  "forbidden_claims": []
+}

@@ -1,0 +1,29 @@
+{
+  "id": "frontend-partial-testing",
+  "role": "Frontend Engineer",
+  "level": "mid",
+  "expected_band": [
+    45,
+    80
+  ],
+  "cv": "MARCUS STEWART\n\nSoftware Engineer with 4 years of frontend development experience building scalable web applications.\n\nEXPERIENCE\n\nSenior Frontend Developer at TechVision Labs, 2021–Present\nLed development of customer dashboard using React and TypeScript, delivering features for 500+ active users. Built responsive UI components with Tailwind CSS for rapid iteration. Collaborated with product team on feature requirements and design specifications. Wrote some tests to verify component behavior. Mentored junior developers on TypeScript patterns and component architecture.\n\nFrontend Developer at CloudScale Inc, 2020–2021\nDeveloped e-commerce platform frontend with Next.js, TypeScript, and Tailwind. Implemented server-side rendering for improved performance and SEO. Created reusable component library used across three product areas. Contributed to codebase optimization reducing initial load time by 35%.\n\nJunior Frontend Developer at Nexus Digital, 2019–2020\nBuilt interactive web interfaces using React and modern JavaScript. Styled applications with Tailwind CSS. Participated in code reviews and deployed features to production. Learned TypeScript fundamentals and applied them across multiple projects.\n\nSKILLS\nReact, TypeScript, Next.js, Tailwind CSS, JavaScript, HTML/CSS, Git, RESTful APIs, Component design\n\nEDUCATION\nBachelor of Science in Computer Science, Portland State University, 2019",
+  "job": "FRONTEND ENGINEER\n\nWe're looking for a skilled Frontend Engineer to join our product team at DigitalCraft Solutions. You'll build and maintain user-facing applications that serve thousands of users daily, working with modern React tooling and contributing to a collaborative engineering culture.\n\nMUST-HAVES\n• 3+ years of professional experience with React and TypeScript\n• Demonstrated practice writing automated tests for frontend code\n• Experience with modern build tools and development workflows (Webpack, Vite, or similar)\n• Strong HTML/CSS fundamentals and ability to build accessible, responsive layouts\n• Proficiency with version control (Git) and ability to work in agile teams\n\nNICE-TO-HAVE\n• Experience with Next.js for server-side rendering and static generation\n• Knowledge of WCAG accessibility standards and commitment to inclusive design\n• Familiarity with CSS-in-JS or utility-first CSS frameworks\n• Experience mentoring junior developers",
+  "requirements": [
+    {
+      "match": "react",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "test",
+      "status": "partially-met",
+      "note": "vague single mention"
+    },
+    {
+      "match": "accessib",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

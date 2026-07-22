@@ -1,0 +1,29 @@
+{
+  "id": "ai-eng-strong",
+  "role": "AI Engineer",
+  "level": "senior",
+  "expected_band": [
+    75,
+    100
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | linkedin.com/in/marcuschen92\n\nPROFESSIONAL SUMMARY\nBackend engineer with 5 years of Python experience, specializing in production AI systems. Demonstrated expertise building and shipping RAG services at scale, with strong focus on evaluation frameworks and operational observability.\n\nEXPERIENCE\n\nSenior Backend Engineer, Vortex AI (San Francisco, CA)\nJanuary 2022 - Present\n- Architected and shipped production RAG service handling 50K+ daily requests, implementing document chunking strategies and semantic embeddings pipeline\n- Optimized retrieval layer using pgvector for similarity search, achieving 98th percentile latency under 200ms\n- Designed reranking module to improve relevance scoring, increasing successful user interactions by 34%\n- Built offline evaluation harness leveraging LLM-as-judge for continuous quality assessment of retrieval results\n- Instrumented all LLM API calls with OpenTelemetry, enabling per-request cost tracking and anomaly detection\n- Reduced operational costs 22% through observability insights and model routing optimization\n\nBackend Engineer, DataFlow Systems (Seattle, WA)\nMarch 2019 - December 2021\n- Developed microservices in Python handling 5M+ events daily\n- Containerized applications with Docker, reducing deployment time from 45 minutes to 8 minutes\n- Implemented CI/CD pipelines using GitHub Actions and Kubernetes, enabling 20+ deployments per day\n- Collaborated with ML team on model serving infrastructure\n\nJunior Python Developer, StartupXYZ (Portland, OR)\nJune 2018 - February 2019\n- Built REST APIs and data processing scripts\n- Assisted in Docker adoption across engineering team\n\nSKILLS\nPython, FastAPI, PostgreSQL, pgvector, LangChain, OpenTelemetry, Docker, Kubernetes, GitHub Actions, Prompt Engineering, Vector Embeddings, LLM Evaluation\n\nEDUCATION\nBS Computer Science, University of Washington (2018)",
+  "job": "AI Engineer\n\nVortex Intelligence is seeking an experienced AI Engineer to build and maintain production systems that integrate large language models with retrieval and search capabilities. You'll own the full lifecycle of RAG services, from data pipeline to user-facing quality metrics.\n\nMust-have:\n- 3+ years of production Python development\n- Shipped at least one production service at scale\n- Hands-on experience building or working with RAG systems, retrieval pipelines, or semantic search\n- Experience designing and implementing evaluation frameworks for model quality assessment\n- Proficiency with Docker and CI/CD tooling (GitHub Actions, GitLab CI, or similar)\n\nNice-to-have:\n- Experience with observability platforms (DataDog, New Relic, Jaeger)\n- Vector database knowledge (pgvector, Pinecone, Weaviate)\n- Background implementing LLM cost tracking and optimization\n- Experience with reranking or learning-to-rank approaches\n\nYou'll work with our Platform team to enhance our evaluation infrastructure, optimize retrieval quality, and ensure our systems remain reliable and cost-effective. Remote-friendly role with flexible hours.",
+  "requirements": [
+    {
+      "match": "rag",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "eval",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "observability",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

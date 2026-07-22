@@ -1,0 +1,24 @@
+{
+  "id": "devops-strong",
+  "role": "DevOps Engineer",
+  "level": "senior",
+  "expected_band": [
+    70,
+    100
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | London, UK | LinkedIn.com/in/marcuschen90\n\nInfrastructure Engineer with 6 years of hands-on experience designing and maintaining cloud platforms. Proven track record in containerization, infrastructure automation, and operational excellence. Strong background in incident response and maintaining high-availability systems under pressure.\n\nEXPERIENCE\n\nSenior Infrastructure Engineer | TechVault Solutions | 2021 – Present\nLead infrastructure modernization initiative across 40+ microservices using Kubernetes and Terraform. Architected multi-region AWS deployment reducing latency by 30%. Implemented comprehensive Prometheus and Grafana monitoring stack covering 200+ metrics. On-call rotation lead managing critical production incidents with average MTTR of 12 minutes. Developed incident playbooks and runbooks for common failure scenarios.\n\nInfrastructure Engineer | Dataflow Systems | 2018 – 2021\nManaged Kubernetes clusters hosting 50+ applications across development, staging, and production environments. Built Terraform modules for repeatable infrastructure provisioning, reducing deployment time from 4 hours to 20 minutes. Created GitHub Actions CI/CD pipelines automating testing and deployment for 30+ repositories. Established Prometheus/Grafana observability framework enabling proactive monitoring and alerting. Handled on-call responsibilities with 99.8% incident resolution rate.\n\nDevOps Technician | Network Innovations | 2017 – 2018\nSupported AWS cloud infrastructure and began learning Kubernetes. Assisted with basic monitoring setup using open-source tools. Participated in incident response activities under senior engineer guidance.\n\nSKILLS\n\nContainerization & Orchestration: Kubernetes (EKS, multi-cluster management), Docker\nInfrastructure as Code: Terraform (5 years), CloudFormation\nCloud Platforms: AWS (EC2, RDS, S3, VPC, ECS, EKS)\nCI/CD: GitHub Actions, GitLab CI, Jenkins\nMonitoring & Observability: Prometheus, Grafana, CloudWatch\nIncident Management: On-call operations, root cause analysis, alerting systems\nOther: Linux administration, networking fundamentals, shell scripting\n\nEDUCATION\n\nBachelor of Science in Computer Science | University of Manchester | 2017\nKubernetes Application Developer Certification (CKAD) | 2021",
+  "job": "DevOps Engineer\n\nWe're seeking an experienced DevOps Engineer to join our platform team at StreamCore Technologies. You'll be responsible for building and maintaining scalable cloud infrastructure that supports our growing microservices architecture. This role involves working with containerized applications, managing infrastructure as code, and ensuring reliable deployment pipelines. You'll be part of a collaborative team focused on operational excellence and continuous improvement.\n\nMust-have:\n\n- Hands-on experience with Kubernetes (container orchestration, cluster management)\n- Proficiency with Terraform or equivalent infrastructure-as-code tools\n- Strong CI/CD pipeline experience (GitHub Actions, GitLab CI, Jenkins, or similar)\n- Demonstrated cloud platform experience with AWS or GCP\n- Experience implementing and maintaining monitoring and alerting systems (Prometheus, Grafana, CloudWatch)\n\nNice-to-have:\n\n- Experience managing production incidents and on-call responsibilities\n- Multi-cloud or multi-region infrastructure deployment\n- Experience with advanced observability and tracing tools\n- Contribution to open-source infrastructure projects",
+  "requirements": [
+    {
+      "match": "kubernetes",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "terraform",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

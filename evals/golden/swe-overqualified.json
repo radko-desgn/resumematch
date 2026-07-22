@@ -1,0 +1,24 @@
+{
+  "id": "swe-overqualified",
+  "role": "Staff Engineer vs mid role",
+  "level": "senior",
+  "expected_band": [
+    70,
+    100
+  ],
+  "cv": "MARCUS CHEN\nSenior Staff Engineer | Platform Infrastructure\n\nPROFESSIONAL SUMMARY\nExperienced Staff Engineer with 11 years of software engineering expertise. Specializes in platform architecture, distributed systems design, and large-scale infrastructure migrations. Proven track record mentoring engineering teams and driving technical excellence across organizations.\n\nEXPERIENCE\n\nStaff Engineer, Zenith Systems (2021-Present)\nLed migration of monolithic payment processing system to microservices architecture on Kubernetes, reducing latency by 40% and improving system reliability. Mentor 5 junior engineers on software design patterns and operational excellence. Designed on-call rotation framework and incident response procedures. Actively participate in production support and system debugging.\n\nSenior Engineer, CloudScale Inc (2017-2021)\nBuilt distributed cache layer in Go handling 100K requests/second. Implemented gRPC-based service communication reducing inter-service latency. Contributed to Kubernetes cluster orchestration strategy across 12 production clusters. On-call ownership for critical infrastructure components.\n\nEngineering Lead, DataFlow Solutions (2014-2017)\nDeveloped Python backend services for real-time analytics platform. Architected event streaming pipeline using distributed systems principles. Mentored junior developers through code review and pair programming.\n\nSoftware Engineer, TechVenture (2013-2014)\nBuilt RESTful APIs in Python. Worked with relational databases and basic infrastructure.\n\nSKILLS\nLanguages: Python (expert), Go (expert), SQL\nPlatforms: Kubernetes, Docker, Linux\nDomains: Distributed Systems, Microservices, Platform Architecture, System Design, On-call Operations\n\nEDUCATION\nBS Computer Science, Oregon State University (2012)",
+  "job": "Mid-level Backend Engineer\n\nJoin our engineering team to build scalable API services supporting millions of users. We're looking for someone with solid Python experience who can design reliable REST APIs and work effectively with databases and containerization technologies.\n\nMust-have:\n- 3+ years professional Python development\n- Experience designing and maintaining REST APIs\n- Strong SQL database design and query optimization skills\n- Proficiency with Docker and container technologies\n\nNice-to-have:\n- Kubernetes experience\n- Distributed systems concepts\n- Experience with microservices architectures\n- Open source contributions\n\nWhat we offer: Competitive salary, professional development budget, flexible remote work options, and collaborative team environment.",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "kubernetes",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

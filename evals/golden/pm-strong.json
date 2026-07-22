@@ -1,0 +1,24 @@
+{
+  "id": "pm-strong",
+  "role": "Product Manager",
+  "level": "senior",
+  "expected_band": [
+    70,
+    100
+  ],
+  "cv": "MARCUS CHEN\nProduct Manager | B2B SaaS | San Francisco, CA\n\nSUMMARY\nSeasoned B2B SaaS product manager with 7 years driving product strategy and execution. Proven track record owning product roadmaps from conception to launch, conducting customer discovery, and shipping features that drive measurable business outcomes. Strong collaborator with engineering teams and data-driven decision maker.\n\nEXPERIENCE\n\nSenior Product Manager, Vertica Analytics (2021-Present)\nOwned product roadmap for data pipeline platform serving enterprise customers. Led monthly customer interviews across 15+ accounts to identify pain points and validate assumptions. Defined KPIs around user adoption, feature usage, and NPS. Partnered with engineering to scope quarterly releases and managed cross-functional prioritization. Ran A/B tests on onboarding flows resulting in 18% improvement in activation rates. Designed and executed pricing experiment that increased ARPU by 22%.\n\nProduct Manager, CloudVault Systems (2017-2021)\nManaged discovery process for storage optimization product, conducting structured customer research with procurement and technical buyers. Authored quarterly roadmap balancing customer requests, competitive positioning, and technical debt. Collaborated closely with 8-person engineering team through full product development lifecycle. Established success metrics dashboard tracking feature adoption, churn, and customer satisfaction. Conducted multivariate testing on key user workflows.\n\nAssociate Product Manager, Nexus Solutions (2015-2017)\nSupported product strategy for workflow automation SaaS. Assisted with customer interviews and synthesized findings into actionable requirements. Shadowed PM on roadmap planning and metric definition.\n\nSKILLS\nProduct roadmap, customer discovery, product strategy, success metrics, A/B testing, pricing strategy, cross-functional collaboration, SaaS business models, user research, data analysis\n\nEDUCATION\nB.A. Business Administration, UC Berkeley, 2015",
+  "job": "SENIOR PRODUCT MANAGER – B2B SAAS\nVertica Analytics | San Francisco, CA\n\nWe're hiring a Senior Product Manager to lead product direction for our enterprise data platform. You'll own the complete product lifecycle—from customer discovery through shipping features that matter. This is a strategic role for someone who loves talking to customers and making data-backed decisions.\n\nWhat You'll Do\n- Own the product roadmap and prioritization process\n- Conduct ongoing customer research and discovery interviews\n- Define success metrics and track product performance\n- Partner with engineering to scope, design, and deliver features\n- Influence product strategy based on market insights\n\nMUST-HAVES\n- 5+ years of product management experience\n- Strong track record with discovery and customer research\n- Experience owning and managing product roadmaps\n- Metrics-driven mindset with ability to define and track KPIs\n- Proven collaboration with engineering teams through full development cycles\n\nNICE-TO-HAVE\n- Experience designing and running A/B tests or experimentation\n- Background in B2B SaaS\n- Experience with pricing strategy or monetization",
+  "requirements": [
+    {
+      "match": "research",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "metric",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

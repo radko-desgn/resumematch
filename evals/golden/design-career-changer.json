@@ -1,0 +1,26 @@
+{
+  "id": "design-career-changer",
+  "role": "Graphic → Product Designer",
+  "level": "mid",
+  "expected_band": [
+    30,
+    62
+  ],
+  "cv": "MARCUS CHEN\nmarchus.chen@email.com | London, UK\n\nGRAPHIC DESIGNER & EMERGING PRODUCT DESIGNER\n\nExperienced graphic designer transitioning into product design with hands-on UX and usability research. Self-directed learner committed to understanding user-centred design principles.\n\nEXPERIENCE\n\nSenior Graphic Designer, Bright & Co., 2019–Present\n- Led brand identity development for 8 commercial clients across retail and tech sectors\n- Designed print collateral including packaging, brochures, and direct mail campaigns\n- Collaborated with marketing teams to execute integrated design campaigns\n- Maintained brand consistency across digital and print touchpoints\n\nGraphic Designer, Vault Creative, 2019–2023\n- Produced high-volume campaign assets for B2B and B2C clients\n- Designed brand guidelines and visual systems for 5+ companies\n- Managed revisions and feedback from stakeholders across multiple projects\n\nJunior Designer, Blueprint Studios, 2019–2020\n- Supported brand refresh initiatives for regional clients\n- Assisted with print production and quality assurance\n\nSELF-DIRECTED PRODUCT DESIGN LEARNING (2023–Present)\n\n- Completed independent study in UX principles, interaction design, and usability research\n- Designed two personal app projects in Figma: a task management tool and a food logging application\n- Conducted informal usability testing sessions with five participants for both projects\n- Documented findings and iterated designs based on user feedback\n- Developed case studies demonstrating design process and rationale\n\nSKILLS\n\nDesign: Figma, Adobe Creative Suite (Photoshop, Illustrator, InDesign), wireframing, prototyping, user flows, visual design\nResearch: Usability testing, user interviews, observation, feedback synthesis\nOther: Brand strategy, design systems, stakeholder communication\n\nEDUCATION\n\nDiploma in Graphic Design, Central School of Art & Design, 2019",
+  "job": "PRODUCT DESIGNER\nTechFlow – London\n\nWe're building consumer mobile applications used by over 500,000 people. Our design team drives product strategy and user experience. We're looking for a Product Designer to lead design for our fitness and wellness suite.\n\nAbout the Role:\n\nYou'll work cross-functionally with engineers, product managers, and researchers to design, test, and ship features. This is a high-impact position where design directly influences product direction and user outcomes.\n\nMUST-HAVES:\n\n- 3+ years of professional product design experience at a technology company or design studio\n- Advanced proficiency in Figma for wireframing, prototyping, and design systems\n- Demonstrated experience planning and conducting usability testing with real users\n- Proven track record shipping products with engineering teams from design handoff through launch\n- Portfolio with case studies showing end-to-end product design work\n\nNICE-TO-HAVES:\n\n- Experience designing mobile health, fitness, or wellness applications\n- Familiarity with design systems at scale\n- Knowledge of analytics and data-driven design decisions\n- Experience mentoring junior designers\n- Background in user research methodology\n\nWe offer competitive salary, flexible working, and professional development budget.",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "met",
+      "note": "self-taught but genuinely used"
+    },
+    {
+      "match": "professional product design",
+      "status": "partially-met",
+      "note": "self-directed, not employed"
+    }
+  ],
+  "forbidden_claims": [
+    "3 years professional product design"
+  ]
+}

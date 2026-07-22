@@ -1,0 +1,24 @@
+{
+  "id": "employment-gap",
+  "role": "Backend Engineer with a career gap",
+  "level": "mid",
+  "expected_band": [
+    50,
+    85
+  ],
+  "cv": "ELENA MARTINEZ\n\nSummary\nExperienced Python backend developer seeking to return to software engineering after an 18-month caregiving sabbatical. Solid foundation in building scalable API services and containerized applications. Eager to re-engage with modern backend development practices and contribute to collaborative engineering teams.\n\nProfessional Experience\n\nSenior Backend Engineer | TechVenture Solutions | 2020-2023\nDeveloped and maintained FastAPI microservices handling 10M+ daily requests\nDesigned PostgreSQL schemas for multi-tenant SaaS platform with complex query optimization\nImplemented CI/CD pipelines using GitHub Actions and Jenkins for automated testing and deployment\nContainerized applications using Docker, reducing deployment time by 40%\nMentored junior developers on REST API design principles and testing strategies\n\nBackend Developer | CloudFirst Inc | 2019-2020\nBuilt RESTful APIs in Python serving mobile and web clients\nManaged database migrations and optimization for PostgreSQL systems\nContributed to Docker-based deployment infrastructure\nParticipated in code reviews and agile sprint planning\n\nCareer Break | 2023-2024\nTook 18 months off to provide full-time care for family member\n\nTechnical Skills\nLanguages: Python\nBackend Frameworks: FastAPI, Flask\nDatabases: PostgreSQL\nDevOps & Deployment: Docker, Docker Compose, GitHub Actions, Jenkins\nTools: Git, pytest, Postman, Linux\nArchitecture: REST APIs, microservices\n\nEducation\nBachelor of Science in Computer Science | State University | 2019",
+  "job": "Backend Engineer\n\nCloudScale Systems is seeking a Backend Engineer to join our platform team. We're building high-performance data infrastructure that serves thousands of enterprise clients globally. You'll work on our core API services, database optimization, and deployment automation.\n\nMust-have Requirements\n3+ years of professional Python development experience\nProven track record building and maintaining production APIs at scale\nStrong PostgreSQL experience including schema design and query optimization\nHands-on experience with Docker and CI/CD pipelines (GitHub Actions, Jenkins, or similar)\nSolid understanding of software engineering fundamentals and testing practices\n\nNice-to-have\nExperience with FastAPI or async Python frameworks\nKnowledge of microservices architecture\nFamiliarity with cloud platforms (AWS, GCP, Azure)\nExperience with API documentation tools like Swagger/OpenAPI\nContributions to open-source projects\n\nWhat We Offer\nCompetitive salary and benefits\nRemote-friendly work environment\nOpportunity to work with cutting-edge backend technologies\nClear career growth path within the engineering organization",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "met",
+      "note": "a gap must not erase real experience"
+    },
+    {
+      "match": "postgres",
+      "status": "met",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": []
+}

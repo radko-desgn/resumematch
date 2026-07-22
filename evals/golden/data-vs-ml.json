@@ -1,0 +1,27 @@
+{
+  "id": "data-vs-ml",
+  "role": "Data Analyst vs ML Engineer",
+  "level": "mid",
+  "expected_band": [
+    25,
+    60
+  ],
+  "cv": "MARCUS REEVES\nData Analyst | London, UK\n\nSUMMARY\nExperienced data analyst with 4 years of expertise in transforming raw data into actionable business insights. Proficient in SQL and Excel with strong visualization capabilities using Tableau. Skilled at identifying trends, creating interactive dashboards, and presenting findings to stakeholders.\n\nEXPERIENCE\n\nSenior Data Analyst | TechVision Solutions | 2021-Present\n- Developed and maintained 15+ interactive Tableau dashboards tracking KPIs across sales, marketing, and operations teams\n- Wrote complex SQL queries to extract and aggregate data from PostgreSQL databases supporting 200+ concurrent users\n- Automated monthly reporting processes using Excel, reducing manual work by 12 hours per month\n- Collaborated with product teams to define metrics and monitor user engagement patterns\n\nData Analyst | Meridian Financial Services | 2019-2021\n- Created advanced Excel models for financial forecasting and budget analysis\n- Built Tableau visualizations for executive dashboards used in quarterly business reviews\n- Queried Oracle databases to support ad-hoc analysis requests from stakeholders\n- Performed exploratory data analysis using Python pandas library to investigate customer churn patterns\n\nJunior Data Analyst | DataCore Consulting | 2018-2019\n- Assisted in designing and maintaining analytical databases using SQL\n- Supported senior analysts in creating client-facing Tableau reports\n- Developed Excel dashboards for performance tracking\n\nSKILLS\nSQL (PostgreSQL, Oracle), Microsoft Excel (pivot tables, VLOOKUP, macros), Tableau, Python (pandas), Data visualization, Stakeholder communication, Business intelligence\n\nEDUCATION\nBachelor of Science in Statistics | University of Manchester | 2018",
+  "job": "ML ENGINEER | INNOVATE AI LABS\n\nWe're seeking an ML Engineer to join our growing data science team. You'll take machine learning models from research to production, building robust systems that power our core platform serving 500,000+ users daily.\n\nMUST-HAVE REQUIREMENTS\n- Proven experience training machine learning models in production environments\n- Demonstrated ability to deploy ML models to cloud infrastructure (AWS/GCP/Azure)\n- Strong proficiency in Python for engineering and production code\n- Deep understanding of MLOps practices including model versioning, monitoring, and continuous integration\n- Experience building and maintaining data pipelines and model serving infrastructure\n- Track record of shipping end-to-end ML solutions with measurable business impact\n\nNICE-TO-HAVE\n- SQL experience for data exploration and pipeline development\n- Familiarity with containerization using Docker and Kubernetes\n- Experience with feature stores or real-time inference systems\n- Contributions to open-source ML projects\n- Background in statistics or computer science\n\nWe offer competitive salary, flexible working, and the opportunity to work on cutting-edge AI problems. Apply now to grow your ML engineering career with us.",
+  "requirements": [
+    {
+      "match": "sql",
+      "status": "met",
+      "note": "nice-to-have satisfied"
+    },
+    {
+      "match": "deploy",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "deployed models",
+    "MLOps"
+  ]
+}

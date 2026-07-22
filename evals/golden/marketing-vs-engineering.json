@@ -1,0 +1,22 @@
+{
+  "id": "marketing-vs-engineering",
+  "role": "Marketing Manager vs Backend Engineer",
+  "level": "mid",
+  "expected_band": [
+    0,
+    30
+  ],
+  "cv": "MARCUS CHEN\nmarcus.chen@email.com | (415) 555-0147 | San Francisco, CA\n\nDigital Marketing Professional with 6 years of experience driving growth through data-driven campaigns and marketing automation. Proven track record optimizing customer journeys and scaling revenue through strategic channel management.\n\nEXPERIENCE\n\nSenior Marketing Specialist | TechVista Solutions | 2021–Present\n- Managed SEO strategy across 15+ properties, increasing organic traffic 240% year-over-year through keyword research, technical optimization, and content planning\n- Built and optimized paid search and display campaigns across Google Ads and Facebook, reducing cost-per-acquisition by 35%\n- Implemented email automation workflows in HubSpot, achieving 28% open rates and nurturing 50,000+ leads monthly\n- Analyzed campaign performance using Google Analytics and created dashboards for executive reporting\n\nMarketing Coordinator | Brightside Media | 2018–2021\n- Executed PPC campaigns for 20+ B2B clients, managing $2M annual ad spend\n- Designed email marketing sequences in HubSpot, resulting in 18% conversion rate improvement\n- Conducted SEO audits and developed optimization recommendations\n- Tracked metrics through Google Analytics and maintained monthly performance reports\n\nMarketing Associate | Digital Pulse Agency | 2017–2018\n- Assisted with SEO research, keyword targeting, and content optimization\n- Supported email campaign creation and list segmentation\n- Monitored campaign analytics and compiled insights for stakeholders\n\nSKILLS\nSEO, Search Engine Marketing, Email Marketing Automation, HubSpot, Google Analytics, Google Ads, Facebook Ads Manager, Content Strategy, Campaign Management, A/B Testing, Excel, CRM Systems\n\nEDUCATION\nBachelor of Business Administration | UC Davis | 2017",
+  "job": "Backend Engineer\n\nJoin our engineering team to build and maintain scalable backend systems serving millions of users. We're looking for an experienced Backend Engineer to develop robust APIs, manage data infrastructure, and contribute to our core platform architecture.\n\nMust-have:\n- 3+ years professional experience with Python\n- Experience designing and deploying production APIs\n- Strong understanding of relational databases (SQL, PostgreSQL, MySQL)\n- Hands-on experience with Docker and containerized deployments\n\nNice-to-have:\n- Experience with cloud platforms (AWS, GCP, Azure)\n- Familiarity with message queues or async task processing\n- Understanding of microservices architecture\n- Contribution to open-source projects\n- Experience with CI/CD pipelines",
+  "requirements": [
+    {
+      "match": "python",
+      "status": "missing",
+      "note": ""
+    }
+  ],
+  "forbidden_claims": [
+    "Python",
+    "API development"
+  ]
+}

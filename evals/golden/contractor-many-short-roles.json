@@ -1,0 +1,24 @@
+{
+  "id": "contractor-many-short-roles",
+  "role": "Contract designer, many short engagements",
+  "level": "mid",
+  "expected_band": [
+    45,
+    85
+  ],
+  "cv": "MARCUS REID\nmarked.design@email.com | +1 415 829 4321\n\nFREELANCE PRODUCT DESIGNER\n\nSpecialist in rapid product design across fast-moving teams. Five years delivering user-centered solutions in fintech, health tech, and e-commerce through short-term client engagements. Proven ability to partner directly with engineering to move designs from concept to shipped product.\n\nEXPERIENCE\n\nFintech / PayBridge Solutions (6 months, 2023)\nLed UX redesign of dashboard for payment processors. Conducted moderated usability testing with 12 users to validate transaction workflows. Shipped iterative releases with backend engineering team.\n\nHealth Tech / Wellness Labs (4 months, 2022)\nDesigned patient-facing mobile screens for telehealth platform. Ran unmoderated remote testing on core flows. Collaborated with iOS and backend teams through launch.\n\nE-Commerce / Style Collective (3 months, 2022)\nOptimized checkout and product discovery flows. Performed comparative usability testing against competitor platforms. Worked embedded with full-stack engineers.\n\nAdditional clients: Logistics SaaS (5 mo), Insurtech startup (4 mo), Social health app (3 mo), Beauty marketplace (2 mo), Fitness tracking (2 mo), Analytics platform (4 mo).\n\nSKILLS\nFigma, Prototyping, User Research, Usability Testing, Design Systems, Interaction Design, Accessibility, Stakeholder Communication\n\nEDUCATION\nB.A. Interaction Design, California College of the Arts (2019)",
+  "job": "PRODUCT DESIGNER\n\nTribune Tech is a Series B fintech platform rebuilding payments infrastructure for regional banks. We're looking for a product designer to own the user experience of our core dashboard and partner closely with our engineering team to ship features that matter.\n\nYou'll work on real problems: compliance-friendly design, high-stakes transaction interfaces, and tools that help non-technical users navigate complex workflows. This is not a large-team role—you'll work directly with engineers, product managers, and occasionally customers.\n\nMUST-HAVES\n\n• 3+ years professional product design experience\n• Proficiency in Figma\n• Hands-on experience running usability tests (moderated or unmoderated)\n• Shipped products directly with engineering teams—not just handoffs\n\nNICE-TO-HAVES\n\n• Experience across multiple domains (fintech, health, e-commerce, etc.)\n• Familiarity with design systems\n• Basic understanding of compliance or financial product constraints",
+  "requirements": [
+    {
+      "match": "figma",
+      "status": "met",
+      "note": ""
+    },
+    {
+      "match": "usability",
+      "status": "met",
+      "note": "short tenures must not erase real work"
+    }
+  ],
+  "forbidden_claims": []
+}
