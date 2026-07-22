@@ -19,7 +19,7 @@ export function Wizard() {
   const Current = STEPS[step - 1];
 
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-3xl border border-black/10 bg-white text-black text-left shadow-2xl p-5 sm:p-8">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-black/10 bg-white text-black text-left shadow-2xl p-5 sm:p-9">
       <StepIndicator />
 
       <div className="mt-7">
