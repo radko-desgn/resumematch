@@ -57,6 +57,11 @@ export function Benefits() {
             alt="Example ResumeMatch result: 78% match with evidence-backed requirement coverage and a suggested rewrite"
             width={2040}
             height={1250}
+            // eager, not the default lazy: this is the section's payoff visual.
+            // The lazy IntersectionObserver was leaving it unloaded — an empty
+            // reserved box — instead of showing the app-window mockup.
+            loading="eager"
+            sizes="(min-width: 768px) 768px, 100vw"
             className="mx-auto w-full max-w-3xl h-auto"
           />
         </motion.div>

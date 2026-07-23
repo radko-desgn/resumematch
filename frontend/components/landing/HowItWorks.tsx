@@ -42,6 +42,7 @@ export function HowItWorks() {
             alt={TRANSFORM_ALT}
             width={2160}
             height={900}
+            loading="eager"
             sizes="(min-width: 640px) 100vw, 0px"
             className="hidden sm:block w-full h-auto"
           />
@@ -50,6 +51,7 @@ export function HowItWorks() {
             alt={TRANSFORM_ALT}
             width={796}
             height={2800}
+            loading="eager"
             sizes="(max-width: 639px) 100vw, 0px"
             className="block sm:hidden mx-auto w-full max-w-[398px] h-auto"
           />
