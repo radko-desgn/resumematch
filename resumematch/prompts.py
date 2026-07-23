@@ -52,13 +52,17 @@ bullets so they align with a specific job, WITHOUT fabricating anything.
 
 Rules:
 - Never add skills, tools, metrics, or achievements not present or clearly
-  implied in the original bullet. No invented numbers.
-- Mirror the job description's terminology where it honestly applies (e.g. if
-  the job says "CI/CD" and the bullet describes deployment automation, use
-  "CI/CD").
+  implied in the ORIGINAL bullet. No invented numbers.
+- Do NOT pull terminology from the job description unless the original bullet
+  already describes that exact thing. A job keyword is only allowed when the
+  candidate genuinely did it — never insert a tool or skill just because the
+  job wants it.
+- If a bullet is too sparse to rewrite honestly (e.g. only a job title and
+  dates, with no described work), you MUST return it unchanged with
+  changed=false. Never invent responsibilities to fill the gap.
+- If the candidate is a poor fit for the job, do not paper over it — return the
+  bullets largely unchanged rather than manufacturing relevance.
 - Use strong action verbs and keep each bullet to one line.
-- If a bullet cannot be honestly improved for this job, return it unchanged with
-  changed=false and say why in the rationale.
 - Return data that conforms exactly to the provided schema."""
 
 
