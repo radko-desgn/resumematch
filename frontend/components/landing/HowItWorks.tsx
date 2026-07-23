@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { FileUp, Briefcase, Radar, BarChart3 } from "lucide-react";
 
@@ -21,6 +22,22 @@ export function HowItWorks() {
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">No account, no setup. Paste, click, and read your fit.</p>
         </div>
+
+        {/* what actually happens: CV + job post -> a match */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mt-12 sm:mt-14"
+        >
+          <Image
+            src="/visuals/transform.png"
+            alt="Your CV and a job post become a match score"
+            width={2000}
+            height={800}
+            className="w-full h-auto"
+          />
+        </motion.div>
 
         <div className="mt-12 sm:mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (

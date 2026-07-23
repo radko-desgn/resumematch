@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Clock, ShieldCheck, Target, Gauge } from "lucide-react";
 import { CountUp } from "./CountUp";
@@ -44,7 +45,23 @@ export function Benefits() {
           ))}
         </div>
 
-        <div className="mt-12 grid grid-cols-3 gap-4 max-w-2xl">
+        {/* the actual output — a white app window reads strongly on the black band */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-14"
+        >
+          <Image
+            src="/visuals/result-preview.png"
+            alt="Example ResumeMatch result: 78% match with evidence-backed requirement coverage and a suggested rewrite"
+            width={2040}
+            height={1400}
+            className="mx-auto w-full max-w-3xl h-auto"
+          />
+        </motion.div>
+
+        <div className="mt-14 grid grid-cols-3 gap-4 max-w-2xl">
           {STATS.map((s) => (
             <div key={s.label}>
               <div className="font-display text-3xl sm:text-5xl"><CountUp value={s.value} /></div>
