@@ -11,6 +11,9 @@ const STEPS = [
   { icon: BarChart3, title: "Get your match", body: "A score, an evidence-backed gap analysis, and tailored rewrites." },
 ];
 
+const TRANSFORM_ALT =
+  "Your CV and a job post become a 78% match: four of four must-haves met, RAG partially covered, Kubernetes missing.";
+
 export function HowItWorks() {
   return (
     <section id="how" className="bg-background scroll-mt-16">
@@ -30,12 +33,25 @@ export function HowItWorks() {
           transition={{ duration: 0.5 }}
           className="mt-12 sm:mt-14"
         >
+          {/* Three columns of small type are unreadable on a phone, so below sm
+              the same flow is swapped for a stacked render sized for that width
+              (capped at its native 398px so type stays 1:1). Only one is ever in
+              the a11y tree — `hidden` is display:none. */}
           <Image
             src="/visuals/transform.png"
-            alt="Your CV and a job post become a match score"
-            width={2000}
-            height={800}
-            className="w-full h-auto"
+            alt={TRANSFORM_ALT}
+            width={2160}
+            height={900}
+            sizes="(min-width: 640px) 100vw, 0px"
+            className="hidden sm:block w-full h-auto"
+          />
+          <Image
+            src="/visuals/transform-stacked.png"
+            alt={TRANSFORM_ALT}
+            width={796}
+            height={2800}
+            sizes="(max-width: 639px) 100vw, 0px"
+            className="block sm:hidden mx-auto w-full max-w-[398px] h-auto"
           />
         </motion.div>
 

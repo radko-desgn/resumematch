@@ -56,7 +56,7 @@ export function Benefits() {
             src="/visuals/result-preview.png"
             alt="Example ResumeMatch result: 78% match with evidence-backed requirement coverage and a suggested rewrite"
             width={2040}
-            height={1400}
+            height={1250}
             className="mx-auto w-full max-w-3xl h-auto"
           />
         </motion.div>
