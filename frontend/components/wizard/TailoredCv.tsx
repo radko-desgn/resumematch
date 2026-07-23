@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { FileDown, Loader2, Sparkles, AlertTriangle, FileText } from "lucide-react";
+import { FileDown, Loader2, Lock, Sparkles, AlertTriangle, FileText } from "lucide-react";
 import { useWizard } from "@/lib/store";
+import { useCredits } from "@/lib/credits";
+import { ENTRY_PRICE } from "@/lib/packs";
 import { generateTailoredCv, downloadTailoredCv } from "@/lib/api";
 import { TailoredCV } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -28,6 +30,7 @@ const MD = {
 
 export function TailoredCv() {
   const { analysis, mock } = useWizard();
+  const { canGenerateCv, spendCv, cvs, unlimited } = useCredits();
   const [cv, setCv] = useState<TailoredCV | null>(null);
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState<"pdf" | "docx" | null>(null);
@@ -37,6 +40,9 @@ export function TailoredCv() {
 
   async function onGenerate() {
     if (!source) return;
+    // Charge once per job, not per attempt: a regenerate is a retry of
+    // something already paid for.
+    if (!cv && !spendCv()) return;
     setBusy(true);
     setError(null);
     try {
@@ -73,14 +79,22 @@ export function TailoredCv() {
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             An ATS-friendly CV rewritten for this job — reordered and reworded, never invented.
+            {!cv && (unlimited ? " Unlimited on Pro." : ` Costs 1 CV credit — you have ${cvs}.`)}
           </p>
         </div>
-        {!cv && (
-          <Button onClick={onGenerate} disabled={busy} className="w-full sm:w-auto">
-            {busy ? <Loader2 className="animate-spin" /> : <Sparkles />}
-            {busy ? "Writing your CV…" : "Generate tailored CV"}
-          </Button>
-        )}
+        {!cv &&
+          (canGenerateCv ? (
+            <Button onClick={onGenerate} disabled={busy} className="w-full sm:w-auto">
+              {busy ? <Loader2 className="animate-spin" /> : <Sparkles />}
+              {busy ? "Writing your CV…" : "Generate tailored CV"}
+            </Button>
+          ) : (
+            <Button asChild variant="outline" className="w-full sm:w-auto">
+              <a href="#pricing">
+                <Lock className="size-4" /> Needs a CV credit — from {ENTRY_PRICE}
+              </a>
+            </Button>
+          ))}
       </div>
 
       {error && (

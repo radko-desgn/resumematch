@@ -12,7 +12,7 @@ const QA = [
   },
   {
     q: "What's free vs. paid?",
-    a: "You choose before we scan. The free score gives you the overall match percentage and a verdict. The $10 full report runs the deeper analysis — executive summary, strengths, every gap with its evidence, tailored CV rewrites, and a branded PDF you can download or have emailed. You can start free and upgrade afterwards. In this demo the payment is simulated (no charge).",
+    a: "You choose before we scan. The free quick check gives you the overall match percentage and a verdict, and never costs a credit. The deep AI analysis costs 1 scan credit and adds the executive summary, pain points, missing keywords, every gap with its evidence, and a branded PDF you can download or have emailed. Credits start at $3.99 for a single pass, or $9.99 for six scans plus a tailored-CV credit. You can start free and upgrade afterwards. In this demo, checkout is simulated — no card, no charge.",
   },
   {
     q: "Will it invent experience to make me look good?",

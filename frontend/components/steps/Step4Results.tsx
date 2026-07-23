@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, Check, AlertTriangle, Sparkles, RotateCcw } from "lucide-react";
+import { Lock, Check, AlertTriangle, Sparkles, RotateCcw, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
+import { useCredits } from "@/lib/credits";
+import { ENTRY_PRICE } from "@/lib/packs";
 import { Gauge } from "../wizard/Gauge";
 import { CopyButton } from "../wizard/CopyButton";
 import { ReportActions } from "../wizard/ReportActions";
@@ -96,6 +98,7 @@ function CoverageChips({ a }: { a: Analysis }) {
 
 export function Step4Results() {
   const { analysis, tier, upgrade, reset } = useWizard();
+  const { canScan, spendScan } = useCredits();
   if (!analysis) return null;
   const { score } = analysis;
 
@@ -137,11 +140,25 @@ export function Step4Results() {
               </li>
             ))}
           </ul>
-          <Button size="lg" className="w-full sm:w-auto" onClick={upgrade}>
-            Unlock Full Analysis & Tailored CV — $10
-          </Button>
+          {canScan ? (
+            <Button
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                if (spendScan()) upgrade();
+              }}
+            >
+              <Zap className="size-4" /> Unlock Deep AI Analysis — 1 credit
+            </Button>
+          ) : (
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <a href="#pricing">Unlock Deep AI Analysis starting at {ENTRY_PRICE}</a>
+            </Button>
+          )}
           <p className="mt-3 text-xs text-muted-foreground">
-            Demo: payment is simulated. We&apos;ll re-run the deeper analysis for you.
+            {canScan
+              ? "We'll re-run the deeper analysis on the same inputs."
+              : "Demo: checkout is simulated — no card, no charge."}
           </p>
         </Card>
       )}

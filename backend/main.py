@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
 
-from backend import cv_export, extract, mailer, report
+from backend import billing, cv_export, extract, mailer, report
 from resumematch.analyzer import analyze, generate_tailored_cv
 
 app = FastAPI(title="ResumeMatch API", version="0.2.0")
@@ -78,6 +78,10 @@ class EmailRequest(BaseModel):
     analysis: dict
 
 
+class CheckoutRequest(BaseModel):
+    pack: str
+
+
 @app.get("/api/health")
 def health() -> dict:
     return {
@@ -85,6 +89,19 @@ def health() -> dict:
         "has_key": _has_key(),
         "email_provider": bool(os.environ.get("RESEND_API_KEY") or os.environ.get("SMTP_HOST")),
     }
+
+
+@app.post("/api/checkout")
+def checkout(req: CheckoutRequest) -> dict:
+    """Start a checkout for a credit pack.
+
+    Simulated — see backend/billing.py for why, and for the one function that
+    changes when real Stripe lands.
+    """
+    try:
+        return billing.create_session(req.pack)
+    except KeyError:
+        raise HTTPException(404, f"Unknown pack: {req.pack}")
 
 
 # NOTE: sync `def` so FastAPI runs these in a worker thread — sync Playwright

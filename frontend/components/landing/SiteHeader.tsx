@@ -5,11 +5,12 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CreditBadge } from "./CreditBadge";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "#how", label: "How it works" },
-  { href: "#why", label: "Why use it" },
+  { href: "#pricing", label: "Pricing" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -86,9 +87,10 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <CreditBadge inverted={!scrolled} />
             <Button asChild size="sm" variant={scrolled ? "default" : "invert"} className="hidden sm:inline-flex">
-              <a href="#analyze">Analyze now</a>
+              <a href="#analyze">Get Started</a>
             </Button>
             <button
               className="md:hidden inline-flex size-11 items-center justify-center rounded-full hover:bg-current/10"
@@ -148,8 +150,13 @@ export function SiteHeader() {
                 ))}
               </nav>
 
-              <Button asChild className="mt-8 w-full">
-                <a href="#analyze" onClick={() => setOpen(false)}>Analyze now</a>
+              <div className="mt-8 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Your credits</span>
+                <CreditBadge onNavigate={() => setOpen(false)} />
+              </div>
+
+              <Button asChild className="mt-4 w-full">
+                <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
               </Button>
             </motion.aside>
           </>

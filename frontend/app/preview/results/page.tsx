@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { WizardProvider, Tier } from "@/lib/store";
+import { CreditsProvider } from "@/lib/credits";
 import { Step4Results } from "@/components/steps/Step4Results";
 import { EXAMPLE_ANALYSIS } from "@/lib/exampleAnalysis";
 import { cn } from "@/lib/utils";
@@ -53,9 +54,14 @@ export default function ResultsPreviewPage() {
 
         {/* same panel chrome the wizard uses, so it looks identical to production */}
         <div className="w-full max-w-4xl mx-auto rounded-3xl border border-black/10 bg-white p-5 text-left text-black shadow-2xl sm:p-9">
-          <WizardProvider key={tier} initialAnalysis={EXAMPLE_ANALYSIS} initialTier={tier} initialStep={4}>
-            <Step4Results />
-          </WizardProvider>
+          {/* Seeded balance, never persisted: the paid preview gets a CV credit
+              so the generator renders enabled, while the free preview keeps 0
+              so the upsell CTA is the one on screen. */}
+          <CreditsProvider key={tier} initial={tier === "paid" ? { cvs: 1 } : { scans: 0, cvs: 0 }}>
+            <WizardProvider initialAnalysis={EXAMPLE_ANALYSIS} initialTier={tier} initialStep={4}>
+              <Step4Results />
+            </WizardProvider>
+          </CreditsProvider>
         </div>
       </div>
     </div>

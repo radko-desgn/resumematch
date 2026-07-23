@@ -1,15 +1,20 @@
 "use client";
 
-import { ArrowRight, Check, Lock } from "lucide-react";
+import { ArrowRight, Check, Infinity as InfinityIcon, Lock, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
+import { useCredits } from "@/lib/credits";
+import { ENTRY_PRICE } from "@/lib/packs";
 import { Button } from "@/components/ui/button";
 
-const FREE = ["Overall match score", "Fit verdict"];
+const FREE = [
+  "Instant percentage match gauge",
+  "Simple heuristic chart preview",
+];
 const PAID = [
-  "Everything in the free score",
-  "Executive summary",
+  "Full algorithm: deep score breakdown",
+  "Pain points & missing keywords",
   "Strengths & every gap, with evidence",
-  "One-click tailored ATS CV (.pdf/.docx)",
+  "Actionable ATS recommendations",
   "Branded PDF + email delivery",
 ];
 
@@ -28,6 +33,14 @@ function Ticks({ items, dim }: { items: string[]; dim?: boolean }) {
 
 export function PlanChoice() {
   const { startScan, jobReady } = useWizard();
+  const { scans, unlimited, canScan, spendScan, hydrated } = useCredits();
+
+  // The credit is spent at the moment the deep scan is authorised — the same
+  // point the expensive call gets made — so an abandoned wizard costs nothing.
+  function runPaid() {
+    if (!spendScan()) return; // guarded by `canScan`, but never trust the caller
+    startScan("paid");
+  }
 
   return (
     <div>
@@ -37,10 +50,10 @@ export function PlanChoice() {
       </p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        {/* Free */}
+        {/* Free — no credit touched */}
         <div className="rounded-2xl border border-border p-5 flex flex-col">
           <div className="flex items-baseline justify-between">
-            <span className="font-display text-base">Free score</span>
+            <span className="font-display text-base">Free Quick Check</span>
             <span className="font-display text-xl">$0</span>
           </div>
           <Ticks items={FREE} dim />
@@ -54,25 +67,45 @@ export function PlanChoice() {
           </Button>
         </div>
 
-        {/* Paid */}
+        {/* Paid — costs one scan credit */}
         <div className="relative rounded-2xl border-2 border-foreground p-5 flex flex-col">
           <span className="absolute -top-2.5 left-5 rounded-full bg-foreground px-2.5 py-0.5 text-[10px] font-semibold text-background">
-            FULL POTENTIAL
+            FULL AI DEEP ANALYSIS
           </span>
           <div className="flex items-baseline justify-between">
-            <span className="font-display text-base">Full report</span>
-            <span className="font-display text-xl">$10</span>
+            <span className="font-display text-base">Deep Analysis</span>
+            <span className="inline-flex items-center gap-1 font-display text-xl">
+              {unlimited ? (
+                <>
+                  <InfinityIcon className="size-4" aria-hidden /> Pro
+                </>
+              ) : (
+                <>
+                  <Zap className="size-4" aria-hidden /> 1 credit
+                </>
+              )}
+            </span>
           </div>
           <Ticks items={PAID} />
-          <Button
-            className="w-full"
-            disabled={!jobReady}
-            onClick={() => startScan("paid")}
-          >
-            <Lock className="size-4" /> Pay &amp; analyze
-          </Button>
+
+          {canScan || !hydrated ? (
+            <Button className="w-full" disabled={!jobReady || !hydrated} onClick={runPaid}>
+              <Zap className="size-4" /> Run deep analysis
+            </Button>
+          ) : (
+            <Button asChild className="w-full">
+              <a href="#pricing">
+                <Lock className="size-4" /> Get credits from {ENTRY_PRICE}
+              </a>
+            </Button>
+          )}
+
           <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
-            Demo: payment is simulated — no charge.
+            {unlimited
+              ? "Pro Career Pass — unlimited scans."
+              : canScan
+                ? `${scans} scan credit${scans === 1 ? "" : "s"} left — this uses one.`
+                : "You have 0 scan credits. Checkout is simulated — no charge."}
           </p>
         </div>
       </div>
