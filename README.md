@@ -95,6 +95,31 @@ Rather than a generic PDF library, the report is an HTML template rendered throu
 
 ![PDF report](docs/screenshots/pdf-report.png)
 
+## Evaluation — how I know it's actually good
+
+Eyeballing a few examples is an anecdote. There's a real eval harness (`evals/`) that measures
+quality against a fixed golden set, so a prompt change can be *shown* to help or hurt.
+
+- **20-case golden set** where the ground truth is true *by construction* — cases are generated from
+  specs, so a CV that uses MongoDB and never says "postgres" **must** return that requirement
+  `missing`. It covers strong/weak matches plus the awkward cases: career-changer, sparse CV,
+  keyword-stuffed CV, missing must-have, over-qualified, employment gap, non-native-English phrasing.
+  Synthetic on purpose — real CVs in a public repo would be personal data.
+- **Deterministic checks** (no cost): score-in-band, every cited quote actually present in the CV,
+  `missing` requirements carry null evidence, ground-truth statuses hold, no forbidden term fabricated
+  into a rewrite.
+- **LLM-as-judge** rating faithfulness / evidence quality / calibration / usefulness — and the judge
+  is itself **validated**: fed a deliberately fabricated analysis, it correctly returns straight 1/5s.
+- **CI-gating runner** that exits non-zero below a pass-rate threshold.
+
+**Baseline (live, 20 cases):** ~88% deterministic pass-rate; judge faithfulness 4.6, evidence 4.75,
+calibration 4.75, usefulness 4.0 (out of 5).
+
+**What it caught:** on its first run the harness found the rewrite step *inventing* experience when a
+CV was too sparse (only titles + dates). I tightened the rewrite prompt to never add a job term the
+original bullet didn't earn; judge faithfulness on those cases went to 5/5. That loop — measure, find
+a real failure, fix, re-measure — is the point. See [`evals/README.md`](evals/README.md).
+
 ## Tech stack
 
 | Layer | Choice |
@@ -154,14 +179,15 @@ tests/            offline test suite + fixtures
 
 ## Honest limitations
 
-- **Payment is simulated.** The $10 tier flips state; there's no Stripe integration.
-- **No evaluation harness yet.** Correctness is enforced by schema + invariant tests, but there's no golden set or LLM-as-judge scoring yet — that's the next milestone and the piece I most want to build.
+- **Payment is simulated.** The $10 tier flips state; there's no Stripe integration, and the paid API endpoints aren't yet gated server-side. Payments + entitlement are the next milestone.
 - **Image OCR needs a key** (it's a Claude vision call), so it's stubbed in demo mode.
+- **Eval calibration bands are hand-set.** A few scores land just outside them — arguable judgment calls tracked as a backlog in `evals/README.md`, not clear defects.
 - **Some job boards block scraping.** LinkedIn job pages work; heavily gated sites don't — the app tells you to paste the text instead.
 
 ## Roadmap
 
-- **v0.3 — Eval & LLMOps:** golden set, LLM-as-judge (faithfulness, evidence-grounding, calibration), tracing and per-analysis cost/latency
+- **v0.4 — Eval & LLMOps:** ✅ eval harness shipped (golden set + validated LLM-judge). Next: Langfuse tracing and richer per-analysis cost/latency dashboards.
+- **v0.3 — Payments & entitlement:** Stripe Checkout + signature-verified webhook, server-side gating, purchase persistence (the paid endpoints are currently unauthenticated).
 - Real payments, persistence of past analyses, live job search
 
 Roadmap and decision history live in [`.paul/`](.paul/ROADMAP.md).
