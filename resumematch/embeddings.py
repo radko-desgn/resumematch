@@ -1,7 +1,10 @@
 """Local embedding utilities for requirement <-> resume matching.
 
-Uses sentence-transformers (bge-small) on-device. No network/API call is made
-at match time (the model is downloaded/cached on first load only).
+Uses bge-small on-device via fastembed (ONNX runtime). Same model as before,
+but the ONNX runtime needs a fraction of the memory of the PyTorch stack —
+which is what lets the backend fit a small (512MB) free-tier host. No
+network/API call is made at match time; the model is downloaded/cached on
+first load only.
 """
 
 from __future__ import annotations
@@ -17,13 +20,18 @@ _model = None
 
 
 def _get_model():
-    """Lazily load and cache the sentence-transformers model."""
+    """Lazily load and cache the fastembed model."""
     global _model
     if _model is None:
-        from sentence_transformers import SentenceTransformer
+        from fastembed import TextEmbedding
 
-        _model = SentenceTransformer(EMBED_MODEL)
+        _model = TextEmbedding(EMBED_MODEL)
     return _model
+
+
+def _encode(texts: list[str]) -> np.ndarray:
+    """Embed a list of strings into a (n, dim) matrix."""
+    return np.asarray(list(_get_model().embed(texts)))
 
 
 def chunk_resume(text: str) -> list[str]:
@@ -65,9 +73,8 @@ def match_requirements(
     """Pair each requirement with its nearest resume chunk by cosine similarity."""
     if not requirements or not resume_chunks:
         return []
-    model = _get_model()
-    req_emb = np.asarray(model.encode(requirements))
-    chunk_emb = np.asarray(model.encode(resume_chunks))
+    req_emb = _encode(requirements)
+    chunk_emb = _encode(resume_chunks)
     sims = _cosine(req_emb, chunk_emb)  # (n_req, n_chunk)
     matches: list[RequirementMatch] = []
     for i, req in enumerate(requirements):

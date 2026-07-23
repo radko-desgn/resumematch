@@ -20,9 +20,20 @@ from resumematch.analyzer import analyze, generate_tailored_cv
 
 app = FastAPI(title="ResumeMatch API", version="0.2.0")
 
+# Allowed browser origins:
+#   * localhost / 127.0.0.1 on any port          -> local dev
+#   * any *.vercel.app subdomain                 -> the deployed frontend and
+#                                                   its per-branch preview URLs
+#   * anything listed in FRONTEND_ORIGINS (csv)  -> the custom domain, once bought
+# Set FRONTEND_ORIGINS on the host, e.g. "https://resumematch.app,https://www.resumematch.app".
+_ALLOWED_ORIGINS = [
+    o.strip() for o in os.environ.get("FRONTEND_ORIGINS", "").split(",") if o.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+",
+    allow_origins=_ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://([a-z0-9-]+\.)*vercel\.app|http://(localhost|127\.0\.0\.1):\d+",
     allow_methods=["*"],
     allow_headers=["*"],
 )

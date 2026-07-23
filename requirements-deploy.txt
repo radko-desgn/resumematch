@@ -1,0 +1,12 @@
+# Runtime deps for the deployed backend image (see Dockerfile).
+# Deliberately NOT the same as pyproject.toml: no Streamlit (the old UI) and no
+# PyTorch — the engine embeds via fastembed (ONNX), which is what keeps the
+# container inside a 512MB free-tier host.
+-r backend/requirements.txt
+
+anthropic>=0.40
+fastembed>=0.3
+pydantic>=2.6
+numpy>=1.26
+python-dotenv>=1.0
+playwright>=1.40
