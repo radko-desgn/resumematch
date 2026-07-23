@@ -1,0 +1,14 @@
+{
+  "mode": "live",
+  "cases": 20,
+  "deterministic_pass_rate": 0.887,
+  "checks_passed": 110,
+  "checks_total": 124,
+  "avg_latency_s": 23.55,
+  "judge_avg": {
+    "faithfulness": 4.55,
+    "evidence_quality": 4.75,
+    "calibration": 4.75,
+    "usefulness": 4.0
+  }
+}

@@ -13,14 +13,14 @@ Milestone: v0.2 + v0.2.x — ✅ SHIPPED
 Phase: idle between milestones
 Plan: roadmap reconciled; v0.3 (Payments & Entitlement) planned but not started
 Status: Ready to plan v0.3 (Stripe, test mode) or v0.4 (Eval & LLMOps)
-Last activity: 2026-07-22 — Roadmap reconciled with all v0.2.x work; Stripe milestone added
+Last activity: 2026-07-23 — Built + ran eval harness (golden set, deterministic checks, validated LLM judge); found & fixed a rewrite-fabrication bug
 
 Progress:
 - v0.1 MVP engine:  [██████████] shipped (Streamlit UI superseded)
 - v0.2 Wizard UX:   [██████████] shipped
 - v0.2.x polish:    [██████████] shipped (PDF/email, tailored CV, branding, mobile, tiering)
 - v0.3 Payments:    [░░░░░░░░░░] planned (~1.5-2 days)
-- v0.4 Eval/LLMOps: [░░░░░░░░░░] planned (~1 week)
+- v0.4 Eval/LLMOps: [████████░░] harness SHIPPED — baseline ~88% det. pass, judge 4.5-4.7/5; backlog in evals/README.md
 
 ### KNOWN GAP (drives v0.3)
 Paid tier is client-side state. /api/analyze?full=true, /api/tailored-cv and
