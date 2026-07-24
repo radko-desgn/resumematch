@@ -192,6 +192,14 @@ export function AuthModal({
                       {busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
                       {mode === "signup" ? "Create account" : mode === "reset" ? "Send reset link" : "Sign in"}
                     </Button>
+                    {mode === "signup" && (
+                      <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
+                        By creating an account you agree to our{" "}
+                        <a href="/terms" target="_blank" className="underline underline-offset-2 hover:no-underline">Terms</a>{" "}
+                        and{" "}
+                        <a href="/privacy" target="_blank" className="underline underline-offset-2 hover:no-underline">Privacy Policy</a>.
+                      </p>
+                    )}
                   </form>
                 )}
 

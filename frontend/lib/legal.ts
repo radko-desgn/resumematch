@@ -1,0 +1,180 @@
+/**
+ * Legal document content.
+ *
+ * TEST / PLACEHOLDER DRAFTS — NOT LEGAL ADVICE. These describe what the app
+ * actually does today (accounts, credits, CV analysis, the free-scan email
+ * gate, the marketing opt-in), so the pages are honest, but every bracketed
+ * [PLACEHOLDER] must be filled in and the whole thing reviewed by a qualified
+ * lawyer before this is anything more than a demo. The operator is EU-based and
+ * the service processes CVs, which can contain special-category data.
+ *
+ * Kept as data (Markdown strings) so the same branded page shell renders both.
+ */
+
+export const LEGAL_EFFECTIVE_DATE = "24 July 2026";
+export const LEGAL_CONTACT = "privacy@[YOURDOMAIN]";
+
+export interface LegalDoc {
+  slug: "terms" | "privacy";
+  title: string;
+  updated: string;
+  /** One-line summary for the page header. */
+  summary: string;
+  body: string;
+}
+
+const DISCLAIMER = `> **Draft for testing — not legal advice.** This document is a placeholder used while ResumeMatch is in development. It has not been reviewed by a lawyer, and every item in \\[brackets] still needs to be completed. Do not rely on it.`;
+
+export const PRIVACY: LegalDoc = {
+  slug: "privacy",
+  title: "Privacy Policy",
+  updated: LEGAL_EFFECTIVE_DATE,
+  summary: "What we collect, why, and the rights you have over it.",
+  body: `${DISCLAIMER}
+
+ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy explains what personal data we handle and how. It is written to reflect the EU General Data Protection Regulation (GDPR), since we operate from **[Bulgaria / EU]**.
+
+**Controller:** [COMPANY LEGAL NAME], [REGISTERED ADDRESS]. Contact: ${LEGAL_CONTACT}.
+
+## 1. What we collect
+
+- **Account data** — your email address and a password. Passwords are hashed by our authentication provider; we never see or store them in plain text. If you sign in with Google, we receive your email and basic profile from Google instead of a password.
+- **The content you submit** — the CV text and job-post text you paste or upload for analysis. **A CV can contain special-category data** (for example health, ethnicity, or religious information). We ask you not to include anything you don't want processed; see §4.
+- **Free-scan email** — if you use the free scan without an account, the email you enter, so we can apply the one-free-scan-per-address limit.
+- **Marketing consent** — if you tick the optional box, a record that you consented, plus the time and place you did so. Kept so we can demonstrate consent and honour withdrawal.
+- **Credits and purchases** — your credit balance and a record of packs bought. Payments are currently **simulated**; when real payments are added, card details will be handled by the payment provider, not by us.
+- **Technical logs** — standard server logs (IP address, timestamps, error traces) generated automatically when you use the site.
+
+We do **not** use advertising trackers or third-party analytics cookies. \\[⚠️ LEGAL REVIEW REQUIRED — confirm before launch and add a cookie notice if any non-essential cookies are introduced.]
+
+## 2. Why we use it, and our legal basis
+
+| What | Why | GDPR basis |
+|---|---|---|
+| Email + password | Create and secure your account | Contract (Art. 6(1)(b)) |
+| CV & job text | Produce your match analysis | Contract (Art. 6(1)(b)) |
+| Free-scan email | Enforce the free-scan limit; deliver the result | Contract / legitimate interests (Art. 6(1)(f)) |
+| Marketing emails | Send tips and product updates | **Consent (Art. 6(1)(a))** — only if you opt in |
+| Logs & security | Keep the service running and prevent abuse | Legitimate interests (Art. 6(1)(f)) |
+
+Marketing is **never** a condition of using the service. You get your scan whether or not you opt in, and you can withdraw consent at any time.
+
+\\[⚠️ LEGAL REVIEW REQUIRED — where special-category data appears in a CV, the appropriate Art. 9 condition (typically explicit consent) must be confirmed with a lawyer.]
+
+## 3. Who we share it with
+
+We use these processors to run the service. Each acts on our instructions under a data-processing agreement:
+
+- **Supabase** — accounts and database (EU region).
+- **Render** — backend hosting.
+- **Vercel** — frontend hosting.
+- **Anthropic** — the AI model that performs the analysis, **only when live analysis is enabled** (the demo uses canned results and sends nothing to Anthropic).
+- **Resend** — sending transactional emails (password resets), once configured.
+- **[Stripe]** — payment processing, once real payments are enabled.
+
+Some of these may process data **outside the EU** (for example in the United States). Where that happens, transfers rely on the appropriate safeguards, such as Standard Contractual Clauses. \\[⚠️ LEGAL REVIEW REQUIRED — confirm each processor's location and transfer mechanism.]
+
+We do **not** sell your personal data.
+
+## 4. What you submit — your responsibility
+
+Please don't paste anything into the CV or job boxes that you don't want us to process. If your CV includes sensitive details, submitting it is your decision, and by doing so you ask us to process that text to produce your analysis.
+
+## 5. How long we keep it
+
+- **Account data** — until you delete your account, then removed within **[30 days]**.
+- **CV and job text** — used to generate your result. \\[⚠️ specify retention — e.g. deleted after the session, or retained with the report until account deletion.]
+- **Free-scan records** — kept to enforce the limit for **[period]**.
+- **Marketing consent records** — kept while consent stands and for a period afterwards as proof.
+- **Logs** — **[period, e.g. 30–90 days]**.
+
+## 6. Your rights
+
+Under the GDPR you can: access your data, correct it, delete it ("right to be forgotten"), restrict or object to processing, receive it in a portable format, and withdraw consent at any time. You also have the right to complain to your supervisory authority — in Bulgaria, the **Commission for Personal Data Protection (CPDP)**.
+
+To exercise any of these, email ${LEGAL_CONTACT}. We aim to respond within **one month**.
+
+## 7. Security
+
+Passwords are hashed by our authentication provider. Traffic is encrypted in transit (HTTPS). Credit balances and every paid action are enforced on our servers, not in your browser. No system is perfectly secure, but we take reasonable measures to protect your data. \\[⚠️ LEGAL REVIEW REQUIRED — describe breach-notification process.]
+
+## 8. Children
+
+ResumeMatch is not intended for anyone under **[16]**, and we do not knowingly collect their data.
+
+## 9. Changes
+
+We may update this policy. Material changes will be notified on this page and, where appropriate, by email. The date below shows the current version.
+
+_Last updated: ${LEGAL_EFFECTIVE_DATE}._`,
+};
+
+export const TERMS: LegalDoc = {
+  slug: "terms",
+  title: "Terms of Service",
+  updated: LEGAL_EFFECTIVE_DATE,
+  summary: "The rules for using ResumeMatch, in plain language.",
+  body: `${DISCLAIMER}
+
+These terms govern your use of ResumeMatch. By using the service you agree to them.
+
+**Operator:** [COMPANY LEGAL NAME], [REGISTERED ADDRESS]. Contact: ${LEGAL_CONTACT}.
+
+## 1. What the service does
+
+ResumeMatch compares a CV against a job post and returns a match score, a gap analysis, and — on the paid tier — tailored rewrites and a downloadable report. It is a **decision-support tool**, not a guarantee of any job outcome. The output may contain mistakes; use your own judgement.
+
+## 2. Accounts
+
+You need an account for anything that uses credits. You're responsible for keeping your password safe and for activity under your account. Provide accurate information and keep it current.
+
+## 3. The free scan
+
+The free quick check is available without an account, limited to **one scan per email address**. It gives an estimated score and a preview only. We may change or withdraw the free tier at any time.
+
+## 4. Credits and payments
+
+- The deep analysis and tailored-CV generation cost **credits**, which you buy in packs.
+- **Payments are currently simulated** — no money changes hands, and any "purchase" during this test period grants demo credits only. When real payments launch, prices and terms will be shown at checkout. \\[⚠️ LEGAL REVIEW REQUIRED before charging — refund policy, EU right of withdrawal for digital goods, VAT/invoicing.]
+- Credits have no cash value and are non-transferable.
+- \\[Refunds: define policy. Under EU law, digital content supplied immediately may waive the 14-day withdrawal right only if you consent to immediate performance — this must be handled at checkout.]
+
+## 5. Acceptable use
+
+Don't: submit content you have no right to share; try to break, overload, or reverse-engineer the service; resell it; or use it to unlawfully process other people's personal data. We may suspend accounts that abuse the service.
+
+## 6. Your content
+
+You keep all rights to the CV and job text you submit. You grant us a limited licence to process that text solely to provide the analysis you asked for. We don't claim ownership and don't use it to train models.
+
+## 7. AI output
+
+Analyses are generated automatically and can be wrong, incomplete, or out of date. Rewrites only rephrase what your CV already contains — they don't invent experience — but you are responsible for checking everything before you rely on or send it.
+
+## 8. Availability
+
+The service is provided "as is" and "as available". It's an early-stage product; we don't promise uninterrupted or error-free operation, and we may change features at any time.
+
+## 9. Liability
+
+\\[⚠️ LEGAL REVIEW REQUIRED — to the extent permitted by law, our liability is limited; consumer protections under Bulgarian/EU law that cannot be excluded still apply. A lawyer must set the exact wording and cap.]
+
+## 10. Termination
+
+You can stop using the service and delete your account at any time. We may suspend or end access for breach of these terms.
+
+## 11. Governing law
+
+These terms are governed by the laws of **[Bulgaria]**, without prejudice to mandatory consumer-protection rights you have where you live. \\[⚠️ LEGAL REVIEW REQUIRED.]
+
+## 12. Changes
+
+We may update these terms; material changes will be posted here and, where appropriate, notified by email.
+
+_Last updated: ${LEGAL_EFFECTIVE_DATE}._`,
+};
+
+export const LEGAL_DOCS: Record<"terms" | "privacy", LegalDoc> = {
+  terms: TERMS,
+  privacy: PRIVACY,
+};

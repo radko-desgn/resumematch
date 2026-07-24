@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -23,7 +24,13 @@ export function Footer() {
             height={261}
             className="h-[22px] w-auto"
           />
-          <p className="text-xs">Built with Next.js + FastAPI · demo project</p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+            <nav className="flex items-center gap-5 text-xs">
+              <Link href="/terms" className="text-white/50 transition-colors hover:text-white">Terms</Link>
+              <Link href="/privacy" className="text-white/50 transition-colors hover:text-white">Privacy</Link>
+            </nav>
+            <p className="text-xs text-white/40">Built with Next.js + FastAPI · demo project</p>
+          </div>
         </div>
       </div>
     </footer>

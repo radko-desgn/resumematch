@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 
 /**
@@ -74,7 +75,8 @@ export function FreeScanEmail({
         />
         <span>
           Send me job-search tips and product updates. Optional — you&apos;ll get your
-          scan either way, and you can unsubscribe at any time.
+          scan either way, and you can unsubscribe at any time. See our{" "}
+          <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:no-underline">Privacy Policy</Link>.
         </span>
       </label>
     </div>
