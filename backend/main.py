@@ -255,6 +255,13 @@ async def analyze_endpoint(
     if free_quota is not None:
         payload["_meta"]["free_scans_left"] = free_quota["scans_left"]
     payload["_source"] = {"cv": cv, "job": job}
+
+    # Save to the signed-in user's history (with _source, so a revisited scan is
+    # fully reviewable). Best effort: save_scan swallows its own errors so a
+    # history-write failure never fails the scan the user asked for.
+    if user_id:
+        history.save_scan(user_id, payload, tier="paid" if full else "free")
+
     return payload
 
 
