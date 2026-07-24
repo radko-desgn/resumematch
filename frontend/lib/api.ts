@@ -147,3 +147,38 @@ export async function downloadTailoredCv(markdown: string, format: "pdf" | "docx
   a.remove();
   URL.revokeObjectURL(url);
 }
+
+// ---------------------------------------------------------------- scan history
+
+export interface ScanSummary {
+  id: string;
+  created_at: string;
+  tier: "free" | "paid";
+  score: number | null;
+  verdict: string | null;
+  summary: string | null;
+  cv_chars: number | null;
+  job_chars: number | null;
+}
+
+export async function listScans(): Promise<ScanSummary[]> {
+  const res = await fetch(`${API}/api/scans`, { headers: await authHeaders() });
+  if (!res.ok) throw new Error("Could not load your history");
+  return res.json();
+}
+
+export async function getScan(id: string): Promise<{ id: string; created_at: string; tier: string; analysis: Analysis }> {
+  const res = await fetch(`${API}/api/scans/${id}`, { headers: await authHeaders() });
+  if (!res.ok) throw new Error("Could not open that scan");
+  return res.json();
+}
+
+export async function deleteScan(id: string): Promise<void> {
+  const res = await fetch(`${API}/api/scans/${id}`, { method: "DELETE", headers: await authHeaders() });
+  if (!res.ok) throw new Error("Could not delete that scan");
+}
+
+export async function deleteAccount(): Promise<void> {
+  const res = await fetch(`${API}/api/account`, { method: "DELETE", headers: await authHeaders() });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || "Could not delete your account");
+}

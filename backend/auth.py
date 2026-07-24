@@ -125,5 +125,23 @@ def require_user(authorization: Optional[str] = Header(None)) -> str:
     return user_id
 
 
+def require_claims(authorization: Optional[str] = Header(None)) -> dict:
+    """Full verified token claims (id + email + …), or 401.
+
+    Used where the email is needed too — e.g. deleting an account also erases
+    the free-scan record keyed by that email.
+    """
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(401, "Sign in to use this feature.")
+    token = authorization.split(" ", 1)[1].strip()
+    try:
+        claims = _decode(token)
+    except Exception:
+        claims = {}
+    if not claims.get("sub"):
+        raise HTTPException(401, "Sign in to use this feature.")
+    return claims
+
+
 def is_configured() -> bool:
     return bool(SUPABASE_URL and os.environ.get("SUPABASE_SECRET_KEY"))

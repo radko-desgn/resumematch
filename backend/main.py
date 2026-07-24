@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
 
-from backend import auth, billing, credits, cv_export, extract, mailer, report
+from backend import auth, billing, credits, cv_export, extract, history, mailer, report
 from resumematch import validation
 from resumematch.analyzer import analyze, generate_tailored_cv
 
@@ -108,6 +108,31 @@ def health() -> dict:
 def read_credits(user_id: str = Depends(auth.require_user)) -> dict:
     """The signed-in user's balance. The server is the source of truth."""
     return credits.get_balance(user_id)
+
+
+@app.get("/api/scans")
+def list_scans(user_id: str = Depends(auth.require_user)) -> list:
+    """The signed-in user's scan history (summaries only)."""
+    return history.list_scans(user_id)
+
+
+@app.get("/api/scans/{scan_id}")
+def get_scan(scan_id: str, user_id: str = Depends(auth.require_user)) -> dict:
+    """Full stored analysis for one past scan, so it can be reviewed."""
+    return history.get_scan(user_id, scan_id)
+
+
+@app.delete("/api/scans/{scan_id}")
+def remove_scan(scan_id: str, user_id: str = Depends(auth.require_user)) -> dict:
+    history.delete_scan(user_id, scan_id)
+    return {"deleted": True}
+
+
+@app.delete("/api/account")
+def delete_account(claims: dict = Depends(auth.require_claims)) -> dict:
+    """Permanently delete the account and all data attached to it."""
+    history.delete_account(claims["sub"], claims.get("email"))
+    return {"deleted": True}
 
 
 @app.post("/api/checkout")

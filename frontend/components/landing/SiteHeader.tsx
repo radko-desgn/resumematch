@@ -6,6 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreditBadge } from "./CreditBadge";
+import { AccountMenu } from "@/components/account/AccountMenu";
+import { HistoryPanel } from "@/components/account/HistoryPanel";
+import { SettingsPanel } from "@/components/account/SettingsPanel";
+import { Clock, Settings as SettingsIcon } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useAuthGate } from "@/components/auth/AuthGate";
 import { cn } from "@/lib/utils";
@@ -21,6 +25,7 @@ export function SiteHeader() {
   const { promptSignIn } = useAuthGate();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<null | "history" | "settings">(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -94,27 +99,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2 sm:gap-3">
             <CreditBadge inverted={!scrolled} />
             {session ? (
-              <>
-                <a
-                  href="/reset-password"
-                  className={cn(
-                    "hidden text-sm transition-colors sm:inline",
-                    scrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"
-                  )}
-                  title={email || undefined}
-                >
-                  Password
-                </a>
-                <Button
-                  size="sm"
-                  variant={scrolled ? "outline" : "invert"}
-                  className="hidden sm:inline-flex"
-                  onClick={() => signOut()}
-                  title={email || undefined}
-                >
-                  Sign out
-                </Button>
-              </>
+              <AccountMenu inverted={!scrolled} />
             ) : (
               <Button
                 size="sm"
@@ -189,27 +174,36 @@ export function SiteHeader() {
               </div>
 
               {session ? (
-                <>
-                  <p className="mt-4 truncate text-xs text-muted-foreground">{email}</p>
-                  <Button asChild variant="outline" className="mt-2 w-full">
-                    <a href="/reset-password" onClick={() => setOpen(false)}>Change password</a>
+                <div className="mt-4 border-t border-border pt-4">
+                  <p className="truncate text-xs text-muted-foreground">{email}</p>
+                  <Button variant="outline" className="mt-3 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("history"); }}>
+                    <Clock className="size-4" /> Scan history
                   </Button>
-                  <Button variant="ghost" className="mt-2 w-full" onClick={() => { signOut(); setOpen(false); }}>
-                    Sign out
+                  <Button variant="outline" className="mt-2 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("settings"); }}>
+                    <SettingsIcon className="size-4" /> Settings
+                  </Button>
+                  <Button variant="ghost" className="mt-2 w-full justify-start" onClick={() => { signOut(); setOpen(false); }}>
+                    Log out
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button className="mt-4 w-full" onClick={() => { setOpen(false); promptSignIn(); }}>
+                    Sign in
+                  </Button>
+                  <Button asChild variant="ghost" className="mt-2 w-full">
+                    <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
                   </Button>
                 </>
-              ) : (
-                <Button className="mt-4 w-full" onClick={() => { setOpen(false); promptSignIn(); }}>
-                  Sign in
-                </Button>
               )}
-              <Button asChild variant="ghost" className="mt-2 w-full">
-                <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
-              </Button>
             </motion.aside>
           </>
         )}
       </AnimatePresence>
+
+      {/* Mobile account panels (the desktop menu renders its own) */}
+      <HistoryPanel open={mobilePanel === "history"} onClose={() => setMobilePanel(null)} />
+      <SettingsPanel open={mobilePanel === "settings"} onClose={() => setMobilePanel(null)} />
     </>
   );
 }
