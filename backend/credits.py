@@ -92,3 +92,25 @@ def grant(user_id: str, grants: dict) -> dict:
         },
     )
     return get_balance(user_id)
+
+
+# ----------------------------------------------------------------- free scans
+# Anonymous visitors get a small number of free quick checks per email address.
+# Counting happens here, never in the browser.
+
+
+def claim_free_scan(email: str, consent: bool = False, source: str = "free-scan") -> dict:
+    """Try to consume one free scan for `email`.
+
+    Returns {"allowed": bool, "scans_used": int, "scans_left": int}.
+    """
+    rows = _rpc(
+        "claim_free_scan",
+        {"p_email": email, "p_consent": bool(consent), "p_source": source},
+    )
+    row = (rows or [{}])[0] if isinstance(rows, list) else (rows or {})
+    return {
+        "allowed": bool(row.get("allowed")),
+        "scans_used": int(row.get("scans_used") or 0),
+        "scans_left": int(row.get("scans_left") or 0),
+    }

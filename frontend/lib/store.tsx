@@ -17,6 +17,11 @@ interface WizardState {
   error: string | null;
   mock: boolean;
   hasKey: boolean;
+  /** Email for an anonymous free scan (unused when signed in). */
+  freeEmail: string;
+  freeConsent: boolean;
+  setFreeEmail: (v: string) => void;
+  setFreeConsent: (v: boolean) => void;
   setMock: (m: boolean) => void;
   setCv: (patch: Partial<CvInput>) => void;
   setJob: (patch: Partial<JobInput>) => void;
@@ -70,6 +75,8 @@ export function WizardProvider({
   const [error, setError] = React.useState<string | null>(null);
   // Free demo mode is the DEFAULT so nobody spends money by accident.
   const [mock, setMock] = React.useState(true);
+  const [freeEmail, setFreeEmail] = React.useState("");
+  const [freeConsent, setFreeConsent] = React.useState(false);
   const [hasKey, setHasKey] = React.useState(false);
 
   React.useEffect(() => {
@@ -108,14 +115,17 @@ export function WizardProvider({
     setError(null);
     try {
       // Free tier skips the rewrite call entirely (cheaper per scan).
-      const result = await runAnalyze(cv, job, mock, tier === "paid");
+      const result = await runAnalyze(cv, job, mock, tier === "paid", {
+        email: freeEmail,
+        marketingConsent: freeConsent,
+      });
       setAnalysis(result);
       setStatus("done");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Analysis failed");
       setStatus("error");
     }
-  }, [cv, job, mock, tier]);
+  }, [cv, job, mock, tier, freeEmail, freeConsent]);
 
   const startScan = (t: Tier) => {
     setTier(t);
@@ -131,6 +141,7 @@ export function WizardProvider({
 
   const value: WizardState = {
     step, cv, job, tier, status, analysis, error, mock, hasKey, setMock,
+    freeEmail, freeConsent, setFreeEmail, setFreeConsent,
     setCv, setJob, setTier, goto, next, back, reset, analyze, startScan, upgrade,
     cvReady, jobReady,
   };

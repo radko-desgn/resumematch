@@ -161,6 +161,8 @@ async def analyze_endpoint(
     job_kind: str = Form(...),
     mock: bool = Form(True),
     full: bool = Form(True),
+    email: Optional[str] = Form(None),
+    marketing_consent: bool = Form(False),
     cv_text: Optional[str] = Form(None),
     job_text: Optional[str] = Form(None),
     job_url: Optional[str] = Form(None),
@@ -181,6 +183,22 @@ async def analyze_endpoint(
         verdict = validation.check(text, kind)
         if not verdict.ok:
             raise HTTPException(422, verdict.reason)
+
+    # Free quick check: no account needed, but an email address is, and each
+    # address gets a limited number. Signed-in users are already identified, so
+    # they are not asked again.
+    free_quota: Optional[dict] = None
+    if not full and not user_id:
+        addr = (email or "").strip()
+        if not mailer.valid_email(addr):
+            raise HTTPException(422, "Enter a valid email address to run your free scan.")
+        free_quota = credits.claim_free_scan(addr, marketing_consent)
+        if not free_quota["allowed"]:
+            raise HTTPException(
+                429,
+                "You've already used the free scan for this email. "
+                "Create an account to keep going.",
+            )
 
     # The free quick check stays open to anonymous visitors. The deep analysis
     # costs a credit, so it needs an account -- and the charge happens here, on
@@ -205,6 +223,8 @@ async def analyze_endpoint(
     # Echo the resolved text lengths so the UI can show what was parsed.
     payload = result.model_dump()
     payload["_meta"] = {"cv_chars": len(cv), "job_chars": len(job), "mock": mock, "full": full}
+    if free_quota is not None:
+        payload["_meta"]["free_scans_left"] = free_quota["scans_left"]
     payload["_source"] = {"cv": cv, "job": job}
     return payload
 

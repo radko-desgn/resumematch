@@ -2,6 +2,7 @@
 
 import { ArrowRight, Check, Infinity as InfinityIcon, Lock, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
+import { FreeScanEmail } from "./FreeScanEmail";
 import { useCredits } from "@/lib/credits";
 import { useAuthGate } from "@/components/auth/AuthGate";
 import { ENTRY_PRICE } from "@/lib/packs";
@@ -33,7 +34,7 @@ function Ticks({ items, dim }: { items: string[]; dim?: boolean }) {
 }
 
 export function PlanChoice() {
-  const { startScan, jobReady } = useWizard();
+  const { startScan, jobReady, freeEmail, freeConsent, setFreeEmail, setFreeConsent } = useWizard();
   const { scans, unlimited, canScan, hydrated, signedIn } = useCredits();
   const { promptSignIn } = useAuthGate();
 
@@ -59,14 +60,26 @@ export function PlanChoice() {
             <span className="font-display text-xl">$0</span>
           </div>
           <Ticks items={FREE} dim />
-          <Button
-            variant="outline"
-            className="w-full"
-            disabled={!jobReady}
-            onClick={() => startScan("free")}
-          >
-            Get my score <ArrowRight />
-          </Button>
+          {signedIn ? (
+            // Already identified — no need to ask for an address again.
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled={!jobReady}
+              onClick={() => startScan("free")}
+            >
+              Get my score <ArrowRight />
+            </Button>
+          ) : (
+            <FreeScanEmail
+              email={freeEmail}
+              consent={freeConsent}
+              onEmail={setFreeEmail}
+              onConsent={setFreeConsent}
+              onSubmit={() => startScan("free")}
+              disabled={!jobReady}
+            />
+          )}
         </div>
 
         {/* Paid — costs one scan credit */}

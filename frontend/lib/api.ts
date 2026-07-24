@@ -75,12 +75,23 @@ export async function buyPack(pack: string): Promise<{
   return body;
 }
 
-export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean, full: boolean): Promise<Analysis> {
+export async function runAnalyze(
+  cv: CvInput,
+  job: JobInput,
+  mock: boolean,
+  full: boolean,
+  /** Anonymous free scans identify themselves by email; ignored when signed in. */
+  free?: { email: string; marketingConsent: boolean }
+): Promise<Analysis> {
   const fd = new FormData();
   fd.append("cv_kind", cv.kind);
   fd.append("job_kind", job.kind);
   fd.append("mock", String(mock));
   fd.append("full", String(full));
+  if (free?.email) {
+    fd.append("email", free.email.trim());
+    fd.append("marketing_consent", String(free.marketingConsent));
+  }
 
   if (cv.kind === "text") fd.append("cv_text", cv.text);
   else if (cv.file) fd.append("cv_file", cv.file);
