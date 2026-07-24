@@ -11,8 +11,16 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
  * Null when the deployment has no Supabase configured, so the marketing site
  * and the free quick check still work without accounts.
  */
-const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+// Defaults for this deployment, so accounts work without any dashboard config.
+// Both values are public by design: the publishable key is constrained by
+// row-level security, ships inside this bundle either way, and grants nothing
+// on its own — every paid action is authorised by the backend against the
+// user's access token. Set the env vars to point at a different project.
+const DEFAULT_URL = "https://eyrnlguyvaxjmmxinkrc.supabase.co";
+const DEFAULT_KEY = "sb_publishable_1wZLYSpveCucHw22QJdSHQ_D_Wfwls0";
+
+const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_URL;
+const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || DEFAULT_KEY;
 
 export const supabase: SupabaseClient | null =
   URL && KEY
