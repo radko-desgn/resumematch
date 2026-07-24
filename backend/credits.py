@@ -21,6 +21,11 @@ SECRET_KEY = os.environ.get("SUPABASE_SECRET_KEY", "")
 
 EMPTY = {"scans": 0, "cvs": 0, "unlimited": False}
 
+
+def free_scan_configured() -> bool:
+    """True when the Supabase store backing free-scan limits is reachable."""
+    return bool(SUPABASE_URL and SECRET_KEY)
+
 _TIMEOUT = httpx.Timeout(15.0)
 
 

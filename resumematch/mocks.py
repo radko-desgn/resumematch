@@ -10,7 +10,10 @@ from __future__ import annotations
 
 from .schemas import Requirement, RewriteResult, RewrittenBullet, ScoreResult, TailoredCV
 
-_MOCK_NOTE = "[mock] canned result — set ANTHROPIC_API_KEY and drop --mock for a real analysis."
+# Shown to free-tier users, so it reads as a product note rather than a
+# developer instruction. The paid/live analysis replaces all of this with a
+# real evaluation of the actual CV and job.
+_MOCK_NOTE = "This is a sample preview. Unlock the full AI analysis for a real, evidence-backed breakdown of your CV against this job."
 
 
 def mock_score(resume: str, job: str) -> ScoreResult:
@@ -20,7 +23,7 @@ def mock_score(resume: str, job: str) -> ScoreResult:
         verdict="moderate match",
         summary=(
             "Strong Python/backend foundation with production API experience; "
-            "lighter on hands-on production LLM/RAG work. " + _MOCK_NOTE
+            "lighter on hands-on production LLM/RAG work."
         ),
         requirements=[
             Requirement(
@@ -125,7 +128,7 @@ def mock_rewrite(bullets: list[str], job: str) -> RewriteResult:
         rewritten_bullets=rewritten,
         tailored_summary=(
             "Backend engineer with 4 years of production Python, API ownership, "
-            "and CI/CD, plus early LLM + vector-search side work. " + _MOCK_NOTE
+            "and CI/CD, plus early LLM + vector-search side work."
         ),
     )
 

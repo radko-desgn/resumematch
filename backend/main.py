@@ -217,13 +217,17 @@ async def analyze_endpoint(
         addr = (email or "").strip()
         if not mailer.valid_email(addr):
             raise HTTPException(422, "Enter a valid email address to run your free scan.")
-        free_quota = credits.claim_free_scan(addr, marketing_consent)
-        if not free_quota["allowed"]:
-            raise HTTPException(
-                429,
-                "You've already used the free scan for this email. "
-                "Create an account to keep going.",
-            )
+        # Enforce the per-email limit only when the tracking store is configured.
+        # If it isn't reachable, degrade to allowing the scan rather than taking
+        # the free tier down with it — a soft limit shouldn't be a hard blocker.
+        if credits.free_scan_configured():
+            free_quota = credits.claim_free_scan(addr, marketing_consent)
+            if not free_quota["allowed"]:
+                raise HTTPException(
+                    429,
+                    "You've already used the free scan for this email. "
+                    "Create an account to keep going.",
+                )
 
     # The free quick check stays open to anonymous visitors. The deep analysis
     # costs a credit, so it needs an account -- and the charge happens here, on
