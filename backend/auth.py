@@ -85,6 +85,25 @@ def selftest() -> dict:
         info["crypto"] = True
     except Exception as exc:  # noqa: BLE001
         info["crypto"] = f"{type(exc).__name__}: {exc}"
+    # The configured URL is public information, so echoing it back is safe and
+    # is the fastest way to catch a typo'd env var.
+    info["jwks_url"] = _jwks_url()
+
+    # Separate "hostname is wrong" from "this container has no DNS at all".
+    import socket
+    from urllib.parse import urlparse
+
+    host = urlparse(SUPABASE_URL).hostname if SUPABASE_URL else None
+    for label, target in (("dns_supabase", host), ("dns_control", "pypi.org")):
+        if not target:
+            info[label] = "no host in SUPABASE_URL"
+            continue
+        try:
+            socket.getaddrinfo(target, 443)
+            info[label] = f"{target} resolves"
+        except Exception as exc:  # noqa: BLE001
+            info[label] = f"{target}: {type(exc).__name__}: {exc}"
+
     try:
         keys = _jwk_client().get_signing_keys()
         info["jwks"] = f"{len(keys)} key(s)"
