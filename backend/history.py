@@ -54,12 +54,24 @@ def save_scan(user_id: str, payload: dict, tier: str) -> str:
         "cv_chars": meta.get("cv_chars"),
         "job_chars": meta.get("job_chars"),
     }
+    # Written through a SECURITY DEFINER function (like the credits ledger)
+    # rather than a direct table insert, so it doesn't depend on the service
+    # role's table-level grants.
     try:
         with httpx.Client(timeout=_TIMEOUT) as c:
             r = c.post(
-                f"{SUPABASE_URL}/rest/v1/scans",
-                headers={**_headers(), "Prefer": "return=minimal"},
-                json=row,
+                f"{SUPABASE_URL}/rest/v1/rpc/record_scan",
+                headers=_headers(),
+                json={
+                    "p_user": row["user_id"],
+                    "p_tier": row["tier"],
+                    "p_score": row["score"],
+                    "p_verdict": row["verdict"],
+                    "p_summary": row["summary"],
+                    "p_analysis": row["analysis"],
+                    "p_cv_chars": row["cv_chars"],
+                    "p_job_chars": row["job_chars"],
+                },
             )
         return "ok" if r.status_code in (200, 201, 204) else f"{r.status_code}:{r.text[:180]}"
     except Exception as exc:  # noqa: BLE001 — best effort

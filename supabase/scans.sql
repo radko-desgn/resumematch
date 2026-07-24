@@ -38,4 +38,36 @@ create policy "delete own scans"
   on public.scans for delete
   using (auth.uid() = user_id);
 
--- No insert/update policy: writes come from the backend (service role) only.
+-- No insert/update policy: writes come from the backend only, through the
+-- function below — the same SECURITY DEFINER pattern the credits ledger uses,
+-- which sidesteps any table-level grant differences for a direct insert.
+create or replace function public.record_scan(
+  p_user     uuid,
+  p_tier     text,
+  p_score    integer,
+  p_verdict  text,
+  p_summary  text,
+  p_analysis jsonb,
+  p_cv_chars integer,
+  p_job_chars integer
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare new_id uuid;
+begin
+  insert into public.scans (user_id, tier, score, verdict, summary, analysis, cv_chars, job_chars)
+  values (p_user, p_tier, p_score, p_verdict, p_summary, p_analysis, p_cv_chars, p_job_chars)
+  returning id into new_id;
+  return new_id;
+end;
+$$;
+
+revoke execute on function
+  public.record_scan(uuid, text, integer, text, text, jsonb, integer, integer)
+  from public, anon, authenticated;
+grant execute on function
+  public.record_scan(uuid, text, integer, text, text, jsonb, integer, integer)
+  to service_role;
