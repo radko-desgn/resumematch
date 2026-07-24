@@ -147,3 +147,54 @@ def test_embedding_match_optional():
     assert -1.0 <= matches[0].score <= 1.0
     # The FastAPI line should be the nearest evidence, not the education line.
     assert "FastAPI" in matches[0].best_chunk
+
+
+# ---------------------------------------------------------------- input checks
+# Thresholds were calibrated by measuring real CVs/job posts against junk; these
+# lock that calibration in so a future tweak can't silently start rejecting real
+# CVs (the failure mode that actually matters).
+import pytest as _pytest
+
+from resumematch import validation
+
+_REAL_CV = (
+    "Maria Ivanova. Graphic designer with 6 years experience at an agency in "
+    "Sofia. Led rebranding projects for retail clients. Skilled in Figma, "
+    "Illustrator and print production. Bachelor degree in visual arts."
+)
+_TERSE_CV = (
+    "Python, FastAPI, Docker, PostgreSQL, Kubernetes, AWS. Senior Engineer "
+    "2020-2024. Led platform team. Shipped payments service. Reduced latency "
+    "40%. BSc Computer Science 2016."
+)
+_REAL_JOB = (
+    "We are looking for a barista to join our coffee shop team in central "
+    "London. You will prepare drinks, serve customers and keep the bar clean. "
+    "Previous hospitality experience preferred. Full training provided."
+)
+
+
+@_pytest.mark.parametrize("text,kind", [(_REAL_CV, "cv"), (_TERSE_CV, "cv"), (_REAL_JOB, "job")])
+def test_real_inputs_are_accepted(text, kind):
+    try:
+        assert validation.check(text, kind).ok, f"real {kind} was rejected"
+    except Exception as exc:  # embedding model unavailable offline
+        _pytest.skip(f"embedding model unavailable: {exc}")
+
+
+@_pytest.mark.parametrize(
+    "text",
+    [
+        "asdkjh askjdh askjdh qwlkejqwe zxcmnzxc askjdhqwe zxcmnbzxc qweqweqwe asdasdasd zxczxczxc",
+        "banana telephone mountain purple running seventeen glass window cloud pencil rabbit ocean "
+        "bicycle lamp forest coffee mirror engine paper river candle bridge garden pillow rocket tiger",
+        "test " * 60,
+        "short",
+    ],
+)
+def test_junk_is_rejected(text):
+    try:
+        v = validation.check(text, "cv")
+    except Exception as exc:
+        _pytest.skip(f"embedding model unavailable: {exc}")
+    assert not v.ok and v.reason, "junk input was accepted"

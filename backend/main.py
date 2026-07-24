@@ -16,6 +16,7 @@ from fastapi.responses import Response
 from pydantic import BaseModel
 
 from backend import auth, billing, credits, cv_export, extract, mailer, report
+from resumematch import validation
 from resumematch.analyzer import analyze, generate_tailored_cv
 
 app = FastAPI(title="ResumeMatch API", version="0.2.0")
@@ -171,6 +172,15 @@ async def analyze_endpoint(
     job = _resolve(job_kind, job_text, job_url, job_file, mock)
     if not cv.strip() or not job.strip():
         raise HTTPException(422, "Could not extract text from the CV and/or job inputs.")
+
+    # Refuse to score nonsense. Without this, anything over the length minimum
+    # produced a confident percentage -- and in demo mode that number is canned,
+    # so gibberish scored 74%. A match score that survives garbage input teaches
+    # users the score is meaningless.
+    for text, kind in ((cv, "cv"), (job, "job")):
+        verdict = validation.check(text, kind)
+        if not verdict.ok:
+            raise HTTPException(422, verdict.reason)
 
     # The free quick check stays open to anonymous visitors. The deep analysis
     # costs a credit, so it needs an account -- and the charge happens here, on

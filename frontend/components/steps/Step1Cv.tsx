@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { FileDrop } from "../wizard/FileDrop";
 import { TextMeta } from "../wizard/TextMeta";
-import { useWizard } from "@/lib/store";
+import { useWizard, MIN_TEXT_CHARS } from "@/lib/store";
 import { CvKind } from "@/lib/types";
 import { SAMPLE_CV } from "@/lib/samples";
 
@@ -32,7 +32,7 @@ export function Step1Cv() {
               value={cv.text}
               onChange={(e) => setCv({ text: e.target.value })}
             />
-            <TextMeta value={cv.text} min={30} onFill={() => setCv({ kind: "text", text: SAMPLE_CV })} />
+            <TextMeta value={cv.text} min={MIN_TEXT_CHARS} onFill={() => setCv({ kind: "text", text: SAMPLE_CV })} />
           </TabsContent>
           <TabsContent value="file" className="mt-0 h-full">
             <FileDrop className="h-full" accept=".pdf,.docx" file={cv.file} onFile={(f) => setCv({ file: f })} hint="PDF or DOCX" />

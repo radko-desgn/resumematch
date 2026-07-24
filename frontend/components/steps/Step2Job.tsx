@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { FileDrop } from "../wizard/FileDrop";
 import { TextMeta } from "../wizard/TextMeta";
-import { useWizard } from "@/lib/store";
+import { useWizard, MIN_TEXT_CHARS } from "@/lib/store";
 import { JobKind } from "@/lib/types";
 import { SAMPLE_JOB } from "@/lib/samples";
 
@@ -45,7 +45,7 @@ export function Step2Job() {
               value={job.text}
               onChange={(e) => setJob({ text: e.target.value })}
             />
-            <TextMeta value={job.text} min={30} onFill={() => setJob({ kind: "text", text: SAMPLE_JOB })} />
+            <TextMeta value={job.text} min={MIN_TEXT_CHARS} onFill={() => setJob({ kind: "text", text: SAMPLE_JOB })} />
           </TabsContent>
           <TabsContent value="file" className="mt-0 h-full">
             <FileDrop className="h-full" accept=".pdf" file={job.file} onFile={(f) => setJob({ file: f })} hint="PDF" />

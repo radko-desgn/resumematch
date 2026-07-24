@@ -42,6 +42,10 @@ export function useWizard() {
   return ctx;
 }
 
+/** Mirrors validation.MIN_CHARS on the server, so the client never says
+ *  "Looks good" about text the API will refuse to score. */
+export const MIN_TEXT_CHARS = 100;
+
 const emptyCv: CvInput = { kind: "text", text: "", file: null };
 const emptyJob: JobInput = { kind: "text", text: "", url: "", file: null };
 
@@ -78,10 +82,10 @@ export function WizardProvider({
   const setJob = (patch: Partial<JobInput>) => setJobState((j) => ({ ...j, ...patch }));
 
   const cvReady =
-    (cv.kind === "text" && cv.text.trim().length > 30) ||
+    (cv.kind === "text" && cv.text.trim().length >= MIN_TEXT_CHARS) ||
     (cv.kind !== "text" && cv.file !== null);
   const jobReady =
-    (job.kind === "text" && job.text.trim().length > 30) ||
+    (job.kind === "text" && job.text.trim().length >= MIN_TEXT_CHARS) ||
     (job.kind === "url" && /^https?:\/\/.+/.test(job.url.trim())) ||
     ((job.kind === "file" || job.kind === "image") && job.file !== null);
 
