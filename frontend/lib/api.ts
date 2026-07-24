@@ -1,6 +1,18 @@
 import { Analysis, CvInput, JobInput, TailoredCV } from "./types";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+/**
+ * Backend base URL.
+ *
+ * NEXT_PUBLIC_API_URL wins when set, so the deployment can be repointed (at a
+ * custom API domain, a staging backend) without a code change. The fallbacks
+ * just make the common cases work with no configuration: the deployed frontend
+ * talks to the deployed backend, and a local `next dev` talks to a local API.
+ */
+const PROD_API = "https://resumematch-api-40kl.onrender.com";
+
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "production" ? PROD_API : "http://localhost:8000");
 
 export async function getHealth(): Promise<{ ok: boolean; has_key: boolean; email_provider: boolean }> {
   const res = await fetch(`${API}/api/health`);
