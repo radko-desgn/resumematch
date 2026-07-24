@@ -30,7 +30,7 @@ const MD = {
 
 export function TailoredCv() {
   const { analysis, mock } = useWizard();
-  const { canGenerateCv, spendCv, cvs, unlimited } = useCredits();
+  const { canGenerateCv, cvs, unlimited, refresh } = useCredits();
   const [cv, setCv] = useState<TailoredCV | null>(null);
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState<"pdf" | "docx" | null>(null);
@@ -40,14 +40,12 @@ export function TailoredCv() {
 
   async function onGenerate() {
     if (!source) return;
-    // Charge once per job, not per attempt: a regenerate is a retry of
-    // something already paid for.
-    if (!cv && !spendCv()) return;
     setBusy(true);
     setError(null);
     try {
       const gaps = analysis?.score.critical_gaps ?? [];
       setCv(await generateTailoredCv(source.cv, source.job, mock, gaps));
+      void refresh(); // the server just spent a CV credit
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
     } finally {

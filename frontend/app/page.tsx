@@ -1,5 +1,7 @@
 import { WizardProvider } from "@/lib/store";
 import { CreditsProvider } from "@/lib/credits";
+import { AuthProvider } from "@/lib/auth";
+import { AuthGateProvider } from "@/components/auth/AuthGate";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
@@ -10,7 +12,9 @@ import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <CreditsProvider>
+    <AuthProvider>
+      <AuthGateProvider>
+        <CreditsProvider>
       <WizardProvider>
         <SiteHeader />
         <main>
@@ -22,6 +26,8 @@ export default function Home() {
         </main>
         <Footer />
       </WizardProvider>
-    </CreditsProvider>
+        </CreditsProvider>
+      </AuthGateProvider>
+    </AuthProvider>
   );
 }

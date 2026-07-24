@@ -3,6 +3,7 @@
 import { ArrowRight, Check, Infinity as InfinityIcon, Lock, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { useCredits } from "@/lib/credits";
+import { useAuthGate } from "@/components/auth/AuthGate";
 import { ENTRY_PRICE } from "@/lib/packs";
 import { Button } from "@/components/ui/button";
 
@@ -33,12 +34,13 @@ function Ticks({ items, dim }: { items: string[]; dim?: boolean }) {
 
 export function PlanChoice() {
   const { startScan, jobReady } = useWizard();
-  const { scans, unlimited, canScan, spendScan, hydrated } = useCredits();
+  const { scans, unlimited, canScan, hydrated, signedIn } = useCredits();
+  const { promptSignIn } = useAuthGate();
 
-  // The credit is spent at the moment the deep scan is authorised — the same
-  // point the expensive call gets made — so an abandoned wizard costs nothing.
+  // No client-side deduction any more: the backend spends the credit as part
+  // of serving the analysis, so the balance can't drift from what was charged
+  // and a tampered client gains nothing.
   function runPaid() {
-    if (!spendScan()) return; // guarded by `canScan`, but never trust the caller
     startScan("paid");
   }
 
@@ -88,7 +90,15 @@ export function PlanChoice() {
           </div>
           <Ticks items={PAID} />
 
-          {canScan || !hydrated ? (
+          {!signedIn ? (
+            <Button
+              className="w-full"
+              disabled={!jobReady}
+              onClick={() => promptSignIn("Deep analysis costs 1 credit, so it needs an account.")}
+            >
+              <Lock className="size-4" /> Sign in to continue
+            </Button>
+          ) : canScan || !hydrated ? (
             <Button className="w-full" disabled={!jobReady || !hydrated} onClick={runPaid}>
               <Zap className="size-4" /> Run deep analysis
             </Button>
@@ -101,11 +111,13 @@ export function PlanChoice() {
           )}
 
           <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
-            {unlimited
-              ? "Pro Career Pass — unlimited scans."
-              : canScan
-                ? `${scans} scan credit${scans === 1 ? "" : "s"} left — this uses one.`
-                : "You have 0 scan credits. Checkout is simulated — no charge."}
+            {!signedIn
+              ? "Credits are saved to your account."
+              : unlimited
+                ? "Pro Career Pass — unlimited scans."
+                : canScan
+                  ? `${scans} scan credit${scans === 1 ? "" : "s"} left — this uses one.`
+                  : "You have 0 scan credits. Checkout is simulated — no charge."}
           </p>
         </div>
       </div>

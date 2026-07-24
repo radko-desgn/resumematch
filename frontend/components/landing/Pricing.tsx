@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Loader2, Lock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCredits } from "@/lib/credits";
-import { startCheckout } from "@/lib/checkout";
+import { useAuthGate } from "@/components/auth/AuthGate";
 import { Feature, Pack, PACKS } from "@/lib/packs";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,8 @@ function FeatureRow({ feature, dark }: { feature: Feature; dark?: boolean }) {
 }
 
 function PackCard({ pack, index }: { pack: Pack; index: number }) {
-  const { grant } = useCredits();
+  const { purchase, signedIn } = useCredits();
+  const { promptSignIn } = useAuthGate();
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,16 +53,14 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
       document.getElementById("analyze")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
+    if (!signedIn) {
+      promptSignIn("Credits are tied to your account, so you'll need to sign in first.");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
-      const session = await startCheckout(pack.id);
-      // A live session would redirect instead; simulated ones settle here.
-      if (session.url) {
-        window.location.href = session.url;
-        return;
-      }
-      grant(pack.id);
+      await purchase(pack.id);
       setDone(true);
       setTimeout(() => setDone(false), 4000);
     } catch (e) {

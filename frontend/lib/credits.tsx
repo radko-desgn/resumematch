@@ -1,24 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { PackId, PACKS_BY_ID } from "./packs";
+import { PackId } from "./packs";
+import { getCredits, buyPack } from "./api";
+import { useAuth } from "./auth";
 
 /**
- * Client-side credit balance, backed by localStorage.
+ * Credit balance, read from the server.
  *
- * IMPORTANT: this is presentation state, not an entitlement. The backend does
- * not yet authenticate callers, so nothing here is a security boundary — a
- * balance in localStorage is trivially editable. Real gating lands with
- * server-side entitlement in v0.3. Until then checkout is simulated and no
- * money changes hands, so the two stay honest with each other.
- *
- * Storage is an external store, so it's read through useSyncExternalStore
- * rather than an effect: React renders the server snapshot during hydration
- * and swaps in the stored value immediately after, with no markup mismatch.
- * Subscribing to `storage` also keeps multiple tabs in agreement for free.
+ * This is a *cache* of the authoritative balance in Postgres, kept here so the
+ * header badge and the gates can render without a round trip. It is never the
+ * thing that decides whether an action is allowed — the backend re-checks and
+ * spends on every paid call, so editing this in devtools buys nothing.
  */
-
-const STORAGE_KEY = "resumematch.credits.v1";
 
 export interface Balance {
   scans: number;
@@ -26,80 +20,18 @@ export interface Balance {
   unlimited: boolean;
 }
 
-// Stable reference: useSyncExternalStore compares snapshots by identity, so a
-// fresh object here would loop forever.
-const EMPTY: Balance = Object.freeze({ scans: 0, cvs: 0, unlimited: false });
-
-function read(): Balance {
-  if (typeof window === "undefined") return EMPTY;
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return EMPTY;
-    const parsed = JSON.parse(raw) as Partial<Balance>;
-    return {
-      scans: Math.max(0, Number(parsed.scans) || 0),
-      cvs: Math.max(0, Number(parsed.cvs) || 0),
-      unlimited: Boolean(parsed.unlimited),
-    };
-  } catch {
-    return EMPTY; // corrupt or unavailable storage — start clean rather than throw
-  }
-}
-
-let cache: Balance | null = null;
-const listeners = new Set<() => void>();
-
-function notify() {
-  listeners.forEach((l) => l());
-}
-
-function getSnapshot(): Balance {
-  if (cache === null) cache = read();
-  return cache;
-}
-
-function getServerSnapshot(): Balance {
-  return EMPTY;
-}
-
-function subscribe(onChange: () => void) {
-  listeners.add(onChange);
-  const onStorage = (e: StorageEvent) => {
-    if (e.key !== STORAGE_KEY) return;
-    cache = read(); // another tab changed the balance
-    notify();
-  };
-  window.addEventListener("storage", onStorage);
-  return () => {
-    listeners.delete(onChange);
-    window.removeEventListener("storage", onStorage);
-  };
-}
-
-function write(next: Balance) {
-  cache = next;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  } catch {
-    /* private mode / quota — the balance just won't survive a reload */
-  }
-  notify();
-}
-
-const alwaysTrue = () => true;
-const alwaysFalse = () => false;
+const EMPTY: Balance = { scans: 0, cvs: 0, unlimited: false };
 
 interface CreditsState extends Balance {
-  /** False during hydration, so counters don't flash a stale zero. */
+  /** False until the first fetch settles, so counters don't flash a stale zero. */
   hydrated: boolean;
+  signedIn: boolean;
   canScan: boolean;
   canGenerateCv: boolean;
-  /** Apply a completed (simulated) purchase. */
-  grant: (pack: PackId) => void;
-  /** Consume one scan credit. Returns false if there was nothing to spend. */
-  spendScan: () => boolean;
-  spendCv: () => boolean;
-  reset: () => void;
+  /** Re-read the balance from the server (after a spend, say). */
+  refresh: () => Promise<void>;
+  /** Run checkout for a pack; resolves with the new balance. */
+  purchase: (pack: PackId) => Promise<Balance>;
 }
 
 const CreditsCtx = React.createContext<CreditsState | null>(null);
@@ -115,60 +47,66 @@ export function CreditsProvider({
   initial,
 }: {
   children: React.ReactNode;
-  /** Seed a balance in memory without touching storage — used by preview pages. */
+  /** Seed a balance without contacting the server — used by preview pages. */
   initial?: Partial<Balance>;
 }) {
   const isPreview = initial !== undefined;
+  const { session, ready } = useAuth();
+  const signedIn = Boolean(session);
 
-  const stored = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const hydrated = React.useSyncExternalStore(subscribe, alwaysTrue, alwaysFalse);
-  const [preview, setPreview] = React.useState<Balance>({ ...EMPTY, ...initial });
+  const [preview] = React.useState<Balance>({ ...EMPTY, ...initial });
+  const [fetched, setFetched] = React.useState<Balance | null>(null);
 
-  const balance = isPreview ? preview : stored;
+  // Signed-out is *derived*, not stored. Keeping it out of state means the
+  // effect below never has to setState synchronously just to clear a balance,
+  // and a sign-out can't leave a stale number on screen.
+  const balance: Balance = isPreview ? preview : signedIn ? fetched ?? EMPTY : EMPTY;
+  const hydrated = isPreview || !signedIn || fetched !== null;
 
-  const commit = React.useCallback(
-    (next: Balance) => (isPreview ? setPreview(next) : write(next)),
-    [isPreview]
-  );
+  const refresh = React.useCallback(async () => {
+    if (isPreview || !signedIn) return;
+    try {
+      setFetched(await getCredits());
+    } catch {
+      setFetched(EMPTY); // token expired mid-flight, or the API is unreachable
+    }
+  }, [isPreview, signedIn]);
 
-  const grant = React.useCallback(
-    (pack: PackId) => {
-      const g = PACKS_BY_ID[pack]?.grants;
-      if (!g) return;
-      commit({
-        scans: balance.scans + g.scans,
-        cvs: balance.cvs + g.cvs,
-        unlimited: balance.unlimited || Boolean(g.unlimited),
-      });
-    },
-    [commit, balance]
-  );
+  // Re-read whenever the session changes (sign in, sign out, token refresh).
+  // The request is fired here rather than delegated to refresh() so the state
+  // update lands in the promise continuation, and so a response that arrives
+  // after the session changed again can be discarded instead of overwriting
+  // the newer balance.
+  React.useEffect(() => {
+    if (!ready || !signedIn) return;
+    let cancelled = false;
+    getCredits()
+      .then((b) => !cancelled && setFetched(b))
+      .catch(() => !cancelled && setFetched(EMPTY));
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, signedIn]);
 
-  const spendScan = React.useCallback(() => {
-    if (balance.unlimited) return true;
-    if (balance.scans <= 0) return false;
-    commit({ ...balance, scans: balance.scans - 1 });
-    return true;
-  }, [commit, balance]);
-
-  const spendCv = React.useCallback(() => {
-    if (balance.unlimited) return true;
-    if (balance.cvs <= 0) return false;
-    commit({ ...balance, cvs: balance.cvs - 1 });
-    return true;
-  }, [commit, balance]);
-
-  const reset = React.useCallback(() => commit(EMPTY), [commit]);
+  const purchase = React.useCallback(async (pack: PackId) => {
+    const session = await buyPack(pack);
+    if (session.url) {
+      window.location.href = session.url; // a live Stripe session would land here
+      return EMPTY;
+    }
+    const next = session.balance ?? EMPTY;
+    setFetched(next);
+    return next;
+  }, []);
 
   const value: CreditsState = {
     ...balance,
-    hydrated: isPreview || hydrated,
+    hydrated,
+    signedIn: isPreview ? true : signedIn,
     canScan: balance.unlimited || balance.scans > 0,
     canGenerateCv: balance.unlimited || balance.cvs > 0,
-    grant,
-    spendScan,
-    spendCv,
-    reset,
+    refresh,
+    purchase,
   };
 
   return <CreditsCtx.Provider value={value}>{children}</CreditsCtx.Provider>;

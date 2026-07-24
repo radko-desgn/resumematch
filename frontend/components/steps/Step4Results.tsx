@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, Check, AlertTriangle, Sparkles, RotateCcw, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { useCredits } from "@/lib/credits";
+import { useAuthGate } from "@/components/auth/AuthGate";
 import { ENTRY_PRICE } from "@/lib/packs";
 import { Gauge } from "../wizard/Gauge";
 import { CopyButton } from "../wizard/CopyButton";
@@ -98,7 +99,8 @@ function CoverageChips({ a }: { a: Analysis }) {
 
 export function Step4Results() {
   const { analysis, tier, upgrade, reset } = useWizard();
-  const { canScan, spendScan } = useCredits();
+  const { canScan, signedIn, refresh } = useCredits();
+  const { promptSignIn } = useAuthGate();
   if (!analysis) return null;
   const { score } = analysis;
 
@@ -140,14 +142,13 @@ export function Step4Results() {
               </li>
             ))}
           </ul>
-          {canScan ? (
-            <Button
-              size="lg"
-              className="w-full sm:w-auto"
-              onClick={() => {
-                if (spendScan()) upgrade();
-              }}
-            >
+          {!signedIn ? (
+            <Button size="lg" className="w-full sm:w-auto"
+              onClick={() => promptSignIn("Deep analysis costs 1 credit, so it needs an account.")}>
+              <Zap className="size-4" /> Sign in to unlock
+            </Button>
+          ) : canScan ? (
+            <Button size="lg" className="w-full sm:w-auto" onClick={() => { upgrade(); void refresh(); }}>
               <Zap className="size-4" /> Unlock Deep AI Analysis — 1 credit
             </Button>
           ) : (

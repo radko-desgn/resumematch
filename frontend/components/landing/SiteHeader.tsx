@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreditBadge } from "./CreditBadge";
+import { useAuth } from "@/lib/auth";
+import { useAuthGate } from "@/components/auth/AuthGate";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -15,6 +17,8 @@ const NAV = [
 ];
 
 export function SiteHeader() {
+  const { session, email, signOut } = useAuth();
+  const { promptSignIn } = useAuthGate();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -89,9 +93,26 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             <CreditBadge inverted={!scrolled} />
-            <Button asChild size="sm" variant={scrolled ? "default" : "invert"} className="hidden sm:inline-flex">
-              <a href="#analyze">Get Started</a>
-            </Button>
+            {session ? (
+              <Button
+                size="sm"
+                variant={scrolled ? "outline" : "invert"}
+                className="hidden sm:inline-flex"
+                onClick={() => signOut()}
+                title={email || undefined}
+              >
+                Sign out
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant={scrolled ? "default" : "invert"}
+                className="hidden sm:inline-flex"
+                onClick={() => promptSignIn()}
+              >
+                Sign in
+              </Button>
+            )}
             <button
               className="md:hidden inline-flex size-11 items-center justify-center rounded-full hover:bg-current/10"
               aria-label="Open menu"
@@ -155,7 +176,19 @@ export function SiteHeader() {
                 <CreditBadge onNavigate={() => setOpen(false)} />
               </div>
 
-              <Button asChild className="mt-4 w-full">
+              {session ? (
+                <>
+                  <p className="mt-4 truncate text-xs text-muted-foreground">{email}</p>
+                  <Button variant="outline" className="mt-2 w-full" onClick={() => { signOut(); setOpen(false); }}>
+                    Sign out
+                  </Button>
+                </>
+              ) : (
+                <Button className="mt-4 w-full" onClick={() => { setOpen(false); promptSignIn(); }}>
+                  Sign in
+                </Button>
+              )}
+              <Button asChild variant="ghost" className="mt-2 w-full">
                 <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
               </Button>
             </motion.aside>

@@ -1,4 +1,5 @@
 import { Analysis, CvInput, JobInput, TailoredCV } from "./types";
+import { authHeaders } from "./supabaseClient";
 
 /**
  * Backend base URL.
@@ -53,6 +54,27 @@ export async function emailReport(
   return body;
 }
 
+export async function getCredits(): Promise<{ scans: number; cvs: number; unlimited: boolean }> {
+  const res = await fetch(`${API}/api/credits`, { headers: await authHeaders() });
+  if (!res.ok) throw new Error("Not signed in");
+  return res.json();
+}
+
+export async function buyPack(pack: string): Promise<{
+  simulated: boolean;
+  url: string | null;
+  balance: { scans: number; cvs: number; unlimited: boolean };
+}> {
+  const res = await fetch(`${API}/api/checkout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+    body: JSON.stringify({ pack }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.detail || "Could not start checkout");
+  return body;
+}
+
 export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean, full: boolean): Promise<Analysis> {
   const fd = new FormData();
   fd.append("cv_kind", cv.kind);
@@ -67,7 +89,7 @@ export async function runAnalyze(cv: CvInput, job: JobInput, mock: boolean, full
   else if (job.kind === "url") fd.append("job_url", job.url);
   else if (job.file) fd.append("job_file", job.file);
 
-  const res = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
+  const res = await fetch(`${API}/api/analyze`, { method: "POST", body: fd, headers: await authHeaders() });
   if (!res.ok) {
     let msg = `Request failed (${res.status})`;
     try {
@@ -89,7 +111,7 @@ export async function generateTailoredCv(
 ): Promise<TailoredCV> {
   const res = await fetch(`${API}/api/tailored-cv`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({ cv_text: cvText, job_text: jobText, mock, gaps }),
   });
   const body = await res.json().catch(() => ({}));

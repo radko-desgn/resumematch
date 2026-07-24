@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { WizardProvider, Tier } from "@/lib/store";
 import { CreditsProvider } from "@/lib/credits";
+import { AuthProvider } from "@/lib/auth";
+import { AuthGateProvider } from "@/components/auth/AuthGate";
 import { Step4Results } from "@/components/steps/Step4Results";
 import { EXAMPLE_ANALYSIS } from "@/lib/exampleAnalysis";
 import { cn } from "@/lib/utils";
@@ -57,11 +59,11 @@ export default function ResultsPreviewPage() {
           {/* Seeded balance, never persisted: the paid preview gets a CV credit
               so the generator renders enabled, while the free preview keeps 0
               so the upsell CTA is the one on screen. */}
-          <CreditsProvider key={tier} initial={tier === "paid" ? { cvs: 1 } : { scans: 0, cvs: 0 }}>
+          <AuthProvider><AuthGateProvider><CreditsProvider key={tier} initial={tier === "paid" ? { cvs: 1 } : { scans: 0, cvs: 0 }}>
             <WizardProvider initialAnalysis={EXAMPLE_ANALYSIS} initialTier={tier} initialStep={4}>
               <Step4Results />
             </WizardProvider>
-          </CreditsProvider>
+          </CreditsProvider></AuthGateProvider></AuthProvider>
         </div>
       </div>
     </div>
