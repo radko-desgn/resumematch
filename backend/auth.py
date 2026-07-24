@@ -12,11 +12,14 @@ Two dependencies are exported:
 
 from __future__ import annotations
 
+import logging
 import os
 from functools import lru_cache
 from typing import Optional
 
 from fastapi import Header, HTTPException
+
+log = logging.getLogger("resumematch.auth")
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 
@@ -56,10 +59,38 @@ def _user_id_from_header(authorization: Optional[str]) -> Optional[str]:
         return None
     try:
         return _decode(token).get("sub")
-    except Exception:
-        # Expired, malformed, or wrong signature — all mean "not signed in".
-        # Deliberately not distinguished, so this can't be used as an oracle.
+    except Exception as exc:  # noqa: BLE001
+        # Callers always just see "not signed in" — the reason is never leaked
+        # to the client, so this can't be used as an oracle. But it IS logged,
+        # because a misconfigured server (unreachable JWKS, missing crypto
+        # backend) is indistinguishable from a bad token without it.
+        log.warning("token rejected: %s: %s", type(exc).__name__, exc)
         return None
+
+
+def selftest() -> dict:
+    """Config diagnostics for /api/health. Touches only public information."""
+    info: dict = {"url_set": bool(SUPABASE_URL), "secret_set": bool(os.environ.get("SUPABASE_SECRET_KEY"))}
+    try:
+        import jwt  # noqa: F401
+        from jwt import PyJWKClient  # noqa: F401
+
+        info["pyjwt"] = True
+    except Exception as exc:  # noqa: BLE001
+        info["pyjwt"] = f"{type(exc).__name__}: {exc}"
+        return info
+    try:
+        from cryptography.hazmat.primitives.asymmetric import ec  # noqa: F401
+
+        info["crypto"] = True
+    except Exception as exc:  # noqa: BLE001
+        info["crypto"] = f"{type(exc).__name__}: {exc}"
+    try:
+        keys = _jwk_client().get_signing_keys()
+        info["jwks"] = f"{len(keys)} key(s)"
+    except Exception as exc:  # noqa: BLE001
+        info["jwks"] = f"{type(exc).__name__}: {exc}"
+    return info
 
 
 def optional_user(authorization: Optional[str] = Header(None)) -> Optional[str]:

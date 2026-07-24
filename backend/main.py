@@ -100,6 +100,7 @@ def health() -> dict:
         "has_key": _has_key(),
         "email_provider": bool(os.environ.get("RESEND_API_KEY") or os.environ.get("SMTP_HOST")),
         "accounts": auth.is_configured(),
+        "auth_check": auth.selftest(),
     }
 
 
