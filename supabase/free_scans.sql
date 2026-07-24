@@ -43,6 +43,10 @@ returns integer language sql immutable as $$ select 1 $$;
 -- Output columns are prefixed out_ so they can't collide with the table's own
 -- column names inside the body (Postgres raised "column reference is ambiguous"
 -- when a RETURNS TABLE column shared a name with a table column).
+--
+-- Dropped first because CREATE OR REPLACE cannot change a function's OUT
+-- columns / return type — replacing an earlier version in place would fail.
+drop function if exists public.claim_free_scan(text, boolean, text);
 create or replace function public.claim_free_scan(
   p_email    text,
   p_consent  boolean default false,
