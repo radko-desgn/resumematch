@@ -25,18 +25,28 @@ export function AuthModal({
   /** Why the prompt appeared, e.g. "Deep analysis costs 1 credit." */
   reason?: string;
 }) {
-  const { signIn, signUp, signInWithGoogle, configured } = useAuth();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const { signIn, signUp, signInWithGoogle, requestPasswordReset, configured } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup" | "reset">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /** Close and drop any stale error, so reopening starts clean. */
+  /** Close and drop transient state, so reopening starts clean. */
   const close = React.useCallback(() => {
     setError(null);
+    setSent(false);
     onClose();
   }, [onClose]);
+
+  function switchMode(next: "signin" | "signup" | "reset") {
+    setError(null);
+    setSent(false);
+    setConfirm("");
+    setMode(next);
+  }
 
   // Escape to dismiss, and don't let the page scroll behind the dialog.
   useEffect(() => {
@@ -52,9 +62,20 @@ export function AuthModal({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    // Checked here rather than by the browser so the message sits with the
+    // other errors instead of in a native tooltip.
+    if (mode === "signup" && password !== confirm) {
+      setError("Those passwords don't match.");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
+      if (mode === "reset") {
+        await requestPasswordReset(email.trim());
+        setSent(true);
+        return;
+      }
       if (mode === "signup") await signUp(email.trim(), password);
       else await signIn(email.trim(), password);
       close();
@@ -96,10 +117,12 @@ export function AuthModal({
             </button>
 
             <h2 className="font-display text-xl">
-              {mode === "signup" ? "Create your account" : "Welcome back"}
+              {mode === "signup" ? "Create your account" : mode === "reset" ? "Reset your password" : "Welcome back"}
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              {reason || "Sign in to buy and spend credits."}
+              {mode === "reset"
+                ? "We'll email you a link to set a new password."
+                : reason || "Sign in to buy and spend credits."}
             </p>
 
             {!configured ? (
@@ -108,54 +131,90 @@ export function AuthModal({
               </p>
             ) : (
               <>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="mt-5 w-full"
-                  onClick={() => signInWithGoogle().catch((e) => setError(e.message))}
-                >
-                  <GoogleMark /> Continue with Google
-                </Button>
+                {mode !== "reset" && (
+                  <>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-5 w-full"
+                      onClick={() => signInWithGoogle().catch((e) => setError(e.message))}
+                    >
+                      <GoogleMark /> Continue with Google
+                    </Button>
 
-                <div className="my-4 flex items-center gap-3">
-                  <span className="h-px flex-1 bg-border" />
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-muted-foreground">or</span>
-                  <span className="h-px flex-1 bg-border" />
-                </div>
+                    <div className="my-4 flex items-center gap-3">
+                      <span className="h-px flex-1 bg-border" />
+                      <span className="text-[11px] uppercase tracking-[0.08em] text-muted-foreground">or</span>
+                      <span className="h-px flex-1 bg-border" />
+                    </div>
+                  </>
+                )}
 
-                <form onSubmit={submit} className="space-y-3">
-                  <Input
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Input
-                    type="password"
-                    required
-                    minLength={6}
-                    autoComplete={mode === "signup" ? "new-password" : "current-password"}
-                    placeholder="Password (6+ characters)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  {error && <p className="text-xs text-missing">{error}</p>}
-                  <Button type="submit" className="w-full" disabled={busy}>
-                    {busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
-                    {mode === "signup" ? "Create account" : "Sign in"}
-                  </Button>
-                </form>
+                {sent ? (
+                  <p className="mt-5 rounded-xl bg-muted p-3 text-sm">
+                    If an account exists for <strong>{email}</strong>, a reset link is on its way.
+                    Check your inbox — and your spam folder.
+                  </p>
+                ) : (
+                  <form onSubmit={submit} className={mode === "reset" ? "mt-5 space-y-3" : "space-y-3"}>
+                    <Input
+                      type="email"
+                      required
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    {mode !== "reset" && (
+                      <Input
+                        type="password"
+                        required
+                        minLength={6}
+                        autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                        placeholder="Password (6+ characters)"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    )}
+                    {mode === "signup" && (
+                      <Input
+                        type="password"
+                        required
+                        minLength={6}
+                        autoComplete="new-password"
+                        placeholder="Repeat password"
+                        value={confirm}
+                        onChange={(e) => setConfirm(e.target.value)}
+                      />
+                    )}
+                    {error && <p className="text-xs text-missing">{error}</p>}
+                    <Button type="submit" className="w-full" disabled={busy}>
+                      {busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
+                      {mode === "signup" ? "Create account" : mode === "reset" ? "Send reset link" : "Sign in"}
+                    </Button>
+                  </form>
+                )}
+
+                {mode === "signin" && (
+                  <button
+                    type="button"
+                    onClick={() => switchMode("reset")}
+                    className="mt-3 w-full text-center text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    Forgot your password?
+                  </button>
+                )}
 
                 <button
                   type="button"
-                  onClick={() => { setError(null); setMode(mode === "signup" ? "signin" : "signup"); }}
-                  className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => switchMode(mode === "signup" ? "signin" : mode === "reset" ? "signin" : "signup")}
+                  className="mt-3 w-full text-center text-xs text-muted-foreground hover:text-foreground"
                 >
                   {mode === "signup"
                     ? "Already have an account? Sign in"
-                    : "New here? Create an account"}
+                    : mode === "reset"
+                      ? "Back to sign in"
+                      : "New here? Create an account"}
                 </button>
               </>
             )}

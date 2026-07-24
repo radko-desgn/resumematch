@@ -22,6 +22,10 @@ export interface AuthState {
   signIn: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  /** Email a password-reset link. */
+  requestPasswordReset: (email: string) => Promise<void>;
+  /** Set a new password for the signed-in (or recovering) user. */
+  updatePassword: (password: string) => Promise<void>;
   /** Bearer token for API calls, refreshed as needed. */
   accessToken: () => Promise<string | null>;
 }
@@ -38,7 +42,9 @@ function friendly(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login")) return "That email and password don't match.";
   if (m.includes("already registered")) return "That email already has an account — try signing in.";
-  if (m.includes("password")) return "Password must be at least 6 characters.";
+  if (m.includes("should be at least")) return "Password must be at least 6 characters.";
+  if (m.includes("for security purposes") || m.includes("rate limit"))
+    return "Too many attempts — wait a minute and try again.";
   return message;
 }
 
@@ -81,6 +87,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase?.auth.signOut();
   }, []);
 
+  const requestPasswordReset = React.useCallback(async (email: string) => {
+    if (!supabase) throw new Error("Accounts aren't configured.");
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw new Error(friendly(error.message));
+  }, []);
+
+  const updatePassword = React.useCallback(async (password: string) => {
+    if (!supabase) throw new Error("Accounts aren't configured.");
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw new Error(friendly(error.message));
+  }, []);
+
   const accessToken = React.useCallback(() => getAccessToken(), []);
 
   const value: AuthState = {
@@ -92,6 +112,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signInWithGoogle,
     signOut,
+    requestPasswordReset,
+    updatePassword,
     accessToken,
   };
   return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>;

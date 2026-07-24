@@ -94,15 +94,27 @@ export function SiteHeader() {
           <div className="flex items-center gap-2 sm:gap-3">
             <CreditBadge inverted={!scrolled} />
             {session ? (
-              <Button
-                size="sm"
-                variant={scrolled ? "outline" : "invert"}
-                className="hidden sm:inline-flex"
-                onClick={() => signOut()}
-                title={email || undefined}
-              >
-                Sign out
-              </Button>
+              <>
+                <a
+                  href="/reset-password"
+                  className={cn(
+                    "hidden text-sm transition-colors sm:inline",
+                    scrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"
+                  )}
+                  title={email || undefined}
+                >
+                  Password
+                </a>
+                <Button
+                  size="sm"
+                  variant={scrolled ? "outline" : "invert"}
+                  className="hidden sm:inline-flex"
+                  onClick={() => signOut()}
+                  title={email || undefined}
+                >
+                  Sign out
+                </Button>
+              </>
             ) : (
               <Button
                 size="sm"
@@ -179,7 +191,10 @@ export function SiteHeader() {
               {session ? (
                 <>
                   <p className="mt-4 truncate text-xs text-muted-foreground">{email}</p>
-                  <Button variant="outline" className="mt-2 w-full" onClick={() => { signOut(); setOpen(false); }}>
+                  <Button asChild variant="outline" className="mt-2 w-full">
+                    <a href="/reset-password" onClick={() => setOpen(false)}>Change password</a>
+                  </Button>
+                  <Button variant="ghost" className="mt-2 w-full" onClick={() => { signOut(); setOpen(false); }}>
                     Sign out
                   </Button>
                 </>
