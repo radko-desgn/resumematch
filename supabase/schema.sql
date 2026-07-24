@@ -115,9 +115,19 @@ begin
 end;
 $$;
 
--- Only the service role should ever call these; revoke the default grants that
--- would otherwise let a signed-in browser invoke them directly.
-revoke execute on function public.spend_scan(uuid)  from anon, authenticated;
-revoke execute on function public.spend_cv(uuid)    from anon, authenticated;
+-- Lock the functions down to the backend.
+--
+-- CREATE FUNCTION grants EXECUTE to PUBLIC by default, and anon/authenticated
+-- inherit that. Revoking from those two roles alone is therefore useless — the
+-- PUBLIC grant has to go, then execute is handed back to service_role only.
+-- Without this, any signed-in user could call grant_credits() with their own id
+-- and award themselves unlimited credits.
+revoke execute on function public.spend_scan(uuid)  from public, anon, authenticated;
+revoke execute on function public.spend_cv(uuid)    from public, anon, authenticated;
 revoke execute on function public.grant_credits(uuid, integer, integer, boolean)
-  from anon, authenticated;
+  from public, anon, authenticated;
+
+grant execute on function public.spend_scan(uuid)  to service_role;
+grant execute on function public.spend_cv(uuid)    to service_role;
+grant execute on function public.grant_credits(uuid, integer, integer, boolean)
+  to service_role;

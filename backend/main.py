@@ -10,12 +10,12 @@ from __future__ import annotations
 import os
 from typing import Optional
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
 
-from backend import billing, cv_export, extract, mailer, report
+from backend import auth, billing, credits, cv_export, extract, mailer, report
 from resumematch.analyzer import analyze, generate_tailored_cv
 
 app = FastAPI(title="ResumeMatch API", version="0.2.0")
@@ -99,20 +99,29 @@ def health() -> dict:
         "ok": True,
         "has_key": _has_key(),
         "email_provider": bool(os.environ.get("RESEND_API_KEY") or os.environ.get("SMTP_HOST")),
+        "accounts": auth.is_configured(),
     }
 
 
-@app.post("/api/checkout")
-def checkout(req: CheckoutRequest) -> dict:
-    """Start a checkout for a credit pack.
+@app.get("/api/credits")
+def read_credits(user_id: str = Depends(auth.require_user)) -> dict:
+    """The signed-in user's balance. The server is the source of truth."""
+    return credits.get_balance(user_id)
 
-    Simulated — see backend/billing.py for why, and for the one function that
-    changes when real Stripe lands.
+
+@app.post("/api/checkout")
+def checkout(req: CheckoutRequest, user_id: str = Depends(auth.require_user)) -> dict:
+    """Buy a credit pack.
+
+    Payment is still simulated (see backend/billing.py), but the grant now
+    lands in the database against a real account rather than in localStorage.
     """
     try:
-        return billing.create_session(req.pack)
+        session = billing.create_session(req.pack)
     except KeyError:
         raise HTTPException(404, f"Unknown pack: {req.pack}")
+    session["balance"] = credits.grant(user_id, session["grants"])
+    return session
 
 
 # NOTE: sync `def` so FastAPI runs these in a worker thread — sync Playwright
@@ -156,15 +165,33 @@ async def analyze_endpoint(
     job_url: Optional[str] = Form(None),
     cv_file: Optional[UploadFile] = File(None),
     job_file: Optional[UploadFile] = File(None),
+    user_id: Optional[str] = Depends(auth.optional_user),
 ) -> dict:
     cv = _resolve(cv_kind, cv_text, None, cv_file, mock)
     job = _resolve(job_kind, job_text, job_url, job_file, mock)
     if not cv.strip() or not job.strip():
         raise HTTPException(422, "Could not extract text from the CV and/or job inputs.")
+
+    # The free quick check stays open to anonymous visitors. The deep analysis
+    # costs a credit, so it needs an account -- and the charge happens here, on
+    # the server, not in the browser. Inputs are validated first so a rejected
+    # request never costs anything.
+    if full:
+        if not user_id:
+            raise HTTPException(401, "Sign in to run the deep analysis.")
+        if not credits.spend_scan(user_id):
+            raise HTTPException(402, "You're out of scan credits.")
+
     try:
         result = analyze(cv, job, mock=mock, with_rewrites=full)
     except ValueError as exc:  # e.g. missing API key on a live run
+        if full and user_id:
+            credits.grant(user_id, {"scans": 1})  # refund: we charged, it failed
         raise HTTPException(400, str(exc))
+    except Exception:
+        if full and user_id:
+            credits.grant(user_id, {"scans": 1})
+        raise
     # Echo the resolved text lengths so the UI can show what was parsed.
     payload = result.model_dump()
     payload["_meta"] = {"cv_chars": len(cv), "job_chars": len(job), "mock": mock, "full": full}
@@ -173,14 +200,20 @@ async def analyze_endpoint(
 
 
 @app.post("/api/tailored-cv")
-def tailored_cv(req: TailoredCVRequest) -> dict:
+def tailored_cv(req: TailoredCVRequest, user_id: str = Depends(auth.require_user)) -> dict:
     """Generate an ATS-friendly CV rewritten for this specific job (paid tier)."""
     if not req.cv_text.strip() or not req.job_text.strip():
         raise HTTPException(422, "Both the CV and the job description are required.")
+    if not credits.spend_cv(user_id):
+        raise HTTPException(402, "You're out of tailored-CV credits.")
     try:
         result = generate_tailored_cv(req.cv_text, req.job_text, mock=req.mock, gaps=req.gaps)
     except ValueError as exc:
+        credits.grant(user_id, {"cvs": 1})  # refund
         raise HTTPException(400, str(exc))
+    except Exception:
+        credits.grant(user_id, {"cvs": 1})
+        raise
     return result.model_dump()
 
 
