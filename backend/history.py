@@ -35,11 +35,13 @@ def _require_config() -> None:
         raise HTTPException(503, "Accounts are not configured on this server.")
 
 
-def save_scan(user_id: str, payload: dict, tier: str) -> None:
+def save_scan(user_id: str, payload: dict, tier: str) -> str:
     """Persist one analysis. Never raises to the caller — a failed history
-    write must not fail the scan the user actually asked for."""
+    write must not fail the scan the user actually asked for. Returns a short
+    status string ("ok" or an error) so the caller can surface it for debugging.
+    """
     if not SUPABASE_URL or not SECRET_KEY:
-        return
+        return "not-configured"
     score = payload.get("score") or {}
     meta = payload.get("_meta") or {}
     row = {
@@ -54,9 +56,14 @@ def save_scan(user_id: str, payload: dict, tier: str) -> None:
     }
     try:
         with httpx.Client(timeout=_TIMEOUT) as c:
-            c.post(f"{SUPABASE_URL}/rest/v1/scans", headers=_headers(), json=row)
-    except Exception:  # noqa: BLE001 — best effort
-        pass
+            r = c.post(
+                f"{SUPABASE_URL}/rest/v1/scans",
+                headers={**_headers(), "Prefer": "return=minimal"},
+                json=row,
+            )
+        return "ok" if r.status_code in (200, 201, 204) else f"{r.status_code}:{r.text[:180]}"
+    except Exception as exc:  # noqa: BLE001 — best effort
+        return f"exc:{type(exc).__name__}:{exc}"
 
 
 def list_scans(user_id: str, limit: int = 50) -> list[dict]:
