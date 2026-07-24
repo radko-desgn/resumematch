@@ -40,20 +40,23 @@ returns integer language sql immutable as $$ select 1 $$;
 
 -- Claim one free scan for an address.
 -- Returns the row so the caller can report remaining quota in one round trip.
+-- Output columns are prefixed out_ so they can't collide with the table's own
+-- column names inside the body (Postgres raised "column reference is ambiguous"
+-- when a RETURNS TABLE column shared a name with a table column).
 create or replace function public.claim_free_scan(
   p_email    text,
   p_consent  boolean default false,
   p_source   text default 'free-scan'
 )
-returns table (allowed boolean, scans_used integer, scans_left integer)
+returns table (out_allowed boolean, out_used integer, out_left integer)
 language plpgsql
 security definer
 set search_path = public
 as $$
 declare
-  norm  text := lower(btrim(p_email));
+  norm   text := lower(btrim(p_email));
   limit_ integer := public.free_scan_limit();
-  used  integer;
+  used   integer;
 begin
   insert into public.free_scans as f (email, marketing_consent, consent_at, consent_source)
   values (
@@ -82,11 +85,11 @@ begin
     return;
   end if;
 
-  update public.free_scans
-     set scans_used = scans_used + 1,
+  update public.free_scans as f
+     set scans_used = f.scans_used + 1,
          last_used  = now()
-   where email = norm
-  returning scans_used into used;
+   where f.email = norm
+  returning f.scans_used into used;
 
   return query select true, used, greatest(limit_ - used, 0);
 end;

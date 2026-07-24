@@ -110,7 +110,7 @@ def claim_free_scan(email: str, consent: bool = False, source: str = "free-scan"
     )
     row = (rows or [{}])[0] if isinstance(rows, list) else (rows or {})
     return {
-        "allowed": bool(row.get("allowed")),
-        "scans_used": int(row.get("scans_used") or 0),
-        "scans_left": int(row.get("scans_left") or 0),
+        "allowed": bool(row.get("out_allowed")),
+        "scans_used": int(row.get("out_used") or 0),
+        "scans_left": int(row.get("out_left") or 0),
     }
