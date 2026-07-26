@@ -64,12 +64,15 @@ CSS = f"""
   .eyebrow {{ font-size: 24px; font-weight: 600; letter-spacing: 7px;
               text-transform: uppercase; color: rgba(255,255,255,.5); }}
 
+  /* generous leading so a highlighted line never collides with the one above */
   h1 {{ font-family: Montserrat, sans-serif; font-weight: 800; letter-spacing: -.02em;
-        line-height: 1.04; }}
+        line-height: 1.32; }}
 
-  /* the "different background for that moment": an inverted highlight chip */
-  .hl {{ background: #fff; color: #0A0A0A; border-radius: 16px;
-         padding: 0 .2em 0.06em; box-decoration-break: clone;
+  /* the "different background for that moment": an inverted highlight chip.
+     Modest vertical padding + the roomy line-height keeps it from swallowing
+     the line; trailing punctuation stays OUTSIDE the chip. */
+  .hl {{ background: #fff; color: #0A0A0A; border-radius: 12px;
+         padding: 0.02em 0.22em; box-decoration-break: clone;
          -webkit-box-decoration-break: clone; }}
   .hl.met {{ background: #12935C; color: #fff; }}
 
@@ -105,24 +108,28 @@ def _page(index: int, eyebrow: str, headline_html: str, lede: str, extra: str = 
 </body></html>"""
 
 
+# One shared headline size across the set (a real type scale), and trailing
+# punctuation sits outside the highlight chip.
+HEAD = "font-size:90px"
+
 SLIDE_1 = _page(
     1,
     "The problem",
-    '<span style="font-size:104px">You apply.<br>Then <span class="hl">nothing.</span></span>',
+    f'<span style="{HEAD}">You apply.<br>Then <span class="hl">nothing</span>.</span>',
     "You never find out if you were close, or nowhere near.",
 )
 
 SLIDE_2 = _page(
     2,
     "The fix",
-    '<span style="font-size:88px">Know if you <span class="hl met">fit</span><br>before you apply.</span>',
+    f'<span style="{HEAD}">Know if you <span class="hl met">fit</span><br>before you apply.</span>',
     "Paste your CV and the job post. Get a match score, the gaps holding you back, and a CV tuned to the role.",
 )
 
 SLIDE_3 = _page(
     3,
     "Coming soon",
-    '<span style="font-size:96px">Stop guessing.<br>Start <span class="hl">matching.</span></span>',
+    f'<span style="{HEAD}">Stop guessing.<br>Start <span class="hl">matching</span>.</span>',
     "ResumeMatch is almost here.",
     # No waitlist exists yet, so the CTA is a follow — something we can actually
     # deliver on. Swap for "Try it free" pointing at the live site once launched.
