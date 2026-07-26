@@ -96,8 +96,8 @@ CSS = f"""
 
 
 def _page(index: int, eyebrow: str, headline_html: str, lede: str, extra: str = "",
-          lede_class: str = "") -> str:
-    dots = "".join(f'<i class="{"on" if k == index else ""}"></i>' for k in (1, 2, 3))
+          lede_class: str = "", total: int = 3) -> str:
+    dots = "".join(f'<i class="{"on" if k == index else ""}"></i>' for k in range(1, total + 1))
     return f"""<!doctype html><html><head><meta charset="utf-8">{FONTS}
 <style>{CSS}</style></head><body>
 {RINGS}
