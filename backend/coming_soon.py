@@ -82,6 +82,8 @@ CSS = f"""
      larger, and a wider measure so it reads in fewer, longer lines */
   .lede.wide {{ font-size: 34px; line-height: 1.55; color: rgba(255,255,255,.82);
                 max-width: 27ch; }}
+  /* short teaser line that should never wrap */
+  .lede.nowrap {{ max-width: none; white-space: nowrap; }}
 
   .cta {{ margin-top: 8px; background: #fff; color: #0A0A0A; font-weight: 700;
           font-size: 30px; padding: 22px 40px; border-radius: 999px; }}
@@ -137,6 +139,7 @@ SLIDE_3 = _page(
     "Coming soon",
     f'<span style="{HEAD}">Stop guessing.<br>Start <span class="hl">matching</span>.</span>',
     "ResumeMatch is almost here.",
+    lede_class="nowrap",
     # No waitlist exists yet, so the CTA is a follow — something we can actually
     # deliver on. Swap for "Try it free" pointing at the live site once launched.
     extra='<div class="cta">Follow for launch</div>'
