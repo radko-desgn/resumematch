@@ -76,8 +76,12 @@ CSS = f"""
          -webkit-box-decoration-break: clone; }}
   .hl.met {{ background: #12935C; color: #fff; }}
 
-  .lede {{ font-size: 32px; line-height: 1.5; color: rgba(255,255,255,.62);
+  .lede {{ font-size: 32px; line-height: 1.5; color: rgba(255,255,255,.72);
            max-width: 20ch; }}
+  /* the solution slide carries the longest explainer: more contrast, a bit
+     larger, and a wider measure so it reads in fewer, longer lines */
+  .lede.wide {{ font-size: 34px; line-height: 1.55; color: rgba(255,255,255,.82);
+                max-width: 27ch; }}
 
   .cta {{ margin-top: 8px; background: #fff; color: #0A0A0A; font-weight: 700;
           font-size: 30px; padding: 22px 40px; border-radius: 999px; }}
@@ -89,7 +93,8 @@ CSS = f"""
 """
 
 
-def _page(index: int, eyebrow: str, headline_html: str, lede: str, extra: str = "") -> str:
+def _page(index: int, eyebrow: str, headline_html: str, lede: str, extra: str = "",
+          lede_class: str = "") -> str:
     dots = "".join(f'<i class="{"on" if k == index else ""}"></i>' for k in (1, 2, 3))
     return f"""<!doctype html><html><head><meta charset="utf-8">{FONTS}
 <style>{CSS}</style></head><body>
@@ -100,7 +105,7 @@ def _page(index: int, eyebrow: str, headline_html: str, lede: str, extra: str = 
   <div class="mid">
     <div class="eyebrow">{eyebrow}</div>
     <h1>{headline_html}</h1>
-    <p class="lede">{lede}</p>
+    <p class="lede {lede_class}">{lede}</p>
     {extra}
   </div>
   <div class="dots-rail">{dots}</div>
@@ -123,7 +128,8 @@ SLIDE_2 = _page(
     2,
     "The fix",
     f'<span style="{HEAD}">Know if you <span class="hl met">fit</span><br>before you apply.</span>',
-    "Paste your CV and the job post. Get a match score, the gaps holding you back, and a CV tuned to the role.",
+    "Paste your CV and the job post. Get a match score, the gaps to fix, and a CV tuned to the role.",
+    lede_class="wide",
 )
 
 SLIDE_3 = _page(
