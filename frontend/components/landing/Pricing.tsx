@@ -83,7 +83,7 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
       className={cn(
         "relative flex flex-col rounded-2xl border p-6 sm:p-7",
         dark
-          ? "border-foreground bg-foreground text-background shadow-2xl lg:-my-3 lg:py-10"
+          ? "border-foreground bg-foreground text-background shadow-2xl"
           : "border-border bg-background"
       )}
     >
@@ -138,13 +138,19 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
         )}
       </Button>
 
-      {error && <p className="mt-2 text-center text-xs text-missing">{error}</p>}
-
-      {pack.id !== "free" && !error && (
-        <p className={cn("mt-2.5 text-center text-[11px]", dark ? "text-background/45" : "text-muted-foreground")}>
-          Demo: checkout is simulated — no card, no charge.
-        </p>
-      )}
+      {/* Fixed-height caption under every card's button so the buttons line up
+          across the row regardless of note length. */}
+      <div className="mt-2.5 min-h-[32px]">
+        {error ? (
+          <p className="text-center text-xs text-missing">{error}</p>
+        ) : (
+          <p className={cn("text-center text-[11px] leading-snug", dark ? "text-background/45" : "text-muted-foreground")}>
+            {pack.id === "free"
+              ? "No sign-up needed to try it."
+              : "Demo: checkout is simulated. No card, no charge."}
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -163,7 +169,8 @@ export function Pricing() {
           </p>
         </div>
 
-        <div className="mt-12 sm:mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
+        {/* stretch (default) so all cards share a height and their CTAs align */}
+        <div className="mt-12 sm:mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {PACKS.map((p, i) => (
             <PackCard key={p.id} pack={p} index={i} />
           ))}

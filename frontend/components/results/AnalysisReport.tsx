@@ -43,10 +43,10 @@ function ReportBody({ a }: { a: Analysis }) {
       .filter((r) => r.status !== "met")
       .map((r) => `${r.requirement} (${r.status.replace("-", " ")})`),
   ];
-  const recs = [
-    ...a.score.quick_wins,
-    ...a.rewrite.rewritten_bullets.filter((b) => b.changed).map((b) => b.rewritten),
-  ];
+  // Only actionable advice belongs here. The rewritten CV bullets are the
+  // Tailored CV's job — dumping them in "Recommendations" turned it into a wall
+  // of the user's own resume text.
+  const recs = a.score.quick_wins;
   return (
     <div className="mt-4 grid gap-4">
       <Card className="p-5">

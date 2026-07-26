@@ -124,8 +124,10 @@ SLIDE_3 = _page(
     "Coming soon",
     '<span style="font-size:96px">Stop guessing.<br>Start <span class="hl">matching.</span></span>',
     "ResumeMatch is almost here.",
-    extra='<div class="cta">Join the waitlist</div>'
-    '<div class="bib">Link in bio · @resumematch</div>',
+    # No waitlist exists yet, so the CTA is a follow — something we can actually
+    # deliver on. Swap for "Try it free" pointing at the live site once launched.
+    extra='<div class="cta">Follow for launch</div>'
+    '<div class="bib">@resumematch</div>',
 )
 
 SLIDES = [SLIDE_1, SLIDE_2, SLIDE_3]
