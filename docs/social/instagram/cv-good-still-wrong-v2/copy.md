@@ -8,7 +8,7 @@ Pillar: education · Funnel: awareness · Produced via the ig-* skills.
 3. Example — **Every role wants different things.** / One prioritises SQL and reporting. The next, stakeholder management.
 4. What we do — **We check the evidence.** / ResumeMatch maps each job requirement to real evidence in your CV.
 5. You see — **Met, partial, or missing.** / Before you apply, not after the rejection.
-6. Before you apply — **Know the gap first.** / CTA: Follow for launch · @resumematch
+6. Before you apply — **Know the gap first.** / CTA: Follow for launch · @resume.matches
 
 ## Caption
 You can have a genuinely strong CV and still get rejected, and it isn't always about quality. A CV that's perfect for one role can be a weak match for the next, because every job weighs its requirements differently. One team lives on SQL and reporting. The next cares most about stakeholder management. Same CV, very different fit, and most of us only find out after the silence.

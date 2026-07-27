@@ -8,7 +8,7 @@ Pillar: product proof / education · Funnel: consideration · Produced via the i
 3. What we do — **Every requirement, its evidence.** / ResumeMatch ties each job requirement to a line in your CV.
 4. You see — **Met. Partial. Missing.** / Clearly, requirement by requirement.
 5. Now — **The score becomes a plan.** / You know exactly what to improve.
-6. Before you apply — **Know why.** / CTA: Follow for launch · @resumematch
+6. Before you apply — **Know why.** / CTA: Follow for launch · @resume.matches
 
 ## Caption
 A match score feels useful, until you realise it doesn't tell you anything you can act on. "64%" isn't a plan. What do you actually fix?
