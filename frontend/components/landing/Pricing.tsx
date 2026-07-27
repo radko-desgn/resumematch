@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useCredits } from "@/lib/credits";
 import { useAuthGate } from "@/components/auth/AuthGate";
 import { Feature, Pack, PACKS } from "@/lib/packs";
+import { COMING_SOON } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 function FeatureRow({ feature, dark }: { feature: Feature; dark?: boolean }) {
@@ -117,31 +118,45 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
         ))}
       </ul>
 
-      <Button
-        onClick={onBuy}
-        disabled={busy}
-        variant={dark ? "invert" : pack.id === "free" ? "outline" : "default"}
-        className="w-full"
-      >
-        {busy ? (
-          <>
-            <Loader2 className="size-4 animate-spin" /> Starting checkout…
-          </>
-        ) : done ? (
-          <>
-            <Check className="size-4" /> {granted}
-          </>
-        ) : (
-          <>
-            {pack.cta} <ArrowRight />
-          </>
-        )}
-      </Button>
+      {COMING_SOON ? (
+        <Button
+          disabled
+          variant={dark ? "invert" : pack.id === "free" ? "outline" : "default"}
+          className="w-full"
+        >
+          Available at launch
+        </Button>
+      ) : (
+        <Button
+          onClick={onBuy}
+          disabled={busy}
+          variant={dark ? "invert" : pack.id === "free" ? "outline" : "default"}
+          className="w-full"
+        >
+          {busy ? (
+            <>
+              <Loader2 className="size-4 animate-spin" /> Starting checkout…
+            </>
+          ) : done ? (
+            <>
+              <Check className="size-4" /> {granted}
+            </>
+          ) : (
+            <>
+              {pack.cta} <ArrowRight />
+            </>
+          )}
+        </Button>
+      )}
 
       {/* Fixed-height caption under every card's button so the buttons line up
           across the row regardless of note length. */}
       <div className="mt-2.5 min-h-[32px]">
-        {error ? (
+        {COMING_SOON ? (
+          <p className={cn("text-center text-[11px] leading-snug", dark ? "text-background/45" : "text-muted-foreground")}>
+            Pricing goes live at launch.
+          </p>
+        ) : error ? (
           <p className="text-center text-xs text-missing">{error}</p>
         ) : (
           <p className={cn("text-center text-[11px] leading-snug", dark ? "text-background/45" : "text-muted-foreground")}>

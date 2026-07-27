@@ -12,6 +12,7 @@ import { SettingsPanel } from "@/components/account/SettingsPanel";
 import { Clock, Settings as SettingsIcon } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useAuthGate } from "@/components/auth/AuthGate";
+import { COMING_SOON, INSTAGRAM_URL } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -97,18 +98,33 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <CreditBadge inverted={!scrolled} />
-            {session ? (
-              <AccountMenu inverted={!scrolled} />
-            ) : (
+            {COMING_SOON ? (
               <Button
+                asChild
                 size="sm"
                 variant={scrolled ? "default" : "invert"}
                 className="hidden sm:inline-flex"
-                onClick={() => promptSignIn()}
               >
-                Sign in
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+                  Follow for launch
+                </a>
               </Button>
+            ) : (
+              <>
+                <CreditBadge inverted={!scrolled} />
+                {session ? (
+                  <AccountMenu inverted={!scrolled} />
+                ) : (
+                  <Button
+                    size="sm"
+                    variant={scrolled ? "default" : "invert"}
+                    className="hidden sm:inline-flex"
+                    onClick={() => promptSignIn()}
+                  >
+                    Sign in
+                  </Button>
+                )}
+              </>
             )}
             <button
               className="md:hidden inline-flex size-11 items-center justify-center rounded-full hover:bg-current/10"
@@ -168,32 +184,42 @@ export function SiteHeader() {
                 ))}
               </nav>
 
-              <div className="mt-8 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Your credits</span>
-                <CreditBadge onNavigate={() => setOpen(false)} />
-              </div>
-
-              {session ? (
-                <div className="mt-4 border-t border-border pt-4">
-                  <p className="truncate text-xs text-muted-foreground">{email}</p>
-                  <Button variant="outline" className="mt-3 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("history"); }}>
-                    <Clock className="size-4" /> Scan history
-                  </Button>
-                  <Button variant="outline" className="mt-2 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("settings"); }}>
-                    <SettingsIcon className="size-4" /> Settings
-                  </Button>
-                  <Button variant="ghost" className="mt-2 w-full justify-start" onClick={() => { signOut(); setOpen(false); }}>
-                    Log out
-                  </Button>
-                </div>
+              {COMING_SOON ? (
+                <Button asChild className="mt-8 w-full">
+                  <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
+                    Follow for launch
+                  </a>
+                </Button>
               ) : (
                 <>
-                  <Button className="mt-4 w-full" onClick={() => { setOpen(false); promptSignIn(); }}>
-                    Sign in
-                  </Button>
-                  <Button asChild variant="ghost" className="mt-2 w-full">
-                    <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
-                  </Button>
+                  <div className="mt-8 flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Your credits</span>
+                    <CreditBadge onNavigate={() => setOpen(false)} />
+                  </div>
+
+                  {session ? (
+                    <div className="mt-4 border-t border-border pt-4">
+                      <p className="truncate text-xs text-muted-foreground">{email}</p>
+                      <Button variant="outline" className="mt-3 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("history"); }}>
+                        <Clock className="size-4" /> Scan history
+                      </Button>
+                      <Button variant="outline" className="mt-2 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("settings"); }}>
+                        <SettingsIcon className="size-4" /> Settings
+                      </Button>
+                      <Button variant="ghost" className="mt-2 w-full justify-start" onClick={() => { signOut(); setOpen(false); }}>
+                        Log out
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Button className="mt-4 w-full" onClick={() => { setOpen(false); promptSignIn(); }}>
+                        Sign in
+                      </Button>
+                      <Button asChild variant="ghost" className="mt-2 w-full">
+                        <a href="#analyze" onClick={() => setOpen(false)}>Get Started</a>
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
             </motion.aside>
