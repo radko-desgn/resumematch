@@ -1,18 +1,25 @@
 /**
  * Legal document content.
  *
- * TEST / PLACEHOLDER DRAFTS — NOT LEGAL ADVICE. These describe what the app
- * actually does today (accounts, credits, CV analysis, the free-scan email
- * gate, the marketing opt-in), so the pages are honest, but every bracketed
- * [PLACEHOLDER] must be filled in and the whole thing reviewed by a qualified
- * lawyer before this is anything more than a demo. The operator is EU-based and
- * the service processes CVs, which can contain special-category data.
+ * NOT LEGAL ADVICE. These reflect what the app actually does (accounts, credits,
+ * real Stripe payments, CV analysis, the free-scan email gate, the marketing
+ * opt-in). Before launch, two things remain: fill in LEGAL_ENTITY + LEGAL_ADDRESS
+ * (your registered sole-trader details), remove DISCLAIMER, and have a lawyer
+ * review the remaining flagged items (Art. 9 special-category basis, liability
+ * cap, breach-notification wording, withdrawal-waiver + VAT). The operator is
+ * EU-based and the service processes CVs, which can contain special-category data.
  *
  * Kept as data (Markdown strings) so the same branded page shell renders both.
  */
 
-export const LEGAL_EFFECTIVE_DATE = "24 July 2026";
-export const LEGAL_CONTACT = "privacy@[YOURDOMAIN]";
+export const LEGAL_EFFECTIVE_DATE = "28 July 2026";
+
+// ⛔ BEFORE LAUNCH: fill in your sole-trader legal name + registered address,
+// then delete DISCLAIMER (below) once a lawyer has looked it over. These two
+// constants are the only details still missing.
+export const LEGAL_ENTITY = "[YOUR SOLE-TRADER LEGAL NAME]";
+export const LEGAL_ADDRESS = "[YOUR REGISTERED ADDRESS, Bulgaria]";
+export const LEGAL_CONTACT = "privacy@resumematch.pro";
 
 export interface LegalDoc {
   slug: "terms" | "privacy";
@@ -23,7 +30,7 @@ export interface LegalDoc {
   body: string;
 }
 
-const DISCLAIMER = `> **Draft for testing — not legal advice.** This document is a placeholder used while ResumeMatch is in development. It has not been reviewed by a lawyer, and every item in \\[brackets] still needs to be completed. Do not rely on it.`;
+const DISCLAIMER = `> **Draft pending final review.** We are finalising our registered business details and a legal review before launch. Questions in the meantime: ${LEGAL_CONTACT}.`;
 
 export const PRIVACY: LegalDoc = {
   slug: "privacy",
@@ -32,9 +39,9 @@ export const PRIVACY: LegalDoc = {
   summary: "What we collect, why, and the rights you have over it.",
   body: `${DISCLAIMER}
 
-ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy explains what personal data we handle and how. It is written to reflect the EU General Data Protection Regulation (GDPR), since we operate from **[Bulgaria / EU]**.
+ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy explains what personal data we handle and how. It is written to reflect the EU General Data Protection Regulation (GDPR), since we operate from **Bulgaria (EU)**.
 
-**Controller:** [COMPANY LEGAL NAME], [REGISTERED ADDRESS]. Contact: ${LEGAL_CONTACT}.
+**Controller:** ${LEGAL_ENTITY}, ${LEGAL_ADDRESS}. Contact: ${LEGAL_CONTACT}.
 
 ## 1. What we collect
 
@@ -68,9 +75,9 @@ We use these processors to run the service. Each acts on our instructions under 
 - **Supabase** — accounts and database (EU region).
 - **Render** — backend hosting.
 - **Vercel** — frontend hosting.
-- **Anthropic** — the AI model that performs the analysis, **only when live analysis is enabled** (the demo uses canned results and sends nothing to Anthropic).
-- **Resend** — sending transactional emails (password resets), once configured.
-- **[Stripe]** — payment processing, once real payments are enabled.
+- **Anthropic** (US) — the AI model that performs the analysis on the CV and job text you submit.
+- **Stripe** — payment processing; card details go directly to Stripe and never to us.
+- **Resend** — sending transactional emails (such as password resets), when configured.
 
 Some of these may process data **outside the EU** (for example in the United States). Where that happens, transfers rely on the appropriate safeguards, such as Standard Contractual Clauses. \\[⚠️ LEGAL REVIEW REQUIRED — confirm each processor's location and transfer mechanism.]
 
@@ -82,11 +89,11 @@ Please don't paste anything into the CV or job boxes that you don't want us to p
 
 ## 5. How long we keep it
 
-- **Account data** — until you delete your account, then removed within **[30 days]**.
-- **CV and job text** — used to generate your result. \\[⚠️ specify retention — e.g. deleted after the session, or retained with the report until account deletion.]
-- **Free-scan records** — kept to enforce the limit for **[period]**.
-- **Marketing consent records** — kept while consent stands and for a period afterwards as proof.
-- **Logs** — **[period, e.g. 30–90 days]**.
+- **Account data** — until you delete your account, then removed within **30 days**.
+- **CV and job text** — stored with your saved scan history so you can revisit a result. Removed when you delete the scan or your account (within 30 days). If you use the free scan without an account, the text is processed to produce the result and not stored beyond it.
+- **Free-scan records** — the email and a counter, kept for **12 months** to enforce the one-free-scan limit.
+- **Marketing consent records** — kept while consent stands and for **up to 3 years** afterwards as proof.
+- **Logs** — up to **90 days**.
 
 ## 6. Your rights
 
@@ -100,7 +107,7 @@ Passwords are hashed by our authentication provider. Traffic is encrypted in tra
 
 ## 8. Children
 
-ResumeMatch is not intended for anyone under **[16]**, and we do not knowingly collect their data.
+ResumeMatch is not intended for anyone under **16**, and we do not knowingly collect their data.
 
 ## 9. Changes
 
@@ -118,7 +125,7 @@ export const TERMS: LegalDoc = {
 
 These terms govern your use of ResumeMatch. By using the service you agree to them.
 
-**Operator:** [COMPANY LEGAL NAME], [REGISTERED ADDRESS]. Contact: ${LEGAL_CONTACT}.
+**Operator:** ${LEGAL_ENTITY}, ${LEGAL_ADDRESS}. Contact: ${LEGAL_CONTACT}.
 
 ## 1. What the service does
 
@@ -134,10 +141,12 @@ The free quick check is available without an account, limited to **one scan per 
 
 ## 4. Credits and payments
 
-- The deep analysis and tailored-CV generation cost **credits**, which you buy in packs.
-- Payments are processed by **Stripe**. Prices and any applicable tax are shown before you pay. \\[⚠️ LEGAL REVIEW REQUIRED: refund policy, EU right of withdrawal for digital goods, VAT/invoicing, and your sole-trader legal name + address.]
+- The deep analysis and tailored-CV generation cost **credits**, which you buy in packs. The Pro plan is a monthly subscription with a fixed monthly allowance that resets each billing cycle and does not roll over.
+- Payments are processed by **Stripe**. Prices and any applicable VAT are shown before you pay.
 - Credits have no cash value and are non-transferable.
-- \\[Refunds: define policy. Under EU law, digital content supplied immediately may waive the 14-day withdrawal right only if you consent to immediate performance — this must be handled at checkout.]
+- **Refunds and the EU right of withdrawal.** Credits are digital content delivered immediately. By buying, you ask us to make them available straight away and you acknowledge that once a credit has been **used** (a scan run or a CV generated), you lose the 14-day right of withdrawal for that credit and it is non-refundable. **Unused** credits can be refunded within **14 days** of purchase — email ${LEGAL_CONTACT}.
+- **Subscriptions.** You can cancel the Pro plan at any time; it stops at the end of the current paid period and the remaining allowance is not pro-rated or refunded.
+- \\[A lawyer should confirm the withdrawal-waiver wording and VAT/invoicing before launch.]
 
 ## 5. Acceptable use
 
@@ -165,7 +174,7 @@ You can stop using the service and delete your account at any time. We may suspe
 
 ## 11. Governing law
 
-These terms are governed by the laws of **[Bulgaria]**, without prejudice to mandatory consumer-protection rights you have where you live. \\[⚠️ LEGAL REVIEW REQUIRED.]
+These terms are governed by the laws of **Bulgaria**, without prejudice to mandatory consumer-protection rights you have where you live.
 
 ## 12. Changes
 
