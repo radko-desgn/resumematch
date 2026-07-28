@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { COMING_SOON, INSTAGRAM_URL } from "@/lib/config";
 
 export function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer className="bg-[#0A0A0A] text-white">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
@@ -44,7 +45,10 @@ export function Footer() {
               <Link href="/terms" className="text-white/50 transition-colors hover:text-white">Terms</Link>
               <Link href="/privacy" className="text-white/50 transition-colors hover:text-white">Privacy</Link>
             </nav>
-            <p className="text-xs text-white/40">Built with Next.js + FastAPI · demo project</p>
+            <div className="text-center text-xs sm:text-right">
+              <p className="text-white/40">© {year} ResumeMatch. All rights reserved.</p>
+              <p className="mt-1 text-white/30">Created by Radostin Armenov</p>
+            </div>
           </div>
         </div>
       </div>
