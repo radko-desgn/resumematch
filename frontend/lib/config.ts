@@ -14,4 +14,4 @@ export const COMING_SOON =
   (process.env.NEXT_PUBLIC_COMING_SOON ?? "true").toLowerCase() !== "false";
 
 /** Where every "Follow for launch" CTA points while in coming-soon mode. */
-export const INSTAGRAM_URL = "https://www.instagram.com/resume.matches/";
+export const INSTAGRAM_URL = "https://www.instagram.com/resumematch.pro/";
