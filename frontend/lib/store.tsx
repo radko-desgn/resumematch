@@ -56,6 +56,14 @@ export const MIN_TEXT_CHARS = 100;
 const emptyCv: CvInput = { kind: "text", text: "", file: null };
 const emptyJob: JobInput = { kind: "text", text: "", url: "", file: null };
 
+// Persist the wizard across full-page redirects (Google sign-in, Stripe
+// checkout, an email-confirm tab) so a free-scan visitor who signs in or buys
+// credits doesn't lose their CV, job, and result. Files can't be stored, but the
+// analysis carries the resolved text (_source), so a restored session can still
+// run the deep scan.
+const STORE_KEY = "rm-wizard-v1";
+const STORE_MAX_AGE = 2 * 60 * 60 * 1000; // 2 hours
+
 export function WizardProvider({
   children,
   initialAnalysis = null,
@@ -82,6 +90,9 @@ export function WizardProvider({
   const [hasKey, setHasKey] = React.useState(false);
   const [emailConfigured, setEmailConfigured] = React.useState(false);
 
+  // Only the real wizard persists; the /preview design page seeds its own state.
+  const persist = initialAnalysis === null;
+
   React.useEffect(() => {
     getHealth()
       .then((h) => {
@@ -93,6 +104,70 @@ export function WizardProvider({
         setEmailConfigured(false);
       });
   }, []);
+
+  // Restore a saved session once on mount (client only) — this is exactly what
+  // an effect is for: syncing with an external store (localStorage) unavailable
+  // during SSR. The one-time sets are intentional.
+  /* eslint-disable react-hooks/set-state-in-effect */
+  React.useEffect(() => {
+    if (!persist) return;
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (!s || Date.now() - (s.ts || 0) > STORE_MAX_AGE) {
+        localStorage.removeItem(STORE_KEY);
+        return;
+      }
+      const saved: Analysis | null = s.analysis ?? null;
+      // Prefer the resolved text from the analysis so a restored session runs
+      // the deep scan even if the original input was an uploaded file.
+      if (saved?._source) {
+        setCvState({ kind: "text", text: saved._source.cv, file: null });
+        setJobState({ kind: "text", text: saved._source.job, url: "", file: null });
+      } else {
+        if (s.cv?.text) setCvState({ kind: "text", text: s.cv.text, file: null });
+        if (s.job) {
+          setJobState({
+            kind: s.job.kind === "url" ? "url" : "text",
+            text: s.job.text || "",
+            url: s.job.url || "",
+            file: null,
+          });
+        }
+      }
+      if (saved) {
+        setAnalysis(saved);
+        setStatus("done");
+      }
+      if (s.tier === "free" || s.tier === "paid") setTier(s.tier);
+      if (typeof s.step === "number") setStep(Math.min(4, Math.max(1, s.step)));
+    } catch {
+      /* ignore corrupt/unavailable storage */
+    }
+  }, [persist]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Save on meaningful changes.
+  React.useEffect(() => {
+    if (!persist) return;
+    if (step === 1 && !analysis && !cv.text && !job.text) return; // nothing to save
+    try {
+      localStorage.setItem(
+        STORE_KEY,
+        JSON.stringify({
+          ts: Date.now(),
+          step,
+          tier,
+          analysis,
+          cv: { kind: cv.kind, text: cv.text },
+          job: { kind: job.kind, text: job.text, url: job.url },
+        })
+      );
+    } catch {
+      /* storage full or disabled — non-fatal */
+    }
+  }, [persist, step, tier, analysis, cv, job]);
 
   const setCv = (patch: Partial<CvInput>) => setCvState((c) => ({ ...c, ...patch }));
   const setJob = (patch: Partial<JobInput>) => setJobState((j) => ({ ...j, ...patch }));
@@ -117,6 +192,13 @@ export function WizardProvider({
     setError(null);
     setStep(1);
     setMock(true); // always fall back to free mode on reset
+    if (persist) {
+      try {
+        localStorage.removeItem(STORE_KEY);
+      } catch {
+        /* ignore */
+      }
+    }
   };
 
   const analyze = React.useCallback(async () => {
