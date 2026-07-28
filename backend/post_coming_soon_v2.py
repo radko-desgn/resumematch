@@ -17,7 +17,7 @@ from __future__ import annotations
 from backend.carousel import render_carousel
 
 CAMPAIGN = "coming-soon-v2"
-CTA = '<div class="cta">Follow for launch</div><div class="bib">@resume.matches</div>'
+CTA = '<div class="cta">Follow for launch</div><div class="bib">@resumematch.pro</div>'
 
 
 def head(html: str, px: int = 88) -> str:
