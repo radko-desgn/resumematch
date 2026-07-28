@@ -95,7 +95,7 @@ evidence, met/partial/missing, and honest tailoring are real product
 capabilities. No prices shown. Tone within brand; no banned phrases.
 
 ## 12. Issues to resolve before publishing
-- **Handle** — confirmed as `@resume.matches` (rendered on slide 4).
+- **Handle** — confirmed as `@resumematch.pro` (rendered on slide 4).
 - **Keep the CTA as "Follow"** until live AI is enabled on the deploy (the live
   free check currently returns a canned demo score, so "try the free check" would
   mislead a cold audience). Flip the CTA once real analysis is on.

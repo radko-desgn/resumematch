@@ -19,7 +19,7 @@ def h(html: str) -> str:
     return f'<span style="{HEAD}">{html}</span>'
 
 
-CTA = '<div class="cta">Follow for launch</div><div class="bib">@resume.matches</div>'
+CTA = '<div class="cta">Follow for launch</div><div class="bib">@resumematch.pro</div>'
 
 
 SLIDES = [

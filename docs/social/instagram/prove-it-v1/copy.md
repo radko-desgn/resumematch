@@ -30,7 +30,7 @@ candidate's self-doubt rather than the CV or the score.
 3. Why — **They match to evidence.** / Recruiters and ATS go off what your CV shows, not what you could do.
 4. The fix — **Show the proof.** / For every requirement the job lists, point to where you've actually done it.
 5. Meet ResumeMatch — **See what your CV proves.** / It ties each requirement to real evidence in your CV, and flags met, partial, or missing.
-6. Before you apply — **Prove it first.** / CTA: Follow for launch · @resume.matches
+6. Before you apply — **Prove it first.** / CTA: Follow for launch · @resumematch.pro
 
 ## Caption (~130 words, humanized)
 Getting rejected over and over does something to your head. You start assuming
@@ -73,7 +73,7 @@ met, partial, and missing. Launching soon, follow along.
 No waitlist (CTA = follow). No "live/try it now" claim (says launching soon). No
 invented users, testimonials, statistics, or hiring outcomes. Requirement→evidence
 and met/partial/missing are real product capabilities. No prices shown. Handle is
-the real @resume.matches. Tone within brand; no banned phrases; no em dashes.
+the real @resumematch.pro. Tone within brand; no banned phrases; no em dashes.
 
 ## Assets
 `prove-it-01..06.png` (1080×1350). Reproduce with `python -m backend.post_prove_it`.
