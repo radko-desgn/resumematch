@@ -42,7 +42,7 @@ ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy 
 - **The content you submit** — the CV text and job-post text you paste or upload for analysis. **A CV can contain special-category data** (for example health, ethnicity, or religious information). We ask you not to include anything you don't want processed; see §4.
 - **Free-scan email** — if you use the free scan without an account, the email you enter, so we can apply the one-free-scan-per-address limit.
 - **Marketing consent** — if you tick the optional box, a record that you consented, plus the time and place you did so. Kept so we can demonstrate consent and honour withdrawal.
-- **Credits and purchases** — your credit balance and a record of packs bought. Payments are currently **simulated**; when real payments are added, card details will be handled by the payment provider, not by us.
+- **Credits and purchases** — your credit balance and a record of packs bought. **Card details** are handled directly by our payment provider (Stripe); we never see or store your full card number.
 - **Technical logs** — standard server logs (IP address, timestamps, error traces) generated automatically when you use the site.
 
 We do **not** use advertising trackers or third-party analytics cookies. \\[⚠️ LEGAL REVIEW REQUIRED — confirm before launch and add a cookie notice if any non-essential cookies are introduced.]
@@ -135,7 +135,7 @@ The free quick check is available without an account, limited to **one scan per 
 ## 4. Credits and payments
 
 - The deep analysis and tailored-CV generation cost **credits**, which you buy in packs.
-- **Payments are currently simulated** — no money changes hands, and any "purchase" during this test period grants demo credits only. When real payments launch, prices and terms will be shown at checkout. \\[⚠️ LEGAL REVIEW REQUIRED before charging — refund policy, EU right of withdrawal for digital goods, VAT/invoicing.]
+- Payments are processed by **Stripe**. Prices and any applicable tax are shown before you pay. \\[⚠️ LEGAL REVIEW REQUIRED: refund policy, EU right of withdrawal for digital goods, VAT/invoicing, and your sole-trader legal name + address.]
 - Credits have no cash value and are non-transferable.
 - \\[Refunds: define policy. Under EU law, digital content supplied immediately may waive the 14-day withdrawal right only if you consent to immediate performance — this must be handled at checkout.]
 

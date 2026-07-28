@@ -162,7 +162,7 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
           <p className={cn("text-center text-[11px] leading-snug", dark ? "text-background/45" : "text-muted-foreground")}>
             {pack.id === "free"
               ? "No sign-up needed to try it."
-              : "Demo: checkout is simulated. No card, no charge."}
+              : "Secure checkout, powered by Stripe."}
           </p>
         )}
       </div>

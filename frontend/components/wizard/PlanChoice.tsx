@@ -130,7 +130,7 @@ export function PlanChoice() {
                 ? "Pro Career Pass — unlimited scans."
                 : canScan
                   ? `${scans} scan credit${scans === 1 ? "" : "s"} left — this uses one.`
-                  : "You have 0 scan credits. Checkout is simulated — no charge."}
+                  : "You have 0 scan credits. Add credits to run the deep analysis."}
           </p>
         </div>
       </div>
