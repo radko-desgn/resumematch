@@ -14,11 +14,10 @@
 
 export const LEGAL_EFFECTIVE_DATE = "28 July 2026";
 
-// ⛔ BEFORE LAUNCH: fill in your sole-trader legal name + registered address,
-// then delete DISCLAIMER (below) once a lawyer has looked it over. These two
-// constants are the only details still missing.
-export const LEGAL_ENTITY = "[YOUR SOLE-TRADER LEGAL NAME]";
-export const LEGAL_ADDRESS = "[YOUR REGISTERED ADDRESS, Bulgaria]";
+// Registered sole-trader details. Remove DISCLAIMER (below) once a lawyer has
+// reviewed the flagged items; the identity fields are now complete.
+export const LEGAL_ENTITY = "Radostin Valentinov Armenov";
+export const LEGAL_ADDRESS = "Yadenitsa Street 14, 4400 Pazardzhik, Bulgaria";
 export const LEGAL_CONTACT = "privacy@resumematch.pro";
 
 export interface LegalDoc {
