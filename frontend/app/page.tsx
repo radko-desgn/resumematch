@@ -2,6 +2,7 @@ import { WizardProvider } from "@/lib/store";
 import { CreditsProvider } from "@/lib/credits";
 import { AuthProvider } from "@/lib/auth";
 import { AuthGateProvider } from "@/components/auth/AuthGate";
+import { CheckoutReturn } from "@/components/checkout/CheckoutReturn";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
@@ -16,6 +17,7 @@ export default function Home() {
       <AuthGateProvider>
         <CreditsProvider>
       <WizardProvider>
+        <CheckoutReturn />
         <SiteHeader />
         <main>
           <Hero />

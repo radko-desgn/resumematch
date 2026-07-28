@@ -10,7 +10,17 @@ from __future__ import annotations
 import os
 from typing import Optional
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
+# Load backend/.env for local development (Stripe keys, Supabase, etc.). On the
+# host (Render) the real env vars are already set, so the missing file is a
+# no-op there. Safe to call unconditionally.
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+except ImportError:  # dotenv not installed (minimal env) — rely on real env vars
+    pass
+
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
@@ -135,19 +145,70 @@ def delete_account(claims: dict = Depends(auth.require_claims)) -> dict:
     return {"deleted": True}
 
 
-@app.post("/api/checkout")
-def checkout(req: CheckoutRequest, user_id: str = Depends(auth.require_user)) -> dict:
-    """Buy a credit pack.
+def _frontend_origin(request: Request) -> str:
+    """Best origin to send the browser back to after Stripe checkout.
 
-    Payment is still simulated (see backend/billing.py), but the grant now
-    lands in the database against a real account rather than in localStorage.
+    Prefers an explicit FRONTEND_URL, then the request's Origin header, then the
+    first configured allowed origin, then localhost for dev.
     """
+    env = os.environ.get("FRONTEND_URL", "").strip().rstrip("/")
+    if env:
+        return env
+    origin = request.headers.get("origin")
+    if origin:
+        return origin.rstrip("/")
+    if _ALLOWED_ORIGINS:
+        return _ALLOWED_ORIGINS[0].rstrip("/")
+    return "http://localhost:3001"
+
+
+@app.post("/api/checkout")
+def checkout(req: CheckoutRequest, request: Request,
+             user_id: str = Depends(auth.require_user)) -> dict:
+    """Start checkout for a credit pack.
+
+    With Stripe configured this returns a hosted Checkout URL and grants nothing
+    yet — credits are applied by the webhook once payment is confirmed. Without
+    Stripe (local dev / demo) it falls back to a simulated session and grants the
+    credits immediately so the flow still works end to end.
+    """
+    origin = _frontend_origin(request)
     try:
-        session = billing.create_session(req.pack)
+        session = billing.create_session(
+            req.pack,
+            user_id,
+            success_url=f"{origin}/?checkout=success",
+            cancel_url=f"{origin}/?checkout=cancel",
+        )
     except KeyError:
         raise HTTPException(404, f"Unknown pack: {req.pack}")
-    session["balance"] = credits.grant(user_id, session["grants"])
+
+    if session.get("url"):
+        return session  # real Stripe: fulfillment happens in the webhook
+    session["balance"] = credits.grant(user_id, session["grants"])  # simulated
     return session
+
+
+@app.post("/api/stripe/webhook")
+async def stripe_webhook(request: Request) -> dict:
+    """Stripe fulfillment: grant credits after a confirmed payment.
+
+    The signature is verified against STRIPE_WEBHOOK_SECRET, and each event id is
+    recorded once so a repeated delivery can't double-credit an account.
+    """
+    payload = await request.body()
+    sig = request.headers.get("stripe-signature", "")
+    try:
+        result = billing.parse_webhook(payload, sig)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+
+    if result is None:
+        return {"received": True}  # an event we don't act on
+    if not credits.mark_event_processed(result["event_id"]):
+        return {"received": True, "duplicate": True}
+    credits.grant(result["user_id"], result["grants"])
+    return {"received": True, "granted": True}
 
 
 # NOTE: sync `def` so FastAPI runs these in a worker thread — sync Playwright
