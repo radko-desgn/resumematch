@@ -21,7 +21,7 @@ import os
 
 import stripe
 
-from backend.billing import CURRENCY, PACKS
+from backend.billing import CURRENCY, PACKS, TAX_CODE
 
 
 def main() -> None:
@@ -37,6 +37,7 @@ def main() -> None:
     for pack in PACKS.values():
         product = stripe.Product.create(
             name=f"ResumeMatch — {pack.name}",
+            tax_code=TAX_CODE,  # required by Managed Payments / Stripe Tax
             metadata={"pack": pack.id},
         )
         price_kwargs: dict = {

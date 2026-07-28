@@ -49,6 +49,11 @@ PACKS: dict[str, Pack] = {
 #: Currency the prices are created and charged in (the Stripe account is EUR).
 CURRENCY = os.environ.get("STRIPE_CURRENCY", "eur")
 
+#: Stripe product tax code. Required by Managed Payments / Stripe Tax so VAT is
+#: computed correctly. Default is "General - Electronically Supplied Services",
+#: the right bucket for a digital analysis service. Override via STRIPE_TAX_CODE.
+TAX_CODE = os.environ.get("STRIPE_TAX_CODE", "txcd_10000000")
+
 
 def _secret() -> str:
     return os.environ.get("STRIPE_SECRET_KEY", "")
