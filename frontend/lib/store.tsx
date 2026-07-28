@@ -17,6 +17,8 @@ interface WizardState {
   error: string | null;
   mock: boolean;
   hasKey: boolean;
+  /** True when the server has an email provider configured (report delivery). */
+  emailConfigured: boolean;
   /** Email for an anonymous free scan (unused when signed in). */
   freeEmail: string;
   freeConsent: boolean;
@@ -78,11 +80,18 @@ export function WizardProvider({
   const [freeEmail, setFreeEmail] = React.useState("");
   const [freeConsent, setFreeConsent] = React.useState(false);
   const [hasKey, setHasKey] = React.useState(false);
+  const [emailConfigured, setEmailConfigured] = React.useState(false);
 
   React.useEffect(() => {
     getHealth()
-      .then((h) => setHasKey(Boolean(h.has_key)))
-      .catch(() => setHasKey(false));
+      .then((h) => {
+        setHasKey(Boolean(h.has_key));
+        setEmailConfigured(Boolean(h.email_provider));
+      })
+      .catch(() => {
+        setHasKey(false);
+        setEmailConfigured(false);
+      });
   }, []);
 
   const setCv = (patch: Partial<CvInput>) => setCvState((c) => ({ ...c, ...patch }));
@@ -140,7 +149,7 @@ export function WizardProvider({
   };
 
   const value: WizardState = {
-    step, cv, job, tier, status, analysis, error, mock, hasKey, setMock,
+    step, cv, job, tier, status, analysis, error, mock, hasKey, emailConfigured, setMock,
     freeEmail, freeConsent, setFreeEmail, setFreeConsent,
     setCv, setJob, setTier, goto, next, back, reset, analyze, startScan, upgrade,
     cvReady, jobReady,

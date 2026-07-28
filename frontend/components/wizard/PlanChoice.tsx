@@ -57,7 +57,7 @@ export function PlanChoice() {
         <div className="rounded-2xl border border-border p-5 flex flex-col">
           <div className="flex items-baseline justify-between">
             <span className="font-display text-base">Free Quick Check</span>
-            <span className="font-display text-xl">$0</span>
+            <span className="font-display text-xl">€0</span>
           </div>
           <Ticks items={FREE} dim />
           {signedIn ? (
@@ -130,7 +130,7 @@ export function PlanChoice() {
                 ? "Pro Career Pass — unlimited scans."
                 : canScan
                   ? `${scans} scan credit${scans === 1 ? "" : "s"} left — this uses one.`
-                  : "You have 0 scan credits. Checkout is simulated — no charge."}
+                  : "You have 0 scan credits. Add credits to run the deep analysis."}
           </p>
         </div>
       </div>

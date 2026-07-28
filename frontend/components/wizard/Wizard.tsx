@@ -9,7 +9,6 @@ import { Step2Job } from "../steps/Step2Job";
 import { Step3Processing } from "../steps/Step3Processing";
 import { Step4Results } from "../steps/Step4Results";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "./ModeToggle";
 import { PlanChoice } from "./PlanChoice";
 
 const STEPS = [Step1Cv, Step2Job, Step3Processing, Step4Results];
@@ -46,9 +45,6 @@ export function Wizard() {
       {step === 2 && (
         <>
           <div className="mt-6">
-            <ModeToggle />
-          </div>
-          <div className="mt-6 border-t border-border pt-6">
             <PlanChoice />
           </div>
           <div className="mt-6">

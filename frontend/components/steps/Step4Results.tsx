@@ -62,7 +62,7 @@ export function Step4Results() {
           <p className="mt-3 text-xs text-muted-foreground">
             {canScan
               ? "We'll re-run the deeper analysis on the same inputs."
-              : "Demo: checkout is simulated — no card, no charge."}
+              : "Secure checkout, powered by Stripe."}
           </p>
         </Card>
       )}

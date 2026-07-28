@@ -4,11 +4,13 @@ import { useState } from "react";
 import { Download, Loader2, Mail, Check, AlertTriangle } from "lucide-react";
 import { Analysis } from "@/lib/types";
 import { downloadReportPdf, emailReport } from "@/lib/api";
+import { useWizard } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 
 export function ReportActions({ analysis }: { analysis: Analysis }) {
+  const { emailConfigured } = useWizard();
   const [downloading, setDownloading] = useState(false);
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
@@ -53,20 +55,24 @@ export function ReportActions({ analysis }: { analysis: Analysis }) {
           {downloading ? "Building PDF…" : "Download PDF"}
         </Button>
 
-        <form onSubmit={onEmail} className="flex flex-1 flex-col gap-2 sm:flex-row">
-          <Input
-            type="email"
-            required
-            placeholder="you@email.com"
-            value={email}
-            onChange={(ev) => setEmail(ev.target.value)}
-            aria-label="Email address"
-          />
-          <Button type="submit" variant="outline" disabled={sending || !email} className="w-full sm:w-auto">
-            {sending ? <Loader2 className="animate-spin" /> : <Mail />}
-            {sending ? "Sending…" : "Email it"}
-          </Button>
-        </form>
+        {/* Email delivery only shows when the server has an email provider
+            configured, so we never offer a button that can't actually send. */}
+        {emailConfigured && (
+          <form onSubmit={onEmail} className="flex flex-1 flex-col gap-2 sm:flex-row">
+            <Input
+              type="email"
+              required
+              placeholder="you@email.com"
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
+              aria-label="Email address"
+            />
+            <Button type="submit" variant="outline" disabled={sending || !email} className="w-full sm:w-auto">
+              {sending ? <Loader2 className="animate-spin" /> : <Mail />}
+              {sending ? "Sending…" : "Email it"}
+            </Button>
+          </form>
+        )}
       </div>
 
       {msg && (

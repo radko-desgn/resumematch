@@ -99,6 +99,43 @@ def grant(user_id: str, grants: dict) -> dict:
     return get_balance(user_id)
 
 
+def reset(user_id: str, quota: dict) -> dict:
+    """Set (not add) a user's balance to a fixed quota, then return it.
+
+    Used for subscription cycles so the monthly allowance restarts rather than
+    accumulating, and for cancellation (quota of zero).
+    """
+    _rpc(
+        "reset_credits",
+        {
+            "p_user": user_id,
+            "p_scans": int(quota.get("scans", 0)),
+            "p_cvs": int(quota.get("cvs", 0)),
+        },
+    )
+    return get_balance(user_id)
+
+
+def mark_event_processed(event_id: str) -> bool:
+    """Record a Stripe webhook event id for idempotency.
+
+    Returns True if it was newly recorded (caller should fulfill), or False if it
+    had already been processed (a duplicate delivery — caller should skip).
+    """
+    _require_config()
+    with httpx.Client(timeout=_TIMEOUT) as c:
+        r = c.post(
+            f"{SUPABASE_URL}/rest/v1/stripe_events",
+            headers={**_headers(), "Prefer": "return=minimal"},
+            json={"event_id": event_id},
+        )
+    if r.status_code in (200, 201, 204):
+        return True
+    if r.status_code == 409:  # duplicate primary key -> already handled
+        return False
+    raise HTTPException(502, f"Could not record billing event: {r.text[:200]}")
+
+
 # ----------------------------------------------------------------- free scans
 # Anonymous visitors get a small number of free quick checks per email address.
 # Counting happens here, never in the browser.
