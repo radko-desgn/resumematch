@@ -57,7 +57,7 @@ export function PlanChoice() {
         <div className="rounded-2xl border border-border p-5 flex flex-col">
           <div className="flex items-baseline justify-between">
             <span className="font-display text-base">Free Quick Check</span>
-            <span className="font-display text-xl">$0</span>
+            <span className="font-display text-xl">€0</span>
           </div>
           <Ticks items={FREE} dim />
           {signedIn ? (

@@ -99,6 +99,23 @@ def grant(user_id: str, grants: dict) -> dict:
     return get_balance(user_id)
 
 
+def reset(user_id: str, quota: dict) -> dict:
+    """Set (not add) a user's balance to a fixed quota, then return it.
+
+    Used for subscription cycles so the monthly allowance restarts rather than
+    accumulating, and for cancellation (quota of zero).
+    """
+    _rpc(
+        "reset_credits",
+        {
+            "p_user": user_id,
+            "p_scans": int(quota.get("scans", 0)),
+            "p_cvs": int(quota.get("cvs", 0)),
+        },
+    )
+    return get_balance(user_id)
+
+
 def mark_event_processed(event_id: str) -> bool:
     """Record a Stripe webhook event id for idempotency.
 

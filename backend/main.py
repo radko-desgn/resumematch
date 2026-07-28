@@ -207,8 +207,13 @@ async def stripe_webhook(request: Request) -> dict:
         return {"received": True}  # an event we don't act on
     if not credits.mark_event_processed(result["event_id"]):
         return {"received": True, "duplicate": True}
-    credits.grant(result["user_id"], result["grants"])
-    return {"received": True, "granted": True}
+
+    action = result["action"]
+    if action == "grant":
+        credits.grant(result["user_id"], result["grants"])  # one-time pack: add
+    else:
+        credits.reset(result["user_id"], result["grants"])  # subscription: set/zero
+    return {"received": True, "action": action}
 
 
 # NOTE: sync `def` so FastAPI runs these in a worker thread — sync Playwright

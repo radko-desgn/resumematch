@@ -38,9 +38,26 @@ browser just follows it.
 
 ## One-time database setup
 
-Run `supabase/stripe_events.sql` once in the Supabase SQL Editor (the webhook
-idempotency table). The credits table and RPCs from `supabase/schema.sql` are
-already in place.
+Run these once in the Supabase SQL Editor (both idempotent):
+- `supabase/stripe_events.sql` — webhook idempotency table.
+- `supabase/pro_subscription.sql` — `reset_credits` for the monthly Pro reset.
+
+The credits table and the other RPCs from `supabase/schema.sql` are already in place.
+
+## Plans
+
+| Pack | Price | Grants | Type |
+|------|-------|--------|------|
+| Single Scan Pass | €3.99 | +1 scan | one-time |
+| Job Hunter Pack | €9.99 | +6 scans, +1 CV | one-time |
+| Pro Career Pass | €19.99/mo | 20 scans + 5 CVs, **reset each cycle** | subscription |
+
+The Pro quota **resets** (not accumulates) on every renewal, and zeroes on
+cancellation. Webhook actions: one-time → `grant` (add) on
+`checkout.session.completed`; subscription → `reset` on `invoice.paid` (initial +
+renewals); cancel → `reset` to zero on `customer.subscription.deleted`. The
+subscription checkout is skipped on `checkout.session.completed` so credits are
+applied in exactly one place.
 
 ## Create the products/prices
 
@@ -86,8 +103,7 @@ grant.
 
 ## Not yet handled (follow-ups)
 
-- Subscription **renewals/cancellations** for the Pro plan. The initial purchase
-  grants `unlimited`; `invoice.paid` (renewal) and `customer.subscription.deleted`
-  (revoke unlimited) webhooks are not wired yet.
-- Currency: packs are priced in EUR; the frontend copy still shows `$`. Reconcile
-  the display before charging real money.
+- Copy that still says checkout is "simulated / no charge" (FAQ, PlanChoice
+  out-of-credits line) needs updating when real charges go live.
+- Proration/upgrades between plans aren't special-cased (Stripe handles the
+  billing; our reset just applies the current plan's quota on the next invoice).

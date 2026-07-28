@@ -42,7 +42,7 @@ export const PACKS: Pack[] = [
     name: "Free Basic Scan",
     badge: "Getting Started",
     blurb: "Quick compatibility estimate to test the waters.",
-    price: "$0",
+    price: "€0",
     priceNote: "free forever",
     features: [
       { state: "included", text: "Basic percentage match score estimate" },
@@ -58,7 +58,7 @@ export const PACKS: Pack[] = [
     name: "Single Scan Pass",
     badge: "Single Application",
     blurb: "Perfect for targeting one specific dream job opportunity.",
-    price: "$3.99",
+    price: "€3.99",
     priceNote: "one-time payment",
     features: [
       { state: "credit", text: "1 AI Deep Scan Credit" },
@@ -76,7 +76,7 @@ export const PACKS: Pack[] = [
     badge: "Most Popular — Save 60%",
     hotBadge: true,
     blurb: "Designed for active job seekers sending multiple applications.",
-    price: "$9.99",
+    price: "€9.99",
     priceNote: "one-time payment",
     features: [
       { state: "credit", text: "5 + 1 free bonus AI scan credits (6 scans total)" },
@@ -92,19 +92,19 @@ export const PACKS: Pack[] = [
   {
     id: "pro",
     name: "Pro Career Pass",
-    badge: "Unlimited Power",
-    blurb: "Ultimate toolkit for aggressive career moves and executive job hunts.",
-    price: "$19.99",
+    badge: "Monthly Plan",
+    blurb: "A steady monthly allowance for an active, ongoing job search.",
+    price: "€19.99",
     priceNote: "per month",
     features: [
-      { state: "credit", text: "Unlimited AI scans & compatibility analyses" },
-      { state: "credit", text: "Unlimited ATS tailored CV generations (.pdf, .docx)" },
-      { state: "included", text: "Full access to all advanced templates & executive summaries" },
-      { state: "included", text: "Instant priority AI processing speed" },
+      { state: "credit", text: "20 AI deep scans every month" },
+      { state: "credit", text: "5 ATS tailored CV generations every month (.pdf, .docx)" },
+      { state: "included", text: "Fresh quota each billing cycle — unused scans don't roll over" },
+      { state: "included", text: "Full pain points, keyword gaps & PDF export" },
       { state: "included", text: "Cancel anytime" },
     ],
     cta: "Start Pro Pass",
-    grants: { scans: 0, cvs: 0, unlimited: true },
+    grants: { scans: 20, cvs: 5 },
   },
 ];
 
