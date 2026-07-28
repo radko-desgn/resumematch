@@ -9,7 +9,51 @@ from __future__ import annotations
 from . import prompts
 from .embeddings import chunk_resume, extract_bullets, match_requirements
 from .llm import structured_call
-from .schemas import Analysis, RewriteResult, ScoreResult, TailoredCV
+from .schemas import Analysis, Requirement, RewriteResult, ScoreResult, TailoredCV
+
+# How much each requirement status counts toward coverage.
+_STATUS_WEIGHT = {"met": 1.0, "partially-met": 0.5, "missing": 0.0}
+# Must-haves dominate; nice-to-haves are a small bonus.
+_MUST_WEIGHT = 0.8
+_NICE_WEIGHT = 0.2
+
+
+def _coverage(group: list[Requirement]) -> float | None:
+    """Average status weight for a group, or None if the group is empty."""
+    if not group:
+        return None
+    return sum(_STATUS_WEIGHT[r.status] for r in group) / len(group)
+
+
+def score_from_requirements(requirements: list[Requirement]) -> int:
+    """Derive the overall fit score (0-100) from the requirement coverage.
+
+    Computed in code so the headline number can never contradict the
+    met/partial/missing breakdown — an LLM left to free-form the percentage
+    inflates it (e.g. 78% while meeting 3 of 9 requirements).
+    """
+    if not requirements:
+        return 0
+    must = _coverage([r for r in requirements if r.type == "must-have"])
+    nice = _coverage([r for r in requirements if r.type == "nice-to-have"])
+    if must is None and nice is None:
+        return 0
+    if must is None:
+        pct = nice  # only nice-to-haves listed
+    elif nice is None:
+        pct = must  # only must-haves listed
+    else:
+        pct = _MUST_WEIGHT * must + _NICE_WEIGHT * nice
+    return max(0, min(100, round(pct * 100)))
+
+
+def verdict_for(score: int) -> str:
+    """Map a score to the three-way verdict, consistent with the number."""
+    if score >= 70:
+        return "strong match"
+    if score >= 45:
+        return "moderate match"
+    return "weak match"
 
 
 def analyze(
@@ -52,6 +96,11 @@ def analyze(
             if with_rewrites
             else empty_rewrite
         )
+
+    # Derive the headline score + verdict from the per-requirement coverage, so
+    # they always agree with the met/partial/missing breakdown the user sees.
+    score.overall_fit_score = score_from_requirements(score.requirements)
+    score.verdict = verdict_for(score.overall_fit_score)  # type: ignore[assignment]
 
     # 2) Local embedding match: requirements -> nearest resume evidence (no API)
     requirement_texts = [r.requirement for r in score.requirements]
