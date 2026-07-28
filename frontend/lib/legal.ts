@@ -155,27 +155,35 @@ Don't: submit content you have no right to share; try to break, overload, or rev
 
 You keep all rights to the CV and job text you submit. You grant us a limited licence to process that text solely to provide the analysis you asked for. We don't claim ownership and don't use it to train models.
 
-## 7. AI output
+## 7. Our intellectual property
+
+ResumeMatch is proprietary. Its name, logo, branding, website, visual design, text, the layout and format of its analysis, the underlying software and source code, and all related materials are owned by ${LEGAL_ENTITY} and protected by copyright and other intellectual-property laws. **All rights reserved.**
+
+You may **not** copy, reproduce, republish, scrape, frame, mirror, modify, translate, distribute, sell, sublicense, or create derivative works from any part of the service or its content, and you may **not** reverse-engineer, decompile, or clone the platform, in whole or in part, without our prior **written** permission. Unauthorised copying or use infringes our rights and may be pursued through civil claims (including damages and injunctions) and, where applicable, criminal proceedings under Bulgarian and EU law.
+
+Nothing in this section affects your rights to the CV and job text you submit (see §6).
+
+## 8. AI output
 
 Analyses are generated automatically and can be wrong, incomplete, or out of date. Rewrites only rephrase what your CV already contains — they don't invent experience — but you are responsible for checking everything before you rely on or send it.
 
-## 8. Availability
+## 9. Availability
 
 The service is provided "as is" and "as available". It's an early-stage product; we don't promise uninterrupted or error-free operation, and we may change features at any time.
 
-## 9. Liability
+## 10. Liability
 
 \\[⚠️ LEGAL REVIEW REQUIRED — to the extent permitted by law, our liability is limited; consumer protections under Bulgarian/EU law that cannot be excluded still apply. A lawyer must set the exact wording and cap.]
 
-## 10. Termination
+## 11. Termination
 
 You can stop using the service and delete your account at any time. We may suspend or end access for breach of these terms.
 
-## 11. Governing law
+## 12. Governing law
 
 These terms are governed by the laws of **Bulgaria**, without prejudice to mandatory consumer-protection rights you have where you live.
 
-## 12. Changes
+## 13. Changes
 
 We may update these terms; material changes will be posted here and, where appropriate, notified by email.
 
