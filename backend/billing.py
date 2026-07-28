@@ -148,18 +148,27 @@ def parse_webhook(payload: bytes, sig_header: str) -> dict | None:
     if event["type"] != "checkout.session.completed":
         return None  # renewals/cancellations handled separately (future work)
 
+    # event["data"]["object"] is a StripeObject: it supports item access but not
+    # dict.get, and dict() conversion misbehaves, so read fields defensively.
     session = event["data"]["object"]
-    if session.get("payment_status") not in ("paid", "no_payment_required"):
+
+    def sfield(obj, key, default=None):
+        try:
+            return obj[key]
+        except (KeyError, TypeError):
+            return default
+
+    if sfield(session, "payment_status") not in ("paid", "no_payment_required"):
         return None
 
-    meta = session.get("metadata") or {}
-    user_id = meta.get("user_id") or session.get("client_reference_id")
+    meta = sfield(session, "metadata")
+    user_id = sfield(meta, "user_id") or sfield(session, "client_reference_id")
     if not user_id:
         return None
 
     grants = {
-        "scans": int(meta.get("scans", 0) or 0),
-        "cvs": int(meta.get("cvs", 0) or 0),
-        "unlimited": meta.get("unlimited") == "true",
+        "scans": int(sfield(meta, "scans", 0) or 0),
+        "cvs": int(sfield(meta, "cvs", 0) or 0),
+        "unlimited": sfield(meta, "unlimited") == "true",
     }
     return {"event_id": event["id"], "user_id": user_id, "grants": grants}
