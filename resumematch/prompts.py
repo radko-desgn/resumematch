@@ -22,8 +22,12 @@ Rules:
 - Distinguish "must-have" requirements from "nice-to-have" ones.
 - For each requirement, cite the exact resume text that supports it (put that
   quote in `evidence`), or set `evidence` to null and mark it as missing.
-- Be calibrated: a 90+ score means an unusually strong match. Most decent
-  matches are 60-80.
+- Judge strictly on the evidence, do not be generous. If the resume does not
+  clearly support a requirement, it is "partially-met" at best, and "missing"
+  when there is no real evidence for it.
+- The overall_fit_score is COMPUTED from your per-requirement judgments, so
+  accuracy on each requirement's type (must-have/nice-to-have) and status
+  (met/partially-met/missing) matters far more than any single number.
 - Return data that conforms exactly to the provided schema."""
 
 
