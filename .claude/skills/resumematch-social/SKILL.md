@@ -41,22 +41,24 @@ Emotional transformation to sell:
 
 ## Current product state — VERIFY before every claim
 
-As of the last update, on the **deployed** site (resumematches.vercel.app):
+The product is **LIVE** at **resumematch.pro** (launched 2026-07-28):
 
 | Thing | State | What copy may say |
 |---|---|---|
-| AI analysis | **Mocked** on deploy (canned sample scores; real engine exists, needs a key) | Do NOT tell people to "check your real CV now"; the live free check returns a demo sample. Frame as "coming soon" / "follow for launch". |
-| Payments | **Simulated** (no Stripe) | Never imply you can buy anything. |
-| Email delivery | Not production-configured | Don't promise emailed reports as a live feature. |
-| Google sign-in | Works but consent screen in **Testing** (test users only) | Don't promote "sign in with Google" publicly. |
-| Custom domain | **Not bought**; lives on vercel.app | Don't print a branded domain. |
-| Legal pages | **Draft, noindex** | Don't cite them as final. |
-| Waitlist | **Does not exist** | NEVER say "join the waitlist / early-access list / link in bio to sign up". |
-| Testimonials / users / results | **None** | NEVER invent any. |
-| Launch status | Pre-launch (demo is viewable) | Lead with value; mention launch near the end. |
+| AI analysis | **Live** — Sonnet 5, real evidence-based scoring | You CAN tell people to run a real check; the free quick check returns a real score. |
+| Payments | **Live** (Stripe) | Real credit packs from €3.99; the deep analysis + tailored CV are paid. |
+| Free quick check | **Live**, 1 per email address | "Try your free check" is accurate and encouraged. |
+| Custom domain | **resumematch.pro** (live, HTTPS) | Use resumematch.pro. |
+| Google sign-in | **Public** | Fine to mention. |
+| Email delivery | Not configured | Don't promise emailed reports. |
+| Legal pages | Live (final lawyer review pending) | Fine to link. |
+| Waitlist | **Does not exist** | NEVER say "join the waitlist / early-access list". |
+| Testimonials / users / results | **None yet** | NEVER invent any. |
+| Handle | **@resumematch.pro** | Use this exact handle. |
 
-**The only accurate primary CTA right now:** *Follow @resumematch to know when it
-goes live.* If product state changes, update this table first, then the CTAs.
+**The accurate primary CTA now:** *Try your free check at resumematch.pro.* It is
+no longer "follow for launch" — the product is live. If product state changes,
+update this table first, then the CTAs.
 
 ## Never invent
 
@@ -101,11 +103,10 @@ chips, evidence excerpts, before/after bullets) should be the visual hero.
 
 ## CTA rules
 
-One primary CTA per post. It must point at something that exists. Given the
-current state, prefer: **"Follow for launch"** / "Follow the build" / "Save this
-for your next application." Use "Run a free Quick Check / check your CV" **only
-once live AI is enabled** (update the state table first). Never "join the
-waitlist."
+One primary CTA per post. It must point at something that exists. The product is
+live, so prefer: **"Try your free check at resumematch.pro"** / "Run a free Quick
+Check" / "Scan your CV free." "Save this for your next application" works for pure
+value posts. Never "join the waitlist" (there isn't one).
 
 ## Privacy rules
 
