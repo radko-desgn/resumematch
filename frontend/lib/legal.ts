@@ -1,21 +1,18 @@
 /**
  * Legal document content.
  *
- * NOT LEGAL ADVICE. These reflect what the app actually does (accounts, credits,
- * real Stripe payments, CV analysis, the free-scan email gate, the marketing
- * opt-in). Before launch, two things remain: fill in LEGAL_ENTITY + LEGAL_ADDRESS
- * (your registered sole-trader details), remove DISCLAIMER, and have a lawyer
- * review the remaining flagged items (Art. 9 special-category basis, liability
- * cap, breach-notification wording, withdrawal-waiver + VAT). The operator is
- * EU-based and the service processes CVs, which can contain special-category data.
+ * Published Terms of Service and Privacy Policy. They reflect what the app
+ * actually does (accounts, credits, real Stripe payments, CV analysis, the
+ * free-scan email gate, the marketing opt-in). The operator is an EU-based sole
+ * trader and the service processes CVs, which can contain special-category data.
+ * Revisit the text if the data flows, processors, pricing, or entity change.
  *
  * Kept as data (Markdown strings) so the same branded page shell renders both.
  */
 
-export const LEGAL_EFFECTIVE_DATE = "28 July 2026";
+export const LEGAL_EFFECTIVE_DATE = "30 July 2026";
 
-// Registered sole-trader details. Remove DISCLAIMER (below) once a lawyer has
-// reviewed the flagged items; the identity fields are now complete.
+// Registered sole-trader details — the controller/operator on both documents.
 export const LEGAL_ENTITY = "Radostin Valentinov Armenov";
 export const LEGAL_ADDRESS = "Yadenitsa Street 14, 4400 Pazardzhik, Bulgaria";
 export const LEGAL_CONTACT = "privacy@resumematch.pro";
@@ -29,16 +26,12 @@ export interface LegalDoc {
   body: string;
 }
 
-const DISCLAIMER = `> **Draft pending final review.** We are finalising our registered business details and a legal review before launch. Questions in the meantime: ${LEGAL_CONTACT}.`;
-
 export const PRIVACY: LegalDoc = {
   slug: "privacy",
   title: "Privacy Policy",
   updated: LEGAL_EFFECTIVE_DATE,
   summary: "What we collect, why, and the rights you have over it.",
-  body: `${DISCLAIMER}
-
-ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy explains what personal data we handle and how. It is written to reflect the EU General Data Protection Regulation (GDPR), since we operate from **Bulgaria (EU)**.
+  body: `ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy explains what personal data we handle and how. It is written to reflect the EU General Data Protection Regulation (GDPR), since we operate from **Bulgaria (EU)**.
 
 **Controller:** ${LEGAL_ENTITY}, ${LEGAL_ADDRESS}. Contact: ${LEGAL_CONTACT}.
 
@@ -51,7 +44,7 @@ ResumeMatch ("we", "us") helps you compare a CV against a job post. This policy 
 - **Credits and purchases** — your credit balance and a record of packs bought. **Card details** are handled directly by our payment provider (Stripe); we never see or store your full card number.
 - **Technical logs** — standard server logs (IP address, timestamps, error traces) generated automatically when you use the site.
 
-We do **not** use advertising trackers or third-party analytics cookies. \\[⚠️ LEGAL REVIEW REQUIRED — confirm before launch and add a cookie notice if any non-essential cookies are introduced.]
+We use **privacy-friendly, cookieless analytics** (Vercel Web Analytics) to count page views and see which pages are used. It sets no cookies and does not track you across other sites, so no cookie-consent banner is required. We do **not** use advertising trackers or third-party advertising cookies.
 
 ## 2. Why we use it, and our legal basis
 
@@ -65,7 +58,7 @@ We do **not** use advertising trackers or third-party analytics cookies. \\[⚠�
 
 Marketing is **never** a condition of using the service. You get your scan whether or not you opt in, and you can withdraw consent at any time.
 
-\\[⚠️ LEGAL REVIEW REQUIRED — where special-category data appears in a CV, the appropriate Art. 9 condition (typically explicit consent) must be confirmed with a lawyer.]
+Where your CV contains **special-category data** (Art. 9 GDPR, such as health, ethnicity, or beliefs), our legal basis for processing it is your **explicit consent**, which you give by choosing to submit that CV for analysis. You can withdraw it at any time by deleting the scan or your account, and you never have to include such details.
 
 ## 3. Who we share it with
 
@@ -78,7 +71,7 @@ We use these processors to run the service. Each acts on our instructions under 
 - **Stripe** — payment processing; card details go directly to Stripe and never to us.
 - **Resend** — sending transactional emails (such as password resets), when configured.
 
-Some of these may process data **outside the EU** (for example in the United States). Where that happens, transfers rely on the appropriate safeguards, such as Standard Contractual Clauses. \\[⚠️ LEGAL REVIEW REQUIRED — confirm each processor's location and transfer mechanism.]
+Some of these process data **outside the EU** (for example Anthropic and Vercel in the United States). Those transfers are covered by a data-processing agreement and rely on the European Commission's **Standard Contractual Clauses** as the transfer safeguard.
 
 We do **not** sell your personal data.
 
@@ -102,7 +95,7 @@ To exercise any of these, email ${LEGAL_CONTACT}. We aim to respond within **one
 
 ## 7. Security
 
-Passwords are hashed by our authentication provider. Traffic is encrypted in transit (HTTPS). Credit balances and every paid action are enforced on our servers, not in your browser. No system is perfectly secure, but we take reasonable measures to protect your data. \\[⚠️ LEGAL REVIEW REQUIRED — describe breach-notification process.]
+Passwords are hashed by our authentication provider. Traffic is encrypted in transit (HTTPS). Credit balances and every paid action are enforced on our servers, not in your browser. No system is perfectly secure, but we take reasonable measures to protect your data. If a personal-data breach occurs that is likely to risk your rights and freedoms, we will notify the competent supervisory authority within **72 hours** where required, and inform affected users without undue delay when the risk is high.
 
 ## 8. Children
 
@@ -120,9 +113,7 @@ export const TERMS: LegalDoc = {
   title: "Terms of Service",
   updated: LEGAL_EFFECTIVE_DATE,
   summary: "The rules for using ResumeMatch, in plain language.",
-  body: `${DISCLAIMER}
-
-These terms govern your use of ResumeMatch. By using the service you agree to them.
+  body: `These terms govern your use of ResumeMatch. By using the service you agree to them.
 
 **Operator:** ${LEGAL_ENTITY}, ${LEGAL_ADDRESS}. Contact: ${LEGAL_CONTACT}.
 
@@ -145,7 +136,7 @@ The free quick check is available without an account, limited to **one scan per 
 - Credits have no cash value and are non-transferable.
 - **Refunds and the EU right of withdrawal.** Credits are digital content delivered immediately. By buying, you ask us to make them available straight away and you acknowledge that once a credit has been **used** (a scan run or a CV generated), you lose the 14-day right of withdrawal for that credit and it is non-refundable. **Unused** credits can be refunded within **14 days** of purchase — email ${LEGAL_CONTACT}.
 - **Subscriptions.** You can cancel the Pro plan at any time; it stops at the end of the current paid period and the remaining allowance is not pro-rated or refunded.
-- \\[A lawyer should confirm the withdrawal-waiver wording and VAT/invoicing before launch.]
+- **Invoicing.** A VAT invoice for any purchase is available on request at ${LEGAL_CONTACT}.
 
 ## 5. Acceptable use
 
@@ -173,7 +164,7 @@ The service is provided "as is" and "as available". It's an early-stage product;
 
 ## 10. Liability
 
-\\[⚠️ LEGAL REVIEW REQUIRED — to the extent permitted by law, our liability is limited; consumer protections under Bulgarian/EU law that cannot be excluded still apply. A lawyer must set the exact wording and cap.]
+The service is provided "as is", without warranties of any kind to the extent permitted by law. To the fullest extent the law allows, our total liability for any claims arising from your use of the service is limited to the greater of the amount you paid us in the **12 months** before the claim, or **€50**. Nothing here limits or excludes liability that cannot be limited or excluded by law, including your mandatory consumer-protection rights under Bulgarian and EU law, or liability for fraud, death, or personal injury caused by our negligence.
 
 ## 11. Termination
 
