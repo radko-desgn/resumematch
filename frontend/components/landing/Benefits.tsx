@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useWipe } from "@/lib/useWipe";
 import { Clock, ShieldCheck, Target, Gauge } from "lucide-react";
 import { CountUp } from "./CountUp";
 
@@ -19,12 +20,13 @@ const STATS = [
 ];
 
 export function Benefits() {
+  const wipe = useWipe<HTMLHeadingElement>();
   return (
     <section id="why" className="scroll-mt-16 bg-[#0A0A0A] text-white">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-white/45">Why use it</span>
-          <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
+          <h2 ref={wipe} className="mk-wipe mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
             An unfair advantage on every application
           </h2>
         </div>
@@ -34,7 +36,8 @@ export function Benefits() {
             <motion.div
               key={b.title}
               initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
               className="rounded-2xl border border-white/12 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-white/30 hover:bg-white/[0.06]"
             >
@@ -48,7 +51,8 @@ export function Benefits() {
         {/* the actual output — a white app window reads strongly on the black band */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-14"
         >

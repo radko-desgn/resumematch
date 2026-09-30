@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useWipe } from "@/lib/useWipe";
 
 const QA = [
   {
@@ -28,48 +25,34 @@ const QA = [
   },
 ];
 
-function Item({ q, a, open, onClick }: { q: string; a: string; open: boolean; onClick: () => void }) {
-  return (
-    <div className="border-b border-border">
-      <button
-        onClick={onClick}
-        className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer"
-        aria-expanded={open}
-      >
-        <span className="font-medium">{q}</span>
-        <Plus className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-45")} />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 text-sm text-muted-foreground max-w-2xl">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
+/*
+ * motion-kit "credits roll": on desktop the title stays pinned while the
+ * questions rise into place beside it. Native <details name> gives the
+ * one-open-at-a-time accordion and keyboard support; the height animation is
+ * CSS (`.mk-acc`) and simply snaps where the browser can't animate to auto.
+ */
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const wipe = useWipe<HTMLHeadingElement>();
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-5 py-20 sm:py-24 scroll-mt-16">
-      <div>
-        <span className="eyebrow text-muted-foreground">FAQ &amp; tips</span>
-        <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
-          Everything you need to know
-        </h2>
-      </div>
-      <div className="mt-10">
-        {QA.map((item, i) => (
-          <Item key={i} q={item.q} a={item.a} open={open === i} onClick={() => setOpen(open === i ? null : i)} />
-        ))}
+    <section id="faq" className="scroll-mt-16">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:py-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <span className="eyebrow text-muted-foreground">FAQ &amp; tips</span>
+          <h2 ref={wipe} className="mk-wipe mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
+            Everything you need to know
+          </h2>
+        </div>
+        <div className="border-t border-border">
+          {QA.map((item, i) => (
+            <details key={item.q} name="faq" open={i === 0} className="mk-acc mk-roll border-b border-border">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 text-left">
+                <span className="font-medium">{item.q}</span>
+                <span className="mk-plus text-muted-foreground" aria-hidden />
+              </summary>
+              <p className="pb-5 text-sm text-muted-foreground max-w-2xl">{item.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useWipe } from "@/lib/useWipe";
 import { FileUp, Briefcase, Radar, BarChart3 } from "lucide-react";
 
 const STEPS = [
@@ -15,12 +16,13 @@ const TRANSFORM_ALT =
   "Your CV and a job post become a 78% match: four of four must-haves met, RAG partially covered, Kubernetes missing.";
 
 export function HowItWorks() {
+  const wipe = useWipe<HTMLHeadingElement>();
   return (
     <section id="how" className="bg-background scroll-mt-16">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-muted-foreground">How it works</span>
-          <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
+          <h2 ref={wipe} className="mk-wipe mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
             From raw CV to a real match in four steps
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">No account, no setup. Paste, click, and read your fit.</p>
@@ -29,7 +31,8 @@ export function HowItWorks() {
         {/* what actually happens: CV + job post -> a match */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
           className="mt-12 sm:mt-14"
         >
@@ -62,7 +65,8 @@ export function HowItWorks() {
             <motion.div
               key={s.title}
               initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.4, delay: i * 0.07 }}
               className="group bg-background p-7 sm:p-8 transition-colors duration-300 hover:bg-muted/60"
             >

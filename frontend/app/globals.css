@@ -74,6 +74,89 @@ body {
   font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
 }
 
+/* ---- Motion (adapted from motion-kit). Every effect is gated on
+   reduced motion and, where scroll-driven, on browser support; the static
+   page is the same markup at rest. Layered so utilities still win. ---- */
+@layer components {
+  /* wiper — a bar in the text colour paints the heading in (see lib/useWipe.ts).
+     Fill mode `backwards`: no clip-path is left on the heading afterwards. */
+  @media (prefers-reduced-motion: no-preference) {
+    .mk-wipe { position: relative; }
+    .mk-wipe[data-wipe="wait"] { clip-path: inset(100% -4% 0 -4%); }
+    .mk-wipe[data-wipe="play"] { animation: mk-wipe-clip 1300ms backwards; }
+    .mk-wipe[data-wipe="play"]::after {
+      content: ""; position: absolute; inset-inline: -4%; height: 2px;
+      background: currentColor; opacity: 0; pointer-events: none;
+      animation: mk-wipe-bar 1300ms both;
+    }
+  }
+
+  /* credits roll — FAQ rows rise into place under the pinned title */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mk-roll {
+        animation: mk-roll linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  /* accordion opens by height where the browser can animate to `auto`,
+     and snaps elsewhere. The + loses its upright and becomes a −. */
+  .mk-acc > summary { list-style: none; }
+  .mk-acc > summary::-webkit-details-marker { display: none; }
+  .mk-plus { position: relative; flex-shrink: 0; width: 1.75rem; height: 1.75rem; border: 1px solid var(--border); border-radius: 9999px; }
+  .mk-plus::before, .mk-plus::after { content: ""; position: absolute; background: currentColor; }
+  .mk-plus::before { inset-inline: 8px; top: 50%; height: 1.5px; translate: 0 -50%; }
+  .mk-plus::after { inset-block: 8px; left: 50%; width: 1.5px; translate: -50% 0; transition: rotate 300ms ease; }
+  .mk-acc[open] .mk-plus::after { rotate: 90deg; }
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mk-acc { interpolate-size: allow-keywords; }
+      .mk-acc::details-content {
+        block-size: 0; overflow: clip;
+        transition: block-size 450ms cubic-bezier(0.25, 0, 0, 1), content-visibility 450ms allow-discrete;
+      }
+      .mk-acc[open]::details-content { block-size: auto; }
+    }
+  }
+
+  /* pull-back — the closing call to action settles into place like a camera
+     pulling back. Driven by the footer's own view timeline, and finished by the
+     time the footer is fully on screen, so it always comes to rest at max scroll. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mk-pull-track { view-timeline: --mk-pull block; }
+      .mk-pull-scene {
+        --pull-from: 1.2;
+        transform-origin: 50% 90%;
+        animation: mk-pull linear both;
+        animation-timeline: --mk-pull;
+        animation-range: entry 0% entry 100%;
+      }
+      @media (min-width: 768px) { .mk-pull-scene { --pull-from: 1.35; } }
+    }
+  }
+}
+
+@keyframes mk-wipe-clip {
+  0%   { clip-path: inset(calc(100% - 2px) -4% 0 -4%); animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  45%  { clip-path: inset(0 -4% calc(100% - 2px) -4%); animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  100% { clip-path: inset(0 -4% 0 -4%); }
+}
+@keyframes mk-wipe-bar {
+  0%   { top: calc(100% - 2px); opacity: 1; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  45%  { top: 0; opacity: 1; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  92%  { opacity: 1; }
+  100% { top: calc(100% - 2px); opacity: 0; }
+}
+@keyframes mk-roll {
+  from { opacity: 0.01; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes mk-pull { from { transform: scale(var(--pull-from)); } to { transform: scale(1); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }

@@ -6,9 +6,10 @@ import { COMING_SOON, INSTAGRAM_URL } from "@/lib/config";
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-[#0A0A0A] text-white">
+    <footer className="mk-pull-track overflow-x-clip bg-[#0A0A0A] text-white">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
-        <div className="text-center">
+        {/* motion-kit pull-back: the closing CTA settles into place as the footer arrives */}
+        <div className="mk-pull-scene text-center">
           {COMING_SOON ? (
             <>
               <h2 className="mx-auto max-w-2xl font-display text-3xl sm:text-5xl leading-[1.05]">

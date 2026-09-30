@@ -9,6 +9,7 @@ import { useAuthGate } from "@/components/auth/AuthGate";
 import { Feature, Pack, PACKS } from "@/lib/packs";
 import { COMING_SOON } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useWipe } from "@/lib/useWipe";
 
 function FeatureRow({ feature, dark }: { feature: Feature; dark?: boolean }) {
   const { state, text } = feature;
@@ -171,12 +172,13 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
 }
 
 export function Pricing() {
+  const wipe = useWipe<HTMLHeadingElement>();
   return (
     <section id="pricing" className="scroll-mt-16 border-t border-border bg-background">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-muted-foreground">Pricing</span>
-          <h2 className="mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
+          <h2 ref={wipe} className="mk-wipe mt-3 font-display text-3xl sm:text-5xl leading-[1.05]">
             Pay for the scans you actually need
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">
