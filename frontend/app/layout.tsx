@@ -2,22 +2,22 @@ import type { Metadata } from "next";
 import { Montserrat, Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { IntroLoader, INTRO_SCRIPT } from "@/components/IntroLoader";
+import { SITE_DESCRIPTION as DESCRIPTION, SITE_NAME, SITE_TITLE as TITLE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const display = Montserrat({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-display-next" });
 const body = Inter({ subsets: ["latin"], variable: "--font-body-next" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-next" });
 
-const TITLE = "ResumeMatch — Know if your CV fits, before you apply";
-const DESCRIPTION =
-  "AI match score, an evidence-backed gap analysis, and a tailored ATS CV — in seconds, with nothing made up.";
-
 export const metadata: Metadata = {
+  // resolves relative OG/Twitter image URLs (and page canonicals) against the live origin
+  metadataBase: new URL(SITE_URL),
   title: TITLE,
   description: DESCRIPTION,
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
+    siteName: SITE_NAME,
     type: "website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "ResumeMatch — AI job match analyzer" }],
   },

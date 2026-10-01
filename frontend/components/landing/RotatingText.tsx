@@ -12,6 +12,11 @@ import { cn } from "@/lib/utils";
  * allowed to wrap (no nowrap, which used to overflow narrow screens), and
  * because the sizers account for the tallest wrapped phrase, swapping text
  * never changes the height either.
+ *
+ * The sizers draw their phrase with ::before (from data-text) rather than as
+ * text nodes, so they size the box without becoming part of the heading's text:
+ * crawlers and AI readers see "…to Analyze & Score your fit for…", not all four
+ * phrases run together.
  */
 export function RotatingText({
   phrases,
@@ -34,9 +39,12 @@ export function RotatingText({
     <span className={cn("grid text-balance", className)}>
       {/* sizers — reserve the largest box across all phrases */}
       {phrases.map((p) => (
-        <span key={p} aria-hidden className="invisible col-start-1 row-start-1">
-          {p}
-        </span>
+        <span
+          key={p}
+          aria-hidden
+          data-text={p}
+          className="invisible col-start-1 row-start-1 before:content-[attr(data-text)]"
+        />
       ))}
 
       <span className="relative col-start-1 row-start-1">

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Wizard } from "../wizard/Wizard";
 import { RotatingText } from "./RotatingText";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,10 @@ export function Hero() {
   return (
     <section id="top" className="bg-[#0A0A0A] text-white">
       <div className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:pt-16 sm:pb-24 text-center">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        {/* entrances are CSS (.mk-rise / .mk-line in globals.css), not framer-motion:
+            server-rendered at opacity 0, the text couldn't paint until hydration,
+            which held mobile LCP back by seconds */}
+        <div className="mk-rise">
           <div className="flex items-center justify-center gap-3 text-white/50">
             <span className="h-px w-8 bg-white/25" />
             <span className="eyebrow">{COMING_SOON ? "Coming soon" : "AI Job-Match Analyzer"}</span>
@@ -26,37 +28,22 @@ export function Hero() {
 
           <h1 className="mx-auto mt-6 max-w-4xl font-display text-[2.1rem] leading-[1.08] sm:text-[3.4rem] sm:leading-[1.06]">
             <span className="block overflow-hidden pb-[0.08em]">
-              <motion.span
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.7, delay: 0.08, ease: [0.2, 0.7, 0.2, 1] }}
-              >
+              <span className="block mk-line [--mk-delay:80ms]">
                 AI platform to
-              </motion.span>
-            </span>
+              </span>
+            </span>{" "}
 
             {/* same mask reveal as the fixed lines, staggered between them */}
             <span className="block overflow-hidden pb-[0.08em] my-1 sm:my-1.5">
-              <motion.span
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.7, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
-              >
+              <span className="block mk-line [--mk-delay:150ms]">
                 <RotatingText phrases={ROTATING} />
-              </motion.span>
-            </span>
+              </span>
+            </span>{" "}
 
             <span className="block overflow-hidden pb-[0.08em]">
-              <motion.span
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.7, delay: 0.22, ease: [0.2, 0.7, 0.2, 1] }}
-              >
+              <span className="block mk-line [--mk-delay:220ms]">
                 for your next job application.
-              </motion.span>
+              </span>
             </span>
           </h1>
 
@@ -64,16 +51,13 @@ export function Hero() {
             Upload your CV, link any job post, get instant match insights, and automatically
             generate an ATS-optimized CV tailored specifically for the role.
           </p>
-        </motion.div>
+        </div>
 
         {/* the wizard — primary focal point */}
         {COMING_SOON ? (
-          <motion.div
+          <div
             id="analyze"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.15 }}
-            className="relative mt-10 sm:mt-14 scroll-mt-20"
+            className="mk-rise [--mk-from:24px] [--mk-dur:550ms] [--mk-delay:150ms] relative mt-10 sm:mt-14 scroll-mt-20"
           >
             {/* the real scanner, shown but inert so visitors can see it's a
                 genuine product while it's not yet open to the public */}
@@ -103,17 +87,14 @@ export function Hero() {
                 </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
         ) : (
-          <motion.div
+          <div
             id="analyze"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.15 }}
-            className="mt-10 sm:mt-14 scroll-mt-20"
+            className="mk-rise [--mk-from:24px] [--mk-dur:550ms] [--mk-delay:150ms] mt-10 sm:mt-14 scroll-mt-20"
           >
             <Wizard />
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

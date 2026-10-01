@@ -92,6 +92,19 @@ body {
   html[data-intro="play"] .mk-intro-p { animation: mk-draw 520ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both; }
   html[data-intro="play"] .mk-intro-check { animation: mk-draw 380ms cubic-bezier(0.3, 0, 0.2, 1) 480ms both; }
 
+  /* hero entrance (components/landing/Hero.tsx): a rise-and-fade for blocks and
+     a masked rise for the H1 lines. Pure CSS so the hero text paints on the
+     first frame instead of waiting for JS to hydrate (it's the LCP element).
+     Per-element timing via --mk-delay / --mk-dur / --mk-from. Fill mode
+     `backwards`: no transform is left behind to trap fixed-position children.
+     The fade starts at 0.01, not 0: text painted at opacity 0 isn't an LCP
+     candidate, and a compositor-run fade doesn't repaint, so Chrome would only
+     count the hero once the animation ended (measured: +0.5s mobile, +0.9s desktop). */
+  @media (prefers-reduced-motion: no-preference) {
+    .mk-rise { animation: mk-rise var(--mk-dur, 500ms) ease-out var(--mk-delay, 0ms) backwards; }
+    .mk-line { animation: mk-line 700ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--mk-delay, 0ms) backwards; }
+  }
+
   /* wiper — a bar in the text colour paints the heading in (see lib/useWipe.ts).
      Fill mode `backwards`: no clip-path is left on the heading afterwards. */
   @media (prefers-reduced-motion: no-preference) {
@@ -156,6 +169,8 @@ body {
 
 @keyframes mk-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes mk-intro-out { to { opacity: 0; visibility: hidden; } }
+@keyframes mk-rise { from { opacity: 0.01; transform: translateY(var(--mk-from, 14px)); } }
+@keyframes mk-line { from { transform: translateY(110%); } }
 @keyframes mk-wipe-clip {
   0%   { clip-path: inset(calc(100% - 2px) -4% 0 -4%); animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
   45%  { clip-path: inset(0 -4% calc(100% - 2px) -4%); animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
