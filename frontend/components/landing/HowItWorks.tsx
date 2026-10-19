@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { useWipe } from "@/lib/useWipe";
-import { FileUp, Briefcase, Radar, BarChart3 } from "lucide-react";
+import { useReveal } from "@/lib/useReveal";
+import { FileUser, Briefcase, ScanSearch, ListChecks } from "lucide-react";
 
 const STEPS = [
-  { icon: FileUp, title: "Add your CV", body: "Upload a PDF/DOCX, paste the text, or drop a screenshot — OCR reads it." },
+  { icon: FileUser, title: "Add your CV", body: "Upload a PDF/DOCX, paste the text, or drop a screenshot — OCR reads it." },
   { icon: Briefcase, title: "Add the job", body: "Paste a link, a PDF, the text, or a screenshot of the offer." },
-  { icon: Radar, title: "AI analyzes", body: "We parse both, extract requirements, and match them semantically." },
-  { icon: BarChart3, title: "Get your match", body: "A score, an evidence-backed gap analysis, and tailored rewrites." },
+  { icon: ScanSearch, title: "AI analyzes", body: "We parse both, extract requirements, and match them semantically." },
+  { icon: ListChecks, title: "Get your match", body: "A score, an evidence-backed gap analysis, and tailored rewrites." },
 ];
 
 const TRANSFORM_ALT =
@@ -17,8 +17,9 @@ const TRANSFORM_ALT =
 
 export function HowItWorks() {
   const wipe = useWipe<HTMLHeadingElement>();
+  const reveal = useReveal<HTMLElement>();
   return (
-    <section id="how" className="bg-background scroll-mt-16">
+    <section ref={reveal} id="how" className="bg-background scroll-mt-16">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-muted-foreground">How it works</span>
@@ -29,13 +30,7 @@ export function HowItWorks() {
         </div>
 
         {/* what actually happens: CV + job post -> a match */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="mt-12 sm:mt-14"
-        >
+        <div className="mk-reveal [--mk-dur:500ms] mt-12 sm:mt-14">
           {/* Three columns of small type are unreadable on a phone, so below sm
               the same flow is swapped for a stacked render sized for that width
               (capped at its native 398px so type stays 1:1). Only one is ever in
@@ -58,17 +53,13 @@ export function HowItWorks() {
             sizes="(max-width: 639px) 100vw, 0px"
             className="block sm:hidden mx-auto w-full max-w-[398px] h-auto"
           />
-        </motion.div>
+        </div>
 
         <div className="mt-12 sm:mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <motion.div
+            <div
               key={s.title}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
-              className="group bg-background p-7 sm:p-8 transition-colors duration-300 hover:bg-muted/60"
+              className="mk-reveal group bg-background p-7 sm:p-8 transition-colors duration-300 hover:bg-muted/60"
             >
               <div className="flex items-center justify-between">
                 <div className="flex size-11 items-center justify-center rounded-xl bg-foreground text-background transition-transform duration-300 group-hover:-translate-y-0.5">
@@ -78,7 +69,7 @@ export function HowItWorks() {
               </div>
               <h3 className="mt-5 font-display text-lg">{s.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.body}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

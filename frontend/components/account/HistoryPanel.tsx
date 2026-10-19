@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronRight, Clock, Loader2, Trash2 } from "lucide-react";
+import { ChevronRight, RotateCcwClock, LoaderCircle, Trash2 } from "lucide-react";
 import { listScans, getScan, deleteScan, ScanSummary } from "@/lib/api";
 import { Analysis } from "@/lib/types";
 import { AnalysisReport } from "@/components/results/AnalysisReport";
@@ -68,11 +68,11 @@ export function HistoryPanel({ open, onClose }: { open: boolean; onClose: () => 
           <p className="text-sm text-missing">{error}</p>
         ) : scans === null ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="size-5 animate-spin text-muted-foreground" />
+            <LoaderCircle className="size-5 animate-spin text-muted-foreground" />
           </div>
         ) : scans.length === 0 ? (
           <div className="py-10 text-center">
-            <Clock className="mx-auto mb-3 size-8 text-muted-foreground/50" />
+            <RotateCcwClock className="mx-auto mb-3 size-8 text-muted-foreground/50" />
             <p className="text-sm text-muted-foreground">No scans yet. Run one and it&apos;ll show up here.</p>
           </div>
         ) : (
@@ -131,7 +131,7 @@ export function HistoryPanel({ open, onClose }: { open: boolean; onClose: () => 
       >
         {detailBusy || !detail ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="size-5 animate-spin text-muted-foreground" />
+            <LoaderCircle className="size-5 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <AnalysisReport analysis={detail.analysis} full={detail.tier === "paid"} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link2, Type, FileText, Image as ImageIcon } from "lucide-react";
+import { Link2, ClipboardPaste, FileUp, Image as ImageIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -20,8 +20,8 @@ export function Step2Job() {
       <Tabs value={job.kind} onValueChange={(v) => setJob({ kind: v as JobKind })}>
         <TabsList>
           <TabsTrigger value="url"><Link2 className="size-4" /> URL</TabsTrigger>
-          <TabsTrigger value="text"><Type className="size-4" /> Paste text</TabsTrigger>
-          <TabsTrigger value="file"><FileText className="size-4" /> PDF</TabsTrigger>
+          <TabsTrigger value="text"><ClipboardPaste className="size-4" /> Paste text</TabsTrigger>
+          <TabsTrigger value="file"><FileUp className="size-4" /> PDF</TabsTrigger>
           <TabsTrigger value="image"><ImageIcon className="size-4" /> Screenshot</TabsTrigger>
         </TabsList>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Check, Loader2 } from "lucide-react";
+import { TriangleAlert, Check, LoaderCircle } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -39,7 +39,7 @@ export function Step3Processing() {
   if (status === "error") {
     return (
       <div className="flex flex-col items-center text-center py-10">
-        <AlertTriangle className="size-10 text-missing mb-4" />
+        <TriangleAlert className="size-10 text-missing mb-4" />
         <h2 className="font-display text-2xl mb-2">Analysis failed</h2>
         <p className="text-muted-foreground max-w-md mb-6">{error}</p>
         <div className="flex gap-3">
@@ -91,7 +91,7 @@ export function Step3Processing() {
                     <Check className="size-3.5" />
                   </span>
                 ) : active ? (
-                  <Loader2 className="size-5 animate-spin text-foreground" />
+                  <LoaderCircle className="size-5 animate-spin text-foreground" />
                 ) : (
                   <span className="size-2 rounded-full bg-border" />
                 )}
@@ -105,7 +105,13 @@ export function Step3Processing() {
       </ul>
 
       <div className="mx-auto mt-7 h-1.5 max-w-sm overflow-hidden rounded-full bg-muted">
-        <motion.div className="h-full bg-foreground" animate={{ width: `${progress}%` }} transition={{ ease: "easeOut" }} />
+        {/* scaleX, not width: the bar fills on the compositor instead of re-laying out every frame */}
+        <motion.div
+          className="h-full origin-left bg-foreground"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: progress / 100 }}
+          transition={{ ease: "easeOut" }}
+        />
       </div>
     </div>
   );

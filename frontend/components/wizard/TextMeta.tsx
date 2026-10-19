@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Wand2 } from "lucide-react";
+import { Check, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function TextMeta({ value, min, onFill }: { value: string; min: number; onFill: () => void }) {
@@ -17,7 +17,7 @@ export function TextMeta({ value, min, onFill }: { value: string; min: number; o
         onClick={onFill}
         className="-my-2 inline-flex items-center gap-1.5 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
       >
-        <Wand2 className="size-3.5" /> Try a sample
+        <FlaskConical className="size-3.5" /> Try a sample
       </button>
     </div>
   );

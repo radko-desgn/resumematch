@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { FileDown, Loader2, Lock, Sparkles, AlertTriangle, FileText } from "lucide-react";
+import { FileDown, FilePen, LoaderCircle, Lock, RefreshCw, TriangleAlert, FileText } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { useCredits } from "@/lib/credits";
 import { ENTRY_PRICE } from "@/lib/packs";
@@ -83,7 +83,7 @@ export function TailoredCv() {
         {!cv &&
           (canGenerateCv ? (
             <Button onClick={onGenerate} disabled={busy} className="w-full sm:w-auto">
-              {busy ? <Loader2 className="animate-spin" /> : <Sparkles />}
+              {busy ? <LoaderCircle className="animate-spin" /> : <FilePen />}
               {busy ? "Writing your CV…" : "Generate tailored CV"}
             </Button>
           ) : (
@@ -97,7 +97,7 @@ export function TailoredCv() {
 
       {error && (
         <p className="mt-3 flex items-start gap-2 text-xs text-missing">
-          <AlertTriangle className="size-4 shrink-0" /> {error}
+          <TriangleAlert className="size-4 shrink-0" /> {error}
         </p>
       )}
 
@@ -136,13 +136,13 @@ export function TailoredCv() {
 
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Button onClick={() => onExport("pdf")} disabled={exporting !== null} className="w-full sm:w-auto">
-              {exporting === "pdf" ? <Loader2 className="animate-spin" /> : <FileDown />} Download .pdf
+              {exporting === "pdf" ? <LoaderCircle className="animate-spin" /> : <FileDown />} Download .pdf
             </Button>
             <Button variant="outline" onClick={() => onExport("docx")} disabled={exporting !== null} className="w-full sm:w-auto">
-              {exporting === "docx" ? <Loader2 className="animate-spin" /> : <FileDown />} Download .docx
+              {exporting === "docx" ? <LoaderCircle className="animate-spin" /> : <FileDown />} Download .docx
             </Button>
             <Button variant="ghost" onClick={onGenerate} disabled={busy} className="w-full sm:w-auto">
-              {busy ? <Loader2 className="animate-spin" /> : <Sparkles />} Regenerate
+              {busy ? <LoaderCircle className="animate-spin" /> : <RefreshCw />} Regenerate
             </Button>
           </div>
         </motion.div>

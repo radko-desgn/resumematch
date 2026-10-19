@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, Loader2, Lock } from "lucide-react";
+import { ArrowLeft, Check, KeyRound, LoaderCircle } from "lucide-react";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,7 +101,7 @@ function ResetForm() {
             />
             {error && <p className="text-xs text-missing">{error}</p>}
             <Button type="submit" className="w-full" disabled={busy}>
-              {busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
+              {busy ? <LoaderCircle className="size-4 animate-spin" /> : <KeyRound className="size-4" />}
               Update password
             </Button>
           </form>

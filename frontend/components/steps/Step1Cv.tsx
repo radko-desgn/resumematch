@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Type, Image as ImageIcon } from "lucide-react";
+import { FileUp, ClipboardPaste, Image as ImageIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { FileDrop } from "../wizard/FileDrop";
@@ -18,8 +18,8 @@ export function Step1Cv() {
 
       <Tabs value={cv.kind} onValueChange={(v) => setCv({ kind: v as CvKind })}>
         <TabsList>
-          <TabsTrigger value="text"><Type className="size-4" /> Paste text</TabsTrigger>
-          <TabsTrigger value="file"><FileText className="size-4" /> Upload file</TabsTrigger>
+          <TabsTrigger value="text"><ClipboardPaste className="size-4" /> Paste text</TabsTrigger>
+          <TabsTrigger value="file"><FileUp className="size-4" /> Upload file</TabsTrigger>
           <TabsTrigger value="image"><ImageIcon className="size-4" /> Screenshot</TabsTrigger>
         </TabsList>
 

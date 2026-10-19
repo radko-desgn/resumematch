@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Globe, Loader2, Trash2 } from "lucide-react";
+import { Check, Languages, LoaderCircle, Trash2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { deleteAccount } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -88,7 +88,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
           />
           {pwError && <p className="text-xs text-missing">{pwError}</p>}
           <Button type="submit" disabled={pwBusy} className="w-full">
-            {pwBusy ? <Loader2 className="size-4 animate-spin" /> : pwDone ? <Check className="size-4" /> : null}
+            {pwBusy ? <LoaderCircle className="size-4 animate-spin" /> : pwDone ? <Check className="size-4" /> : null}
             {pwDone ? "Password updated" : "Update password"}
           </Button>
         </form>
@@ -97,7 +97,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
       {/* Language — coming soon */}
       <section className="mt-8 border-t border-border pt-6">
         <h3 className="flex items-center gap-2 font-display text-base text-muted-foreground">
-          <Globe className="size-4" /> Language
+          <Languages className="size-4" /> Language
         </h3>
         <div className="mt-3 flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm text-muted-foreground">
           English
@@ -129,7 +129,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
           onClick={removeAccount}
           className="mt-3 w-full border-missing/40 text-missing hover:bg-missing/5"
         >
-          {delBusy ? <Loader2 className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+          {delBusy ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
           Delete my account
         </Button>
       </section>

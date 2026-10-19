@@ -15,7 +15,8 @@ const ROTATING = [
 export function Hero() {
   return (
     <section id="top" className="bg-[#0A0A0A] text-white">
-      <div className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:pt-16 sm:pb-24 text-center">
+      {/* top padding = the fixed header's 80px (h-20) + the original 48/64px */}
+      <div className="mx-auto max-w-6xl px-5 pt-32 pb-16 sm:pt-36 sm:pb-24 text-center">
         {/* entrances are CSS (.mk-rise / .mk-line in globals.css), not framer-motion:
             server-rendered at opacity 0, the text couldn't paint until hydration,
             which held mobile LCP back by seconds */}

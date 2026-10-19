@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, Check, RotateCcw, Zap } from "lucide-react";
+import { Lock, Check, LogIn, RotateCcw, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { useCredits } from "@/lib/credits";
 import { useAuthGate } from "@/components/auth/AuthGate";
@@ -48,7 +48,7 @@ export function Step4Results() {
           {!signedIn ? (
             <Button size="lg" className="w-full sm:w-auto"
               onClick={() => promptSignIn("Deep analysis costs 1 credit, so it needs an account.")}>
-              <Zap className="size-4" /> Sign in to unlock
+              <LogIn className="size-4" /> Sign in to unlock
             </Button>
           ) : canScan ? (
             <Button size="lg" className="w-full sm:w-auto" onClick={() => { upgrade(); void refresh(); }}>

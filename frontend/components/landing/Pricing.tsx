@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Check, Loader2, Lock, Zap } from "lucide-react";
+import { ArrowRight, Check, LoaderCircle, Lock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCredits } from "@/lib/credits";
 import { useAuthGate } from "@/components/auth/AuthGate";
@@ -10,6 +9,7 @@ import { Feature, Pack, PACKS } from "@/lib/packs";
 import { COMING_SOON } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useWipe } from "@/lib/useWipe";
+import { useReveal } from "@/lib/useReveal";
 
 function FeatureRow({ feature, dark }: { feature: Feature; dark?: boolean }) {
   const { state, text } = feature;
@@ -42,7 +42,7 @@ function FeatureRow({ feature, dark }: { feature: Feature; dark?: boolean }) {
   );
 }
 
-function PackCard({ pack, index }: { pack: Pack; index: number }) {
+function PackCard({ pack }: { pack: Pack }) {
   const { purchase, signedIn } = useCredits();
   const { promptSignIn } = useAuthGate();
   const [busy, setBusy] = useState(false);
@@ -77,13 +77,9 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
     : `${pack.grants.scans} scan${pack.grants.scans === 1 ? "" : "s"} added`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.4, delay: index * 0.06 }}
+    <div
       className={cn(
-        "relative flex flex-col rounded-2xl border p-6 sm:p-7",
+        "mk-reveal relative flex flex-col rounded-2xl border p-6 sm:p-7",
         dark
           ? "border-foreground bg-foreground text-background shadow-2xl"
           : "border-border bg-background"
@@ -136,7 +132,7 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
         >
           {busy ? (
             <>
-              <Loader2 className="size-4 animate-spin" /> Starting checkout…
+              <LoaderCircle className="size-4 animate-spin" /> Starting checkout…
             </>
           ) : done ? (
             <>
@@ -167,14 +163,15 @@ function PackCard({ pack, index }: { pack: Pack; index: number }) {
           </p>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export function Pricing() {
   const wipe = useWipe<HTMLHeadingElement>();
+  const reveal = useReveal<HTMLElement>();
   return (
-    <section id="pricing" className="scroll-mt-16 border-t border-border bg-background">
+    <section ref={reveal} id="pricing" className="scroll-mt-16 border-t border-border bg-background">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="max-w-2xl">
           <span className="eyebrow text-muted-foreground">Pricing</span>
@@ -188,8 +185,8 @@ export function Pricing() {
 
         {/* stretch (default) so all cards share a height and their CTAs align */}
         <div className="mt-12 sm:mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {PACKS.map((p, i) => (
-            <PackCard key={p.id} pack={p} index={i} />
+          {PACKS.map((p) => (
+            <PackCard key={p.id} pack={p} />
           ))}
         </div>
       </div>

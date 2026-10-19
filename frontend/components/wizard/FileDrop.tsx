@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { UploadCloud, FileCheck2, X } from "lucide-react";
+import { FileUp, FileCheckCorner, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function FileDrop({
@@ -47,7 +47,7 @@ export function FileDrop({
       />
       {file ? (
         <div className="flex items-center justify-center gap-3">
-          <FileCheck2 className="size-5 text-met" />
+          <FileCheckCorner className="size-5 text-met" />
           <span className="text-sm font-medium">{file.name}</span>
           <button
             onClick={() => onFile(null)}
@@ -63,7 +63,7 @@ export function FileDrop({
           onClick={() => inputRef.current?.click()}
           className="flex w-full flex-col items-center gap-2 cursor-pointer"
         >
-          <UploadCloud className="size-8 text-muted-foreground" />
+          <FileUp className="size-8 text-muted-foreground" />
           <span className="text-sm font-medium">Drop a file or click to browse</span>
           <span className="text-xs text-muted-foreground">{hint}</span>
         </button>

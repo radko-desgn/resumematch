@@ -22,7 +22,9 @@ export function Wizard() {
       <StepIndicator />
 
       <div className="mt-7">
-        <AnimatePresence mode="wait">
+        {/* initial={false}: the first step arrives with the hero's CSS entrance,
+            so it isn't server-rendered at opacity 0 waiting for hydration */}
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={step}
             initial={{ opacity: 0, x: 20 }}

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Check, Sparkles } from "lucide-react";
+import { TriangleAlert, Check, Lightbulb } from "lucide-react";
 import { Gauge } from "../wizard/Gauge";
 import { CopyButton } from "../wizard/CopyButton";
 import { Card } from "@/components/ui/card";
@@ -70,7 +70,7 @@ function ReportBody({ a }: { a: Analysis }) {
         </Card>
         <Card className="p-5">
           <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
-            <AlertTriangle className="size-4 text-missing" /> Gaps to address
+            <TriangleAlert className="size-4 text-missing" /> Gaps to address
           </h3>
           <ul className="space-y-2.5">
             {gaps.map((g, i) => (
@@ -87,7 +87,7 @@ function ReportBody({ a }: { a: Analysis }) {
         <Card className="p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
             <h3 className="font-display font-semibold flex items-center gap-2">
-              <Sparkles className="size-4" /> Recommendations
+              <Lightbulb className="size-4" /> Recommendations
             </h3>
             <CopyButton text={recs.join("\n")} label="Copy all" />
           </div>

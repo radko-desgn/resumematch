@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -17,6 +17,13 @@ import { cn } from "@/lib/utils";
  * text nodes, so they size the box without becoming part of the heading's text:
  * crawlers and AI readers see "…to Analyze & Score your fit for…", not all four
  * phrases run together.
+ *
+ * It only rotates while it's on screen and the tab is visible: scrolled past
+ * the hero, there's nothing to watch and no reason to keep re-rendering.
+ *
+ * Reduced motion is handled by <MotionProvider> (reducedMotion="user"), which
+ * drops the slide and keeps the fade. Branching on useReducedMotion() here
+ * rendered different styles on the server and client (a hydration mismatch).
  */
 export function RotatingText({
   phrases,
@@ -28,15 +35,23 @@ export function RotatingText({
   className?: string;
 }) {
   const [i, setI] = useState(0);
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % phrases.length), intervalMs);
-    return () => clearInterval(id);
+    let onScreen = true;
+    const io = new IntersectionObserver(([entry]) => (onScreen = entry.isIntersecting));
+    if (ref.current) io.observe(ref.current);
+    const id = setInterval(() => {
+      if (onScreen && !document.hidden) setI((v) => (v + 1) % phrases.length);
+    }, intervalMs);
+    return () => {
+      clearInterval(id);
+      io.disconnect();
+    };
   }, [phrases.length, intervalMs]);
 
   return (
-    <span className={cn("grid text-balance", className)}>
+    <span ref={ref} className={cn("grid text-balance", className)}>
       {/* sizers — reserve the largest box across all phrases */}
       {phrases.map((p) => (
         <span
@@ -52,9 +67,9 @@ export function RotatingText({
           <motion.span
             key={i}
             className="absolute inset-0 flex items-center justify-center"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: "0.55em" }}
-            animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: "-0.55em" }}
+            initial={{ opacity: 0, y: "0.55em" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-0.55em" }}
             transition={{ duration: 0.42, ease: [0.2, 0.7, 0.2, 1] }}
           >
             {phrases[i]}

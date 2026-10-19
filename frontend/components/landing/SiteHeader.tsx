@@ -9,7 +9,7 @@ import { CreditBadge } from "./CreditBadge";
 import { AccountMenu } from "@/components/account/AccountMenu";
 import { HistoryPanel } from "@/components/account/HistoryPanel";
 import { SettingsPanel } from "@/components/account/SettingsPanel";
-import { Clock, Settings as SettingsIcon } from "lucide-react";
+import { RotateCcwClock, Settings as SettingsIcon } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useAuthGate } from "@/components/auth/AuthGate";
 import { COMING_SOON, INSTAGRAM_URL } from "@/lib/config";
@@ -45,9 +45,12 @@ export function SiteHeader() {
 
   return (
     <>
+      {/* fixed, not sticky: a sticky header sits in the flow, so condensing
+          80px -> 56px pulled the whole page up 24px mid-scroll. Fixed, the
+          condense moves nothing; the hero reserves the 80px (pt-* in Hero). */}
       <header
         className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow,color] duration-300",
           scrolled
             ? "border-b border-border bg-background/80 backdrop-blur-md shadow-sm text-foreground"
             : "bg-[#0A0A0A] text-white" // seamless with the dark hero
@@ -55,7 +58,7 @@ export function SiteHeader() {
       >
         <div
           className={cn(
-            "mx-auto max-w-6xl px-5 flex items-center justify-between transition-all duration-300",
+            "mx-auto max-w-6xl px-5 flex items-center justify-between transition-[height] duration-300 ease-out",
             scrolled ? "h-14" : "h-20"
           )}
         >
@@ -67,7 +70,7 @@ export function SiteHeader() {
               width={1476}
               height={261}
               priority
-              className={cn("w-auto transition-all duration-300", scrolled ? "h-[22px] opacity-0" : "h-[26px] opacity-100")}
+              className={cn("w-auto transition-[height,opacity] duration-300", scrolled ? "h-[22px] opacity-0" : "h-[26px] opacity-100")}
             />
             <Image
               src="/logo-black.png"
@@ -76,7 +79,7 @@ export function SiteHeader() {
               width={1476}
               height={261}
               className={cn(
-                "absolute inset-0 w-auto transition-all duration-300",
+                "absolute inset-0 w-auto transition-[height,opacity] duration-300",
                 scrolled ? "h-[22px] opacity-100" : "h-[26px] opacity-0"
               )}
             />
@@ -201,7 +204,7 @@ export function SiteHeader() {
                     <div className="mt-4 border-t border-border pt-4">
                       <p className="truncate text-xs text-muted-foreground">{email}</p>
                       <Button variant="outline" className="mt-3 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("history"); }}>
-                        <Clock className="size-4" /> Scan history
+                        <RotateCcwClock className="size-4" /> Scan history
                       </Button>
                       <Button variant="outline" className="mt-2 w-full justify-start" onClick={() => { setOpen(false); setMobilePanel("settings"); }}>
                         <SettingsIcon className="size-4" /> Settings

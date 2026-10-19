@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { IntroLoader, INTRO_SCRIPT } from "@/components/IntroLoader";
+import { MotionProvider } from "@/components/MotionProvider";
 import { SITE_DESCRIPTION as DESCRIPTION, SITE_NAME, SITE_TITLE as TITLE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="min-h-full">
         <IntroLoader />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         {/* Vercel Web Analytics — cookieless, GDPR-friendly page-view tracking.
             Only records once Web Analytics is enabled in the Vercel dashboard. */}
         <Analytics />

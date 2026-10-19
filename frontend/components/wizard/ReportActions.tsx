@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Loader2, Mail, Check, AlertTriangle } from "lucide-react";
+import { Download, LoaderCircle, Mail, Check, TriangleAlert } from "lucide-react";
 import { Analysis } from "@/lib/types";
 import { downloadReportPdf, emailReport } from "@/lib/api";
 import { useWizard } from "@/lib/store";
@@ -51,7 +51,7 @@ export function ReportActions({ analysis }: { analysis: Analysis }) {
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
         <Button onClick={onDownload} disabled={downloading} className="w-full sm:w-auto">
-          {downloading ? <Loader2 className="animate-spin" /> : <Download />}
+          {downloading ? <LoaderCircle className="animate-spin" /> : <Download />}
           {downloading ? "Building PDF…" : "Download PDF"}
         </Button>
 
@@ -68,7 +68,7 @@ export function ReportActions({ analysis }: { analysis: Analysis }) {
               aria-label="Email address"
             />
             <Button type="submit" variant="outline" disabled={sending || !email} className="w-full sm:w-auto">
-              {sending ? <Loader2 className="animate-spin" /> : <Mail />}
+              {sending ? <LoaderCircle className="animate-spin" /> : <Mail />}
               {sending ? "Sending…" : "Email it"}
             </Button>
           </form>
@@ -81,7 +81,7 @@ export function ReportActions({ analysis }: { analysis: Analysis }) {
             msg.kind === "ok" ? "text-met" : msg.kind === "err" ? "text-missing" : "text-muted-foreground"
           }`}
         >
-          {msg.kind === "ok" ? <Check className="size-4 shrink-0" /> : <AlertTriangle className="size-4 shrink-0" />}
+          {msg.kind === "ok" ? <Check className="size-4 shrink-0" /> : <TriangleAlert className="size-4 shrink-0" />}
           {msg.text}
         </p>
       )}

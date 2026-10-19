@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Lock, X } from "lucide-react";
+import { LoaderCircle, LogIn, Mail, UserPlus, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -189,7 +189,15 @@ export function AuthModal({
                     )}
                     {error && <p className="text-xs text-missing">{error}</p>}
                     <Button type="submit" className="w-full" disabled={busy}>
-                      {busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
+                      {busy ? (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      ) : mode === "signup" ? (
+                        <UserPlus className="size-4" />
+                      ) : mode === "reset" ? (
+                        <Mail className="size-4" />
+                      ) : (
+                        <LogIn className="size-4" />
+                      )}
                       {mode === "signup" ? "Create account" : mode === "reset" ? "Send reset link" : "Sign in"}
                     </Button>
                     {mode === "signup" && (

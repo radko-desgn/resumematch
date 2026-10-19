@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Infinity as InfinityIcon, Lock, Zap } from "lucide-react";
+import { ArrowRight, Check, Infinity as InfinityIcon, LogIn, Zap } from "lucide-react";
 import { useWizard } from "@/lib/store";
 import { FreeScanEmail } from "./FreeScanEmail";
 import { useCredits } from "@/lib/credits";
@@ -109,7 +109,7 @@ export function PlanChoice() {
               disabled={!jobReady}
               onClick={() => promptSignIn("Deep analysis costs 1 credit, so it needs an account.")}
             >
-              <Lock className="size-4" /> Sign in to continue
+              <LogIn className="size-4" /> Sign in to continue
             </Button>
           ) : canScan || !hydrated ? (
             <Button className="w-full" disabled={!jobReady || !hydrated} onClick={runPaid}>
@@ -118,7 +118,7 @@ export function PlanChoice() {
           ) : (
             <Button asChild className="w-full">
               <a href="#pricing">
-                <Lock className="size-4" /> Get credits from {ENTRY_PRICE}
+                <Zap className="size-4" /> Get credits from {ENTRY_PRICE}
               </a>
             </Button>
           )}

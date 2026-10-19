@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Clock, LogOut, Settings } from "lucide-react";
+import { RotateCcwClock, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { SettingsPanel } from "./SettingsPanel";
@@ -66,7 +66,7 @@ export function AccountMenu({ inverted }: { inverted?: boolean }) {
               <p className="mt-0.5 truncate text-sm font-medium">{email}</p>
             </div>
             <nav className="p-1.5">
-              <MenuItem icon={Clock} label="Scan history" onClick={() => { setMenu(false); setPanel("history"); }} />
+              <MenuItem icon={RotateCcwClock} label="Scan history" onClick={() => { setMenu(false); setPanel("history"); }} />
               <MenuItem icon={Settings} label="Settings" onClick={() => { setMenu(false); setPanel("settings"); }} />
               <MenuItem icon={LogOut} label="Log out" onClick={() => { setMenu(false); signOut(); }} />
             </nav>
@@ -85,7 +85,7 @@ function MenuItem({
   label,
   onClick,
 }: {
-  icon: typeof Clock;
+  icon: typeof RotateCcwClock;
   label: string;
   onClick: () => void;
 }) {

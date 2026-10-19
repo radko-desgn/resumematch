@@ -50,7 +50,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -63,6 +62,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+/* anchor links glide, unless the visitor asked for less motion */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* one icon style site-wide: every Lucide icon draws a 1.5px line on screen,
+   whatever its size. Lucide's default 2-unit stroke scales with the icon, so a
+   14px badge icon read hairline-thin and a 40px state icon read heavy.
+   Layered, so a one-off utility can still override it. */
+@layer base {
+  svg.lucide { stroke-width: 1.5px; }
+  svg.lucide * { vector-effect: non-scaling-stroke; }
+}
 
 /* accent gradient — used ONLY for the score gauge + tiny logo mark */
 .accent-gradient { background-image: linear-gradient(120deg, var(--accent-a), var(--accent-b)); }
@@ -115,6 +127,18 @@ body {
       content: ""; position: absolute; inset-inline: -4%; height: 2px;
       background: currentColor; opacity: 0; pointer-events: none;
       animation: mk-wipe-bar 1300ms both;
+    }
+  }
+
+  /* reveal — blocks below the fold rise in once, the first time they scroll
+     into view (see lib/useReveal.ts). Server-rendered visible; only JS puts
+     a block into "wait", so no-JS and reduced motion get the page at rest.
+     --mk-delay is set per batch: cards that arrive together stagger, a card
+     arriving alone (one column on a phone) doesn't wait for its siblings. */
+  @media (prefers-reduced-motion: no-preference) {
+    .mk-reveal[data-reveal="wait"] { opacity: 0.01; transform: translateY(var(--mk-from, 18px)); }
+    .mk-reveal[data-reveal="play"] {
+      animation: mk-rise var(--mk-dur, 450ms) cubic-bezier(0.2, 0.7, 0.2, 1) var(--mk-delay, 0ms) backwards;
     }
   }
 
