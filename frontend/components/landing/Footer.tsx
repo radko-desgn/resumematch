@@ -48,7 +48,17 @@ export function Footer() {
             </nav>
             <div className="text-center text-xs sm:text-right">
               <p className="text-white/40">© {year} ResumeMatch. All rights reserved.</p>
-              <p className="mt-1 text-white/30">Created by Radostin Armenov</p>
+              <p className="mt-1 text-white/30">
+                Created by{" "}
+                <a
+                  href="https://www.radostin.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 underline-offset-4 transition-colors hover:text-white hover:underline"
+                >
+                  Radostin Armenov
+                </a>
+              </p>
             </div>
           </div>
         </div>
